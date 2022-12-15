@@ -27,6 +27,13 @@ public class Warehouse {
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
+    @Column(name = "deliveries_as_source")
     @OneToMany
-    private List<Delivery> deliveries;
+    private List<Delivery> deliveriesAsSource;
+
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @Column(name = "deliveries_as_destination")
+    @OneToMany
+    private List<Delivery> deliveriesAsDestination;
 }
