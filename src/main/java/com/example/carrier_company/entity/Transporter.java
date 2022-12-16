@@ -25,6 +25,6 @@ public class Transporter {
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
-    @OneToMany
+    @OneToMany(mappedBy = "transporter")
     private List<Delivery> deliveries;
 }

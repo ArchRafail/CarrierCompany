@@ -28,12 +28,12 @@ public class Warehouse {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @Column(name = "deliveries_as_source")
-    @OneToMany
+    @OneToMany(mappedBy = "warehouse_from")
     private List<Delivery> deliveriesAsSource;
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @Column(name = "deliveries_as_destination")
-    @OneToMany
+    @OneToMany(mappedBy = "warehouse_to")
     private List<Delivery> deliveriesAsDestination;
 }
