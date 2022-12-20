@@ -22,8 +22,7 @@ public class WarehouseService {
     }
 
     public WarehouseDto get(Long id) {
-        return warehouseRepository.findById(id).map(mapper::toWarehouseDto)
-                .orElseThrow(() -> new EntityNotFoundException("Warehouse not found"));
+        return mapper.toWarehouseDto(retrieve(id));
     }
 
     public void create(WarehouseDto warehouseDto) {
@@ -31,13 +30,16 @@ public class WarehouseService {
     }
 
     public void update(Long id, WarehouseDto warehouseDto) {
-        Warehouse warehouse = warehouseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Warehouse not found"));
+        Warehouse warehouse = retrieve(id);
         mapper.mergeWarehouse(warehouseDto, warehouse);
         warehouseRepository.save(warehouse);
     }
 
     public void delete(Long id) {
         warehouseRepository.deleteById(id);
+    }
+
+    public Warehouse retrieve(Long id) {
+        return warehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Warehouse", id));
     }
 }

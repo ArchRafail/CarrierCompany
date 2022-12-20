@@ -22,8 +22,7 @@ public class DeliveryService {
     }
 
     public DeliveryDto get(Long id) {
-        return deliveryRepository.findById(id).map(mapper::toDeliveryDto)
-                .orElseThrow(() -> new EntityNotFoundException("Delivery not found"));
+        return mapper.toDeliveryDto(retrieve(id));
     }
 
     public void create(DeliveryDto deliveryDto) {
@@ -31,13 +30,16 @@ public class DeliveryService {
     }
 
     public void update(Long id, DeliveryDto deliveryDto) {
-        Delivery delivery = deliveryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Delivery not found"));
+        Delivery delivery = retrieve(id);
         mapper.mergeDelivery(deliveryDto, delivery);
         deliveryRepository.save(delivery);
     }
 
     public void delete(Long id) {
         deliveryRepository.deleteById(id);
+    }
+
+    public Delivery retrieve(Long id) {
+        return deliveryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Delivery", id));
     }
 }

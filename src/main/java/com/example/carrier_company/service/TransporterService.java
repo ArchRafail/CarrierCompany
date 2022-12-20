@@ -22,8 +22,7 @@ public class TransporterService {
     }
 
     public TransporterDto get(Long id) {
-        return transporterRepository.findById(id).map(mapper::toTransporterDto)
-                .orElseThrow(() -> new EntityNotFoundException("Transporter not found"));
+        return mapper.toTransporterDto(retrieve(id));
     }
 
     public void create(TransporterDto transporterDto) {
@@ -31,13 +30,16 @@ public class TransporterService {
     }
 
     public void update(Long id, TransporterDto transporterDto) {
-        Transporter transporter = transporterRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Transporter not found"));
+        Transporter transporter = retrieve(id);
         mapper.mergeTransporter(transporterDto, transporter);
         transporterRepository.save(transporter);
     }
 
     public void delete(Long id) {
         transporterRepository.deleteById(id);
+    }
+
+    public Transporter retrieve(Long id) {
+        return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
     }
 }
