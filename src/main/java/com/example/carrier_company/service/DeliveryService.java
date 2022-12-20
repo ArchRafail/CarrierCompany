@@ -1,7 +1,9 @@
 package com.example.carrier_company.service;
 
+import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.entity.Delivery;
 import com.example.carrier_company.exception.EntityNotFoundException;
+import com.example.carrier_company.mapper.Mapper;
 import com.example.carrier_company.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,28 +15,26 @@ import java.util.List;
 @Service
 public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
+    private final Mapper mapper;
 
-    public List<Delivery> getAll(){
-        return deliveryRepository.findAll();
+    public List<DeliveryDto> getAll(){
+        return deliveryRepository.findAll().stream().map(mapper::toDeliveryDto).toList();
     }
 
-    public Delivery get(Long id) {
-        return deliveryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Delivery not found"));
+    public DeliveryDto get(Long id) {
+        return deliveryRepository.findById(id).map(mapper::toDeliveryDto)
+                .orElseThrow(() -> new EntityNotFoundException("Delivery not found"));
     }
 
-    public void create(Delivery delivery) {
+    public void create(DeliveryDto deliveryDto) {
+        deliveryRepository.save(mapper.toDelivery(deliveryDto));
+    }
+
+    public void update(Long id, DeliveryDto deliveryDto) {
+        Delivery delivery = deliveryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Delivery not found"));
+        mapper.mergeDelivery(deliveryDto, delivery);
         deliveryRepository.save(delivery);
-    }
-
-    public void update(Long id, Delivery delivery) {
-        Delivery searchedDelivery = get(id);
-        searchedDelivery.setWarehouse_from(delivery.getWarehouse_from());
-        searchedDelivery.setWarehouse_to(delivery.getWarehouse_to());
-        searchedDelivery.setTransporter(delivery.getTransporter());
-        searchedDelivery.setCargo_name(delivery.getCargo_name());
-        searchedDelivery.setCargo_amount(delivery.getCargo_amount());
-        searchedDelivery.setStatus(delivery.getStatus());
-        deliveryRepository.save(searchedDelivery);
     }
 
     public void delete(Long id) {

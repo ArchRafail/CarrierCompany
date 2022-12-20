@@ -1,6 +1,6 @@
 package com.example.carrier_company.controller;
 
-import com.example.carrier_company.entity.Transporter;
+import com.example.carrier_company.dto.TransporterDto;
 import com.example.carrier_company.service.TransporterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +15,22 @@ public class TransporterController {
     private final TransporterService transporterService;
 
     @GetMapping()
-    public List<Transporter> getAll() {
+    public List<TransporterDto> getAll() {
         return transporterService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Transporter get(@PathVariable Long id) {
+    public TransporterDto get(@PathVariable Long id) {
         return transporterService.get(id);
     }
 
     @PostMapping()
-    private void create(@RequestBody Transporter transporter){
+    private void create(@RequestBody TransporterDto transporter){
         transporterService.create(transporter);
     }
 
     @PutMapping("/{id}")
-    private void update(@PathVariable Long id, @RequestBody Transporter transporter){
+    private void update(@PathVariable Long id, @RequestBody TransporterDto transporter){
         transporterService.update(id, transporter);
     }
 
