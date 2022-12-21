@@ -10,10 +10,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+
 @org.mapstruct.Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface Mapper {
     DeliveryDto toDeliveryDto(Delivery delivery);
     Delivery toDelivery(DeliveryDto deliveryDto);
+    @Mapping(target = "warehouseFrom", ignore = true)
+    @Mapping(target = "warehouseTo", ignore = true)
+    @Mapping(target = "transporter", ignore = true)
     void mergeDelivery(DeliveryDto deliveryDto, @MappingTarget Delivery delivery);
 
     TransporterDto toTransporterDto(Transporter transporter);
@@ -23,8 +27,6 @@ public interface Mapper {
     void mergeTransporter(TransporterDto transporterDto, @MappingTarget Transporter transporter);
 
     WarehouseDto toWarehouseDto(Warehouse warehouse);
-    @Mapping(target = "deliveriesAsSource", ignore = true)
-    @Mapping(target = "deliveriesAsDestination", ignore = true)
     Warehouse toWarehouse(WarehouseDto warehouseDto);
     @Mapping(target = "deliveriesAsSource", ignore = true)
     @Mapping(target = "deliveriesAsDestination", ignore = true)

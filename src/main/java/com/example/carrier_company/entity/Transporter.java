@@ -22,8 +22,8 @@ public class Transporter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String car_model;
-    private double load_capacity;
+    private String carModel;
+    private double loadCapacity;
 
     @ToString.Exclude
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")

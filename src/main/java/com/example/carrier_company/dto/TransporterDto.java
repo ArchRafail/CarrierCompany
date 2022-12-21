@@ -9,7 +9,7 @@ import java.util.List;
 public class TransporterDto {
     private Long id;
     private String name;
-    private String car_model;
-    private double load_capacity;
+    private String carModel;
+    private double loadCapacity;
     private List<DeliveryDto> deliveries;
 }

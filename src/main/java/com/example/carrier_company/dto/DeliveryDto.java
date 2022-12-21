@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 public class DeliveryDto {
     private Long id;
-    private WarehouseInfoDto warehouse_from;
-    private WarehouseInfoDto warehouse_to;
+    private WarehouseDto warehouseFrom;
+    private WarehouseDto warehouseTo;
     private TransporterInfoDto transporter;
-    private String cargo_name;
-    private double cargo_amount;
+    private String cargoName;
+    private double cargoAmount;
     private DeliveryStatus status;
 }

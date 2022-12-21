@@ -30,14 +30,12 @@ public class Warehouse {
     @ToString.Exclude
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
-    @Column(name = "deliveries_as_source")
-    @OneToMany(mappedBy = "warehouse_from")
+    @OneToMany(mappedBy = "warehouseFrom")
     private List<Delivery> deliveriesAsSource;
 
     @ToString.Exclude
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
-    @Column(name = "deliveries_as_destination")
-    @OneToMany(mappedBy = "warehouse_to")
+    @OneToMany(mappedBy = "warehouseTo")
     private List<Delivery> deliveriesAsDestination;
 }

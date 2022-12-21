@@ -24,13 +24,13 @@ public class Delivery {
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "warehouse_from")
-    private Warehouse warehouse_from;
+    private Warehouse warehouseFrom;
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "warehouse_to")
-    private Warehouse warehouse_to;
+    private Warehouse warehouseTo;
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
@@ -38,8 +38,8 @@ public class Delivery {
     @JoinColumn(name = "transporter_id")
     private Transporter transporter;
 
-    private String cargo_name;
-    private double cargo_amount;
+    private String cargoName;
+    private double cargoAmount;
 
     @Enumerated
     private DeliveryStatus status;

@@ -2,8 +2,6 @@ package com.example.carrier_company.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 
 @Data
 public class WarehouseDto {
@@ -13,6 +11,4 @@ public class WarehouseDto {
     private String street;
     private double latitude;
     private double longitude;
-    private List<DeliveryDto> deliveriesAsSource;
-    private List<DeliveryDto> deliveriesAsDestination;
 }
