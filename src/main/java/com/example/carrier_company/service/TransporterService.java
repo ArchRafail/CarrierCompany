@@ -1,9 +1,11 @@
 package com.example.carrier_company.service;
 
+import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.TransporterDto;
 import com.example.carrier_company.entity.Transporter;
 import com.example.carrier_company.exception.EntityNotFoundException;
 import com.example.carrier_company.mapper.Mapper;
+import com.example.carrier_company.repository.DeliveryRepository;
 import com.example.carrier_company.repository.TransporterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 @Service
 public class TransporterService {
     private final TransporterRepository transporterRepository;
+    private final DeliveryRepository deliveryRepository;
     private final Mapper mapper;
 
     public List<TransporterDto> getAll(){
@@ -23,6 +26,10 @@ public class TransporterService {
 
     public TransporterDto get(Long id) {
         return mapper.toTransporterDto(retrieve(id));
+    }
+
+    public List<DeliveryDto> getDeliveries(Long id) {
+        return deliveryRepository.findAllByTransporterId(retrieve(id).getId()).stream().map(mapper::toDeliveryDto).toList();
     }
 
     public void create(TransporterDto transporterDto) {
@@ -42,4 +49,6 @@ public class TransporterService {
     public Transporter retrieve(Long id) {
         return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
     }
+
+
 }

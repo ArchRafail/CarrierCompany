@@ -21,7 +21,6 @@ public interface Mapper {
     void mergeDelivery(DeliveryDto deliveryDto, @MappingTarget Delivery delivery);
 
     TransporterDto toTransporterDto(Transporter transporter);
-    @Mapping(target = "deliveries", ignore = true)
     Transporter toTransporter(TransporterDto transporterDto);
     @Mapping(target = "deliveries", ignore = true)
     void mergeTransporter(TransporterDto transporterDto, @MappingTarget Transporter transporter);

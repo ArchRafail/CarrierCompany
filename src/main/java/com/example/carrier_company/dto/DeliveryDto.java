@@ -10,7 +10,7 @@ public class DeliveryDto {
     private Long id;
     private WarehouseDto warehouseFrom;
     private WarehouseDto warehouseTo;
-    private TransporterInfoDto transporter;
+    private TransporterDto transporter;
     private String cargoName;
     private double cargoAmount;
     private DeliveryStatus status;

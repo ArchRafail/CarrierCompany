@@ -11,4 +11,5 @@ import java.util.List;
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
     List<Delivery> findAllByWarehouseFromId(Long id);
     List<Delivery> findAllByWarehouseToId(Long id);
+    List<Delivery> findAllByTransporterId(Long id);
 }

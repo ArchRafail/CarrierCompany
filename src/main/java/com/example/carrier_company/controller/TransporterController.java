@@ -1,5 +1,6 @@
 package com.example.carrier_company.controller;
 
+import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.TransporterDto;
 import com.example.carrier_company.service.TransporterService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,11 @@ public class TransporterController {
     @GetMapping("/{id}")
     public TransporterDto get(@PathVariable Long id) {
         return transporterService.get(id);
+    }
+
+    @GetMapping("/{id}/deliveries")
+    public List<DeliveryDto> getDeliveries(@PathVariable Long id) {
+        return transporterService.getDeliveries(id);
     }
 
     @PostMapping()

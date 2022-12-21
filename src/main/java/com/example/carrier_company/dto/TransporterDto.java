@@ -11,5 +11,4 @@ public class TransporterDto {
     private String name;
     private String carModel;
     private double loadCapacity;
-    private List<DeliveryDto> deliveries;
 }
