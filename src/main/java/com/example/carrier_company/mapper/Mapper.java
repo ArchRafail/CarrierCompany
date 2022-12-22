@@ -29,6 +29,7 @@ public interface Mapper {
 
     WarehouseDto toWarehouseDto(Warehouse warehouse);
     Warehouse toWarehouse(WarehouseDto warehouseDto);
+    @Mapping(target = "address", ignore = true)
     @Mapping(target = "deliveriesAsSource", ignore = true)
     @Mapping(target = "deliveriesAsDestination", ignore = true)
     void mergeWarehouse(WarehouseDto warehouseDto, @MappingTarget Warehouse warehouse);
