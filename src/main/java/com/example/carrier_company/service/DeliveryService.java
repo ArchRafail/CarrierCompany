@@ -5,7 +5,7 @@ import com.example.carrier_company.entity.Delivery;
 import com.example.carrier_company.entity.Transporter;
 import com.example.carrier_company.entity.Warehouse;
 import com.example.carrier_company.exception.EntityNotFoundException;
-import com.example.carrier_company.exception.ParametersUpdateError;
+import com.example.carrier_company.exception.WrongParametersException;
 import com.example.carrier_company.mapper.Mapper;
 import com.example.carrier_company.repository.DeliveryRepository;
 import com.example.carrier_company.repository.TransporterRepository;
@@ -85,6 +85,6 @@ public class DeliveryService {
         if (delivery.getCargoAmount() <= delivery.getTransporter().getLoadCapacity()) {
             return delivery;
         }
-        throw new ParametersUpdateError("Cargo amount is more then load capacity!");
+        throw new WrongParametersException("Cargo amount is more then load capacity!");
     }
 }

@@ -8,7 +8,6 @@ import lombok.*;
 
 import java.util.List;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,28 +15,19 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Warehouse {
+public class Address {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @ManyToOne()
-    @JoinColumn(name = "address_id")
-    private Address address;
+    private String city;
+    private String street;
+    private double latitude;
+    private double longitude;
 
     @ToString.Exclude
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
-    @OneToMany(mappedBy = "warehouseFrom")
-    private List<Delivery> deliveriesAsSource;
-
-    @ToString.Exclude
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @OneToMany(mappedBy = "warehouseTo")
-    private List<Delivery> deliveriesAsDestination;
+    @OneToMany(mappedBy = "address")
+    private List<Warehouse> warehouses;
 }

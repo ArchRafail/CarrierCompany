@@ -1,8 +1,10 @@
 package com.example.carrier_company.mapper;
 
+import com.example.carrier_company.dto.AddressDto;
 import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.TransporterDto;
 import com.example.carrier_company.dto.WarehouseDto;
+import com.example.carrier_company.entity.Address;
 import com.example.carrier_company.entity.Delivery;
 import com.example.carrier_company.entity.Transporter;
 import com.example.carrier_company.entity.Warehouse;
@@ -30,4 +32,8 @@ public interface Mapper {
     @Mapping(target = "deliveriesAsSource", ignore = true)
     @Mapping(target = "deliveriesAsDestination", ignore = true)
     void mergeWarehouse(WarehouseDto warehouseDto, @MappingTarget Warehouse warehouse);
+
+    AddressDto toAddressDto(Address address);
+    Address toAddress(AddressDto addressDto);
+    void mergeAddress(AddressDto addressDto, @MappingTarget Address address);
 }

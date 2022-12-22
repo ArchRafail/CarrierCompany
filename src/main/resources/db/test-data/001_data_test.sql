@@ -1,8 +1,14 @@
-INSERT INTO warehouse (title, city, street, latitude, longitude) VALUES
-('General warehouse', 'Kyiv', '54 Dovzhenka str.', 40.127, 12.128),
-('West wholesale warehouse', 'Ivano-Frankivsk', '129 Eugena Konovaltsya str.', 8.12, 7.492),
-('Regional IF retail warehouse', 'Ivano-Frankivsk', '22 Vasylianok str.', 38.019, 7.433),
-('Regional LV retail warehouse', 'Lviv', '48 Prokopenka str.', 33.588, 14.007);
+INSERT INTO address (city, street, latitude, longitude) VALUES
+('Kyiv', '54 Dovzhenka str.', 40.127, 12.128),
+('Ivano-Frankivsk', '129 Eugena Konovaltsya str.', 8.12, 7.492),
+('Ivano-Frankivsk', '22 Vasylianok str.', 38.019, 7.433),
+('Lviv', '48 Prokopenka str.', 33.588, 14.007);
+
+INSERT INTO warehouse (title, address_id) VALUES
+('General warehouse', 1),
+('West wholesale warehouse', 2),
+('Regional IF retail warehouse', 3),
+('Regional LV retail warehouse', 4);
 
 INSERT INTO transporter (name, car_model, load_capacity) VALUES
 ('Melnyk O.S.', 'Renault Traffic', 4200),
