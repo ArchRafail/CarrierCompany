@@ -7,5 +7,8 @@ import lombok.Data;
 public class WarehouseDto {
     private Long id;
     private String title;
-    private AddressDto address;
+    private String city;
+    private String street;
+    private double latitude;
+    private double longitude;
 }

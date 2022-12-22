@@ -2,11 +2,9 @@ package com.example.carrier_company.service;
 
 import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.WarehouseDto;
-import com.example.carrier_company.entity.Address;
 import com.example.carrier_company.entity.Warehouse;
 import com.example.carrier_company.exception.EntityNotFoundException;
 import com.example.carrier_company.mapper.Mapper;
-import com.example.carrier_company.repository.AddressRepository;
 import com.example.carrier_company.repository.DeliveryRepository;
 import com.example.carrier_company.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ import java.util.List;
 public class WarehouseService {
     private final WarehouseRepository warehouseRepository;
     private final DeliveryRepository deliveryRepository;
-    private final AddressRepository addressRepository;
     private final Mapper mapper;
 
     public List<WarehouseDto> getAll(){
@@ -40,17 +37,12 @@ public class WarehouseService {
     }
 
     public void create(WarehouseDto warehouseDto) {
-        Address address = searchAddress(warehouseDto);
-        Warehouse warehouse = mapper.toWarehouse(warehouseDto);
-        warehouse.setAddress(address);
-        warehouseRepository.save(warehouse);
+        warehouseRepository.save(mapper.toWarehouse(warehouseDto));
     }
 
     public void update(Long id, WarehouseDto warehouseDto) {
         Warehouse warehouse = retrieve(id);
-        Address address = searchAddress(warehouseDto);
         mapper.mergeWarehouse(warehouseDto, warehouse);
-        warehouse.setAddress(address);
         warehouseRepository.save(warehouse);
     }
 
@@ -62,9 +54,4 @@ public class WarehouseService {
         return warehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Warehouse", id));
     }
 
-    public Address searchAddress(WarehouseDto warehouseDto) {
-        Long idAddress = warehouseDto.getAddress().getId();
-        return addressRepository.findById(idAddress)
-                .orElseThrow(() -> new EntityNotFoundException("Address", idAddress));
-    }
 }

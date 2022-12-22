@@ -13,7 +13,7 @@ public class ApiDocConfig {
         return new Info().title("Carrier company API")
                 .description("Api for managing deliveries")
                 .version("0.1.0")
-                .contact(new Contact().name("Roman Bylo").email("off.bk@gmail.com"));
+                .contact(new Contact().name("Roman Bylo").email("bylo.roman@gmail.com"));
     }
 
     @Bean
