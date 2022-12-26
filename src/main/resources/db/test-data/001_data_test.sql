@@ -15,15 +15,15 @@ INSERT INTO transporter (name, car_model, load_capacity) VALUES
 ('Delivery Group', 'Man TGL', 10400);
 
 INSERT INTO delivery (warehouse_from, warehouse_to, transporter_id, cargo_name, cargo_amount, status) VALUES
-(1, 2, 1, 'Tomato', 4000, 0),
-(1, 3, 4, 'Cucumber', 2000, 1),
-(2, 4, 3, 'Banana', 13800, 3),
-(3, 4, 5, 'Pineapple', 5280, 2),
-(2, 3, 8, 'Flour', 10000, 2),
-(1, 4, 6, 'Groats', 10600, 0),
-(3, 2, 2, 'Apple', 4900, 4),
-(2, 4, 8, 'Sunflower oil', 10180, 1),
-(2, 3, 7, 'Olive oil', 4280, 3),
-(1, 2, 2, 'Mineral water', 8160, 0),
-(4, 3, 1, 'Sweets', 4120, 2),
-(1, 3, 5, 'Fish', 5300, 3);
+(1, 2, 1, 'Tomato', 4000, 'CREATED'),
+(1, 3, 4, 'Cucumber', 2000, 'PROCESSING'),
+(2, 4, 3, 'Banana', 13800, 'DELIVERED'),
+(3, 4, 5, 'Pineapple', 5280, 'SHIPPING'),
+(2, 3, 8, 'Flour', 10000, 'SHIPPING'),
+(1, 4, 6, 'Groats', 10600, 'CREATED'),
+(3, 2, 2, 'Apple', 4900, 'DECLINED'),
+(2, 4, 8, 'Sunflower oil', 10180, 'PROCESSING'),
+(2, 3, 7, 'Olive oil', 4280, 'DELIVERED'),
+(1, 2, 2, 'Mineral water', 8160, 'CREATED'),
+(4, 3, 1, 'Sweets', 4120, 'SHIPPING'),
+(1, 3, 5, 'Fish', 5300, 'DELIVERED');

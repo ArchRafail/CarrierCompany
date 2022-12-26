@@ -8,9 +8,9 @@ import com.example.carrier_company.mapper.Mapper;
 import com.example.carrier_company.repository.DeliveryRepository;
 import com.example.carrier_company.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -20,20 +20,21 @@ public class WarehouseService {
     private final DeliveryRepository deliveryRepository;
     private final Mapper mapper;
 
-    public List<WarehouseDto> getAll(){
-        return warehouseRepository.findAll().stream().map(mapper::toWarehouseDto).toList();
+    public Page<WarehouseDto> getAll(Long id, String title, String city, String street, Double latitude,
+                                     Double longitude, Pageable pageable){
+        return warehouseRepository.findAllBy(id, title, city, street, latitude, longitude, pageable).map(mapper::toWarehouseDto);
     }
 
     public WarehouseDto get(Long id) {
         return mapper.toWarehouseDto(retrieve(id));
     }
 
-    public List<DeliveryDto> getDeliveriesFrom(Long id) {
-        return deliveryRepository.findAllByWarehouseFromId(retrieve(id).getId()).stream().map(mapper::toDeliveryDto).toList();
+    public Page<DeliveryDto> getDeliveriesFrom(Long id, Pageable pageable) {
+        return deliveryRepository.findAllByWarehouseFromId(retrieve(id).getId(), pageable).map(mapper::toDeliveryDto);
     }
 
-    public List<DeliveryDto> getDeliveriesTo(Long id) {
-        return deliveryRepository.findAllByWarehouseToId(retrieve(id).getId()).stream().map(mapper::toDeliveryDto).toList();
+    public Page<DeliveryDto> getDeliveriesTo(Long id, Pageable pageable) {
+        return deliveryRepository.findAllByWarehouseToId(retrieve(id).getId(), pageable).map(mapper::toDeliveryDto);
     }
 
     public void create(WarehouseDto warehouseDto) {

@@ -1,8 +1,6 @@
 package com.example.carrier_company.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.example.carrier_company.entity.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,20 +18,14 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "warehouse_from")
     private Warehouse warehouseFrom;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "warehouse_to")
     private Warehouse warehouseTo;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "transporter_id")
     private Transporter transporter;
@@ -41,6 +33,6 @@ public class Delivery {
     private String cargoName;
     private double cargoAmount;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 }

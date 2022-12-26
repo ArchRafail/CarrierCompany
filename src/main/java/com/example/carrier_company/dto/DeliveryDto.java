@@ -1,6 +1,6 @@
 package com.example.carrier_company.dto;
 
-import com.example.carrier_company.entity.DeliveryStatus;
+import com.example.carrier_company.entity.enums.DeliveryStatus;
 
 import lombok.Data;
 

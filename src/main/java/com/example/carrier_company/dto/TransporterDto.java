@@ -2,8 +2,6 @@ package com.example.carrier_company.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 
 @Data
 public class TransporterDto {

@@ -8,9 +8,9 @@ import com.example.carrier_company.mapper.Mapper;
 import com.example.carrier_company.repository.DeliveryRepository;
 import com.example.carrier_company.repository.TransporterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -20,16 +20,16 @@ public class TransporterService {
     private final DeliveryRepository deliveryRepository;
     private final Mapper mapper;
 
-    public List<TransporterDto> getAll(){
-        return transporterRepository.findAll().stream().map(mapper::toTransporterDto).toList();
+    public Page<TransporterDto> getAll(Long id, String name, String carModel, Double loadCapacity, Pageable pageable) {
+        return transporterRepository.findAllBy(id, name, carModel, loadCapacity, pageable).map(mapper::toTransporterDto);
     }
 
     public TransporterDto get(Long id) {
         return mapper.toTransporterDto(retrieve(id));
     }
 
-    public List<DeliveryDto> getDeliveries(Long id) {
-        return deliveryRepository.findAllByTransporterId(retrieve(id).getId()).stream().map(mapper::toDeliveryDto).toList();
+    public Page<DeliveryDto> getDeliveries(Long id, Pageable pageable) {
+        return deliveryRepository.findAllByTransporterId(retrieve(id).getId(), pageable).map(mapper::toDeliveryDto);
     }
 
     public void create(TransporterDto transporterDto) {

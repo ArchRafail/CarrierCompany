@@ -4,9 +4,12 @@ import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.WarehouseDto;
 import com.example.carrier_company.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -16,8 +19,15 @@ public class WarehouseController {
     private final WarehouseService warehouseService;
 
     @GetMapping()
-    public List<WarehouseDto> getAll() {
-        return warehouseService.getAll();
+    public Page<WarehouseDto> getAll(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String street,
+            @RequestParam(required = false) Double latitude,
+            @RequestParam(required = false) Double longitude,
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
+        return warehouseService.getAll(id, title, city, street, latitude, longitude, pageable);
     }
 
     @GetMapping("/{id}")
@@ -26,13 +36,17 @@ public class WarehouseController {
     }
 
     @GetMapping("/{id}/deliveriesFrom")
-    public List<DeliveryDto> getDeliveriesFrom(@PathVariable Long id) {
-        return warehouseService.getDeliveriesFrom(id);
+    public Page<DeliveryDto> getDeliveriesFrom(
+            @PathVariable Long id,
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
+        return warehouseService.getDeliveriesFrom(id, pageable);
     }
 
     @GetMapping("/{id}/deliveriesTo")
-    public List<DeliveryDto> getDeliveriesTo(@PathVariable Long id) {
-        return warehouseService.getDeliveriesTo(id);
+    public Page<DeliveryDto> getDeliveriesTo(
+            @PathVariable Long id,
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
+        return warehouseService.getDeliveriesTo(id, pageable);
     }
 
     @PostMapping()
