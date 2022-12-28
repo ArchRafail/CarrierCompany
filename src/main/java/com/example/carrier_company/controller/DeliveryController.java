@@ -38,18 +38,18 @@ public class DeliveryController {
     }
 
     @PostMapping()
-    private void create(@RequestBody DeliveryDto delivery){
-        deliveryService.create(delivery);
+    private DeliveryDto create(@RequestBody DeliveryDto delivery){
+        return deliveryService.create(delivery);
     }
 
     @PatchMapping("/{id}")
-    private void patch(@PathVariable Long id, @RequestBody DeliveryDto delivery) {
-        deliveryService.patch(id, delivery);
+    private DeliveryDto patch(@PathVariable Long id, @RequestBody DeliveryDto delivery) {
+        return deliveryService.patch(id, delivery);
     }
 
     @PutMapping("/{id}")
-    private void update(@PathVariable Long id, @RequestBody DeliveryDto delivery){
-        deliveryService.update(id, delivery);
+    private DeliveryDto update(@PathVariable Long id, @RequestBody DeliveryDto delivery){
+        return deliveryService.update(id, delivery);
     }
 
     @DeleteMapping("/{id}")

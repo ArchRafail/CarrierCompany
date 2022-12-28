@@ -39,19 +39,26 @@ public class WarehouseService {
         return deliveryRepository.findAllByWarehouseToId(retrieve(id).getId(), pageable).map(mapper::toDeliveryDto);
     }
 
-    public void create(WarehouseDto warehouseDto) {
-        warehouseRepository.save(mapper.toWarehouse(warehouseDto));
+    public WarehouseDto create(WarehouseDto warehouseDto) {
+        return mapper.toWarehouseDto(warehouseRepository.save(mapper.toWarehouse(warehouseDto)));
     }
 
-    public void patch(Long id, WarehouseDto warehouseDto) {
+    public WarehouseDto patch(Long id, WarehouseDto warehouseDto) {
         Warehouse warehouse = retrieve(id);
         if (warehouseDto.getTitle() != null)
             warehouse.setTitle(warehouseDto.getTitle());
+        if (warehouseDto.getAddress() == null)
+            return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
         Address address = warehouse.getAddress();
         if (warehouseDto.getAddress().getCity() != null)
             address.setCity(warehouseDto.getAddress().getCity());
         if (warehouseDto.getAddress().getStreet() != null)
             address.setStreet(warehouseDto.getAddress().getStreet());
+        if (warehouseDto.getAddress().getLocation() == null)
+        {
+            warehouse.setAddress(address);
+            return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
+        }
         Location location = address.getLocation();
         if (warehouseDto.getAddress().getLocation().getLatitude() != null)
             location.setLatitude(warehouseDto.getAddress().getLocation().getLatitude());
@@ -59,13 +66,13 @@ public class WarehouseService {
             location.setLongitude(warehouseDto.getAddress().getLocation().getLongitude());
         address.setLocation(location);
         warehouse.setAddress(address);
-        warehouseRepository.save(warehouse);
+        return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
     }
 
-    public void update(Long id, WarehouseDto warehouseDto) {
+    public WarehouseDto update(Long id, WarehouseDto warehouseDto) {
         Warehouse warehouse = retrieve(id);
         mapper.mergeWarehouse(warehouseDto, warehouse);
-        warehouseRepository.save(warehouse);
+        return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
     }
 
     public void delete(Long id) {

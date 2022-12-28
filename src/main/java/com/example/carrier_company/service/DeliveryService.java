@@ -33,7 +33,7 @@ public class DeliveryService {
         return mapper.toDeliveryDto(retrieve(id));
     }
 
-    public void create(DeliveryDto deliveryDto) {
+    public DeliveryDto create(DeliveryDto deliveryDto) {
         Warehouse warehouseFrom = searchWarehouse(deliveryDto.getWarehouseFrom().getId());
         Warehouse warehouseTo = searchWarehouse(deliveryDto.getWarehouseTo().getId());
         Transporter transporter = searchTransporter(deliveryDto.getTransporter().getId());
@@ -41,10 +41,10 @@ public class DeliveryService {
         delivery.setWarehouseFrom(warehouseFrom);
         delivery.setWarehouseTo(warehouseTo);
         delivery.setTransporter(transporter);
-        deliveryRepository.save(transporterValidation(delivery));
+        return mapper.toDeliveryDto(deliveryRepository.save(transporterValidation(delivery)));
     }
 
-    public void patch(Long id, DeliveryDto deliveryDto) {
+    public DeliveryDto patch(Long id, DeliveryDto deliveryDto) {
         Delivery delivery = retrieve(id);
         if (deliveryDto.getWarehouseFrom() != null)
             delivery.setWarehouseFrom(searchWarehouse(deliveryDto.getWarehouseFrom().getId()));
@@ -58,10 +58,10 @@ public class DeliveryService {
             delivery.setCargoAmount(deliveryDto.getCargoAmount());
         if (!deliveryDto.getStatus().equals(DeliveryStatus.CREATED) )
             delivery.setStatus(deliveryDto.getStatus());
-        deliveryRepository.save(delivery);
+        return mapper.toDeliveryDto(deliveryRepository.save(transporterValidation(delivery)));
     }
 
-    public void update(Long id, DeliveryDto deliveryDto) {
+    public DeliveryDto update(Long id, DeliveryDto deliveryDto) {
         Delivery delivery = retrieve(id);
         Warehouse warehouseFrom = searchWarehouse(deliveryDto.getWarehouseFrom().getId());
         Warehouse warehouseTo = searchWarehouse(deliveryDto.getWarehouseTo().getId());
@@ -70,7 +70,7 @@ public class DeliveryService {
         delivery.setWarehouseFrom(warehouseFrom);
         delivery.setWarehouseTo(warehouseTo);
         delivery.setTransporter(transporter);
-        deliveryRepository.save(transporterValidation(delivery));
+        return mapper.toDeliveryDto(deliveryRepository.save(transporterValidation(delivery)));
     }
 
     public void delete(Long id) {
@@ -95,7 +95,7 @@ public class DeliveryService {
         if (delivery.getCargoAmount() <= delivery.getTransporter().getLoadCapacity()) {
             return delivery;
         }
-        throw new WrongParametersException("Cargo amount is more then load capacity!");
+        throw new WrongParametersException("Cargo amount is more then transporter's load capacity!");
     }
 
 }

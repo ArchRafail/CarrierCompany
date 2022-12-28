@@ -4,6 +4,7 @@ import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.TransporterDto;
 import com.example.carrier_company.entity.Transporter;
 import com.example.carrier_company.exception.EntityNotFoundException;
+import com.example.carrier_company.exception.WrongParametersException;
 import com.example.carrier_company.mapper.Mapper;
 import com.example.carrier_company.repository.DeliveryRepository;
 import com.example.carrier_company.repository.TransporterRepository;
@@ -32,25 +33,27 @@ public class TransporterService {
         return deliveryRepository.findAllByTransporterId(retrieve(id).getId(), pageable).map(mapper::toDeliveryDto);
     }
 
-    public void create(TransporterDto transporterDto) {
-        transporterRepository.save(mapper.toTransporter(transporterDto));
+    public TransporterDto create(TransporterDto transporterDto) {
+        validateLoadCapacity(transporterDto.getLoadCapacity());
+        return mapper.toTransporterDto(transporterRepository.save(mapper.toTransporter(transporterDto)));
     }
 
-    public void patch(Long id, TransporterDto transporterDto) {
+    public TransporterDto patch(Long id, TransporterDto transporterDto) {
         Transporter transporter = retrieve(id);
         if (transporterDto.getName() != null)
             transporter.setName(transporterDto.getName());
         if (transporterDto.getCarModel() != null)
             transporter.setCarModel(transporterDto.getCarModel());
-        if (transporterDto.getLoadCapacity() != null)
+        if (transporterDto.getLoadCapacity() != null && validateLoadCapacity(transporterDto.getLoadCapacity()))
             transporter.setLoadCapacity(transporterDto.getLoadCapacity());
-        transporterRepository.save(transporter);
+        return mapper.toTransporterDto(transporterRepository.save(transporter));
     }
 
-    public void update(Long id, TransporterDto transporterDto) {
+    public TransporterDto update(Long id, TransporterDto transporterDto) {
         Transporter transporter = retrieve(id);
+        validateLoadCapacity(transporterDto.getLoadCapacity());
         mapper.mergeTransporter(transporterDto, transporter);
-        transporterRepository.save(transporter);
+        return mapper.toTransporterDto(transporterRepository.save(transporter));
     }
 
     public void delete(Long id) {
@@ -59,5 +62,11 @@ public class TransporterService {
 
     public Transporter retrieve(Long id) {
         return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
+    }
+
+    public boolean validateLoadCapacity(double loadCapacity) {
+        if (loadCapacity < 0)
+            throw new WrongParametersException("Load capacity can't be less then zero.");
+        return true;
     }
 }

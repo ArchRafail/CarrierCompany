@@ -50,18 +50,18 @@ public class WarehouseController {
     }
 
     @PostMapping()
-    private void create(@RequestBody WarehouseDto warehouse){
-        warehouseService.create(warehouse);
+    private WarehouseDto create(@RequestBody WarehouseDto warehouse){
+        return warehouseService.create(warehouse);
     }
 
     @PatchMapping("/{id}")
-    private void patch(@PathVariable Long id, @RequestBody WarehouseDto warehouse) {
-        warehouseService.patch(id, warehouse);
+    private WarehouseDto patch(@PathVariable Long id, @RequestBody WarehouseDto warehouse) {
+        return warehouseService.patch(id, warehouse);
     }
 
     @PutMapping("/{id}")
-    private void update(@PathVariable Long id, @RequestBody WarehouseDto warehouse){
-        warehouseService.update(id, warehouse);
+    private WarehouseDto update(@PathVariable Long id, @RequestBody WarehouseDto warehouse){
+        return warehouseService.update(id, warehouse);
     }
 
     @DeleteMapping("/{id}")

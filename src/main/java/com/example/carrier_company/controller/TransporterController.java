@@ -41,18 +41,18 @@ public class TransporterController {
     }
 
     @PostMapping()
-    private void create(@RequestBody TransporterDto transporter){
-        transporterService.create(transporter);
+    private TransporterDto create(@RequestBody TransporterDto transporter){
+        return transporterService.create(transporter);
     }
 
     @PatchMapping("/{id}")
-    private void patch(@PathVariable Long id, @RequestBody TransporterDto transporter) {
-        transporterService.patch(id, transporter);
+    private TransporterDto patch(@PathVariable Long id, @RequestBody TransporterDto transporter) {
+        return transporterService.patch(id, transporter);
     }
 
     @PutMapping("/{id}")
-    private void update(@PathVariable Long id, @RequestBody TransporterDto transporter) {
-        transporterService.update(id, transporter);
+    private TransporterDto update(@PathVariable Long id, @RequestBody TransporterDto transporter) {
+        return transporterService.update(id, transporter);
     }
 
     @DeleteMapping("/{id}")
