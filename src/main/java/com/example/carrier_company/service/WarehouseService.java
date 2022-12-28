@@ -2,6 +2,8 @@ package com.example.carrier_company.service;
 
 import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.WarehouseDto;
+import com.example.carrier_company.entity.Address;
+import com.example.carrier_company.entity.Location;
 import com.example.carrier_company.entity.Warehouse;
 import com.example.carrier_company.exception.EntityNotFoundException;
 import com.example.carrier_company.mapper.Mapper;
@@ -41,6 +43,25 @@ public class WarehouseService {
         warehouseRepository.save(mapper.toWarehouse(warehouseDto));
     }
 
+    public void patch(Long id, WarehouseDto warehouseDto) {
+        Warehouse warehouse = retrieve(id);
+        if (warehouseDto.getTitle() != null)
+            warehouse.setTitle(warehouseDto.getTitle());
+        Address address = warehouse.getAddress();
+        if (warehouseDto.getAddress().getCity() != null)
+            address.setCity(warehouseDto.getAddress().getCity());
+        if (warehouseDto.getAddress().getStreet() != null)
+            address.setStreet(warehouseDto.getAddress().getStreet());
+        Location location = address.getLocation();
+        if (warehouseDto.getAddress().getLocation().getLatitude() != null)
+            location.setLatitude(warehouseDto.getAddress().getLocation().getLatitude());
+        if (warehouseDto.getAddress().getLocation().getLongitude() != null)
+            location.setLongitude(warehouseDto.getAddress().getLocation().getLongitude());
+        address.setLocation(location);
+        warehouse.setAddress(address);
+        warehouseRepository.save(warehouse);
+    }
+
     public void update(Long id, WarehouseDto warehouseDto) {
         Warehouse warehouse = retrieve(id);
         mapper.mergeWarehouse(warehouseDto, warehouse);
@@ -54,5 +75,4 @@ public class WarehouseService {
     public Warehouse retrieve(Long id) {
         return warehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Warehouse", id));
     }
-
 }

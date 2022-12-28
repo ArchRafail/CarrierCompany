@@ -54,6 +54,11 @@ public class WarehouseController {
         warehouseService.create(warehouse);
     }
 
+    @PatchMapping("/{id}")
+    private void patch(@PathVariable Long id, @RequestBody WarehouseDto warehouse) {
+        warehouseService.patch(id, warehouse);
+    }
+
     @PutMapping("/{id}")
     private void update(@PathVariable Long id, @RequestBody WarehouseDto warehouse){
         warehouseService.update(id, warehouse);

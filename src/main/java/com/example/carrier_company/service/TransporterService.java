@@ -36,6 +36,17 @@ public class TransporterService {
         transporterRepository.save(mapper.toTransporter(transporterDto));
     }
 
+    public void patch(Long id, TransporterDto transporterDto) {
+        Transporter transporter = retrieve(id);
+        if (transporterDto.getName() != null)
+            transporter.setName(transporterDto.getName());
+        if (transporterDto.getCarModel() != null)
+            transporter.setCarModel(transporterDto.getCarModel());
+        if (transporterDto.getLoadCapacity() != null)
+            transporter.setLoadCapacity(transporterDto.getLoadCapacity());
+        transporterRepository.save(transporter);
+    }
+
     public void update(Long id, TransporterDto transporterDto) {
         Transporter transporter = retrieve(id);
         mapper.mergeTransporter(transporterDto, transporter);
@@ -49,6 +60,4 @@ public class TransporterService {
     public Transporter retrieve(Long id) {
         return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
     }
-
-
 }

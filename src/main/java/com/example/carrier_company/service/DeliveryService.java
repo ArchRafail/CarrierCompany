@@ -1,9 +1,7 @@
 package com.example.carrier_company.service;
 
 import com.example.carrier_company.dto.DeliveryDto;
-import com.example.carrier_company.entity.Delivery;
-import com.example.carrier_company.entity.Transporter;
-import com.example.carrier_company.entity.Warehouse;
+import com.example.carrier_company.entity.*;
 import com.example.carrier_company.entity.enums.DeliveryStatus;
 import com.example.carrier_company.exception.EntityNotFoundException;
 import com.example.carrier_company.exception.WrongParametersException;
@@ -46,6 +44,23 @@ public class DeliveryService {
         deliveryRepository.save(transporterValidation(delivery));
     }
 
+    public void patch(Long id, DeliveryDto deliveryDto) {
+        Delivery delivery = retrieve(id);
+        if (deliveryDto.getWarehouseFrom() != null)
+            delivery.setWarehouseFrom(searchWarehouse(deliveryDto.getWarehouseFrom().getId()));
+        if (deliveryDto.getWarehouseTo() != null)
+            delivery.setWarehouseTo(searchWarehouse(deliveryDto.getWarehouseTo().getId()));
+        if (deliveryDto.getTransporter() != null)
+            delivery.setTransporter(searchTransporter(deliveryDto.getTransporter().getId()));
+        if (deliveryDto.getCargoName() != null)
+            delivery.setCargoName(deliveryDto.getCargoName());
+        if (deliveryDto.getCargoAmount() != null )
+            delivery.setCargoAmount(deliveryDto.getCargoAmount());
+        if (!deliveryDto.getStatus().equals(DeliveryStatus.CREATED) )
+            delivery.setStatus(deliveryDto.getStatus());
+        deliveryRepository.save(delivery);
+    }
+
     public void update(Long id, DeliveryDto deliveryDto) {
         Delivery delivery = retrieve(id);
         Warehouse warehouseFrom = searchWarehouse(deliveryDto.getWarehouseFrom().getId());
@@ -82,4 +97,5 @@ public class DeliveryService {
         }
         throw new WrongParametersException("Cargo amount is more then load capacity!");
     }
+
 }

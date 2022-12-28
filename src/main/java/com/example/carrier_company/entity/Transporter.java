@@ -20,7 +20,7 @@ public class Transporter {
     private Long id;
     private String name;
     private String carModel;
-    private double loadCapacity;
+    private Double loadCapacity;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "transporter")

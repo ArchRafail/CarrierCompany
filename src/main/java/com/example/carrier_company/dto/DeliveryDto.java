@@ -12,6 +12,6 @@ public class DeliveryDto {
     private WarehouseDto warehouseTo;
     private TransporterDto transporter;
     private String cargoName;
-    private double cargoAmount;
+    private Double cargoAmount;
     private DeliveryStatus status;
 }

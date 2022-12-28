@@ -31,7 +31,7 @@ public class Delivery {
     private Transporter transporter;
 
     private String cargoName;
-    private double cargoAmount;
+    private Double cargoAmount;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;

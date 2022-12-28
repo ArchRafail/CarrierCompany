@@ -42,6 +42,11 @@ public class DeliveryController {
         deliveryService.create(delivery);
     }
 
+    @PatchMapping("/{id}")
+    private void patch(@PathVariable Long id, @RequestBody DeliveryDto delivery) {
+        deliveryService.patch(id, delivery);
+    }
+
     @PutMapping("/{id}")
     private void update(@PathVariable Long id, @RequestBody DeliveryDto delivery){
         deliveryService.update(id, delivery);

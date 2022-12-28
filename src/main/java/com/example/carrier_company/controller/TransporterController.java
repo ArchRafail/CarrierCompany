@@ -45,6 +45,11 @@ public class TransporterController {
         transporterService.create(transporter);
     }
 
+    @PatchMapping("/{id}")
+    private void patch(@PathVariable Long id, @RequestBody TransporterDto transporter) {
+        transporterService.patch(id, transporter);
+    }
+
     @PutMapping("/{id}")
     private void update(@PathVariable Long id, @RequestBody TransporterDto transporter) {
         transporterService.update(id, transporter);

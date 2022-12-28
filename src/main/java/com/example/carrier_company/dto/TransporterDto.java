@@ -8,5 +8,5 @@ public class TransporterDto {
     private Long id;
     private String name;
     private String carModel;
-    private double loadCapacity;
+    private Double loadCapacity;
 }
