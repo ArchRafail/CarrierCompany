@@ -40,12 +40,8 @@ public class TransporterService {
 
     public TransporterDto patch(Long id, TransporterDto transporterDto) {
         Transporter transporter = retrieve(id);
-        if (transporterDto.getName() != null)
-            transporter.setName(transporterDto.getName());
-        if (transporterDto.getCarModel() != null)
-            transporter.setCarModel(transporterDto.getCarModel());
-        if (transporterDto.getLoadCapacity() != null && validateLoadCapacity(transporterDto.getLoadCapacity()))
-            transporter.setLoadCapacity(transporterDto.getLoadCapacity());
+        validateLoadCapacity(transporterDto.getLoadCapacity());
+        mapper.patchTransporter(transporterDto, transporter);
         return mapper.toTransporterDto(transporterRepository.save(transporter));
     }
 
@@ -64,9 +60,8 @@ public class TransporterService {
         return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
     }
 
-    public boolean validateLoadCapacity(double loadCapacity) {
-        if (loadCapacity < 0)
+    public void validateLoadCapacity(Double loadCapacity) {
+        if (loadCapacity != null && loadCapacity < 0)
             throw new WrongParametersException("Load capacity can't be less then zero.");
-        return true;
     }
 }

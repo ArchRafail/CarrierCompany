@@ -2,8 +2,6 @@ package com.example.carrier_company.service;
 
 import com.example.carrier_company.dto.DeliveryDto;
 import com.example.carrier_company.dto.WarehouseDto;
-import com.example.carrier_company.entity.Address;
-import com.example.carrier_company.entity.Location;
 import com.example.carrier_company.entity.Warehouse;
 import com.example.carrier_company.exception.EntityNotFoundException;
 import com.example.carrier_company.mapper.Mapper;
@@ -45,27 +43,7 @@ public class WarehouseService {
 
     public WarehouseDto patch(Long id, WarehouseDto warehouseDto) {
         Warehouse warehouse = retrieve(id);
-        if (warehouseDto.getTitle() != null)
-            warehouse.setTitle(warehouseDto.getTitle());
-        if (warehouseDto.getAddress() == null)
-            return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
-        Address address = warehouse.getAddress();
-        if (warehouseDto.getAddress().getCity() != null)
-            address.setCity(warehouseDto.getAddress().getCity());
-        if (warehouseDto.getAddress().getStreet() != null)
-            address.setStreet(warehouseDto.getAddress().getStreet());
-        if (warehouseDto.getAddress().getLocation() == null)
-        {
-            warehouse.setAddress(address);
-            return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
-        }
-        Location location = address.getLocation();
-        if (warehouseDto.getAddress().getLocation().getLatitude() != null)
-            location.setLatitude(warehouseDto.getAddress().getLocation().getLatitude());
-        if (warehouseDto.getAddress().getLocation().getLongitude() != null)
-            location.setLongitude(warehouseDto.getAddress().getLocation().getLongitude());
-        address.setLocation(location);
-        warehouse.setAddress(address);
+        mapper.patchWarehouse(warehouseDto, warehouse);
         return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
     }
 
