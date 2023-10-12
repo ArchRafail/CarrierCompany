@@ -6,13 +6,21 @@ INSERT INTO warehouse (title, city, street, latitude, longitude) VALUES
 
 INSERT INTO transporter (name, car_model, load_capacity) VALUES
 ('Melnyk O.S.', 'Renault Traffic', 4200),
-('Carrier experts', 'Mercedes Actros', 8800),
-('Global delivery', 'Volvo FH16', 14200),
-('Quick currier', 'Citroen Jumper', 2600),
-('Fiesta show', 'Volkswagen Crafter', 5550),
-('Nickolas', 'DAF LF', 11000),
-('Robert Space', 'Mercedes Sprinter', 4820),
-('Delivery Group', 'Man TGL', 10400);
+('Mitsui O.S.K. Lines', 'Mercedes Actros', 8800),
+('Kerry Logistics', 'Volvo FH16', 14200),
+('TFI International', 'Citroen Jumper', 2600),
+('Kintetsu World Express', 'Volkswagen Crafter', 5550),
+('Landstar System', 'DAF LF', 11000),
+('Emirates Group', 'Mercedes Sprinter', 4820),
+('CSX Corp.', 'Freightliner FLD 120 HD', 22400),
+('Norfolk Southern', 'Peugeot Expert', 2500),
+('Freight Inc.', 'Iveco Strator', 12400),
+('CJ Logistics', 'Mercedes-Benz Atego 815', 7350),
+('Yamato Holdings', 'Renault Midlum 300 DXi', 6200),
+('Bollore Logistics', 'Scania P230', 7600),
+('Wan Hai Lines', 'Volvo FL 240', 6920),
+('Dachser Group', 'Man TGL', 10400);
+
 
 INSERT INTO delivery (warehouse_from, warehouse_to, transporter_id, cargo_name, cargo_amount, status) VALUES
 (1, 2, 1, 'Tomato', 4000, 'CREATED'),

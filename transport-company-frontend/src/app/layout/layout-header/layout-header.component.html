@@ -1,0 +1,14 @@
+<div class="flex justify-content-start gap-5 left-menu">
+  <a id="logo" routerLink="/">
+    <img src="assets/logo.png" alt="company logo">
+  </a>
+
+  <div class="card">
+    <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+  </div>
+</div>
+
+<p-avatar icon="pi pi-user"
+          styleClass="user-avatar"
+          shape="circle"
+/>

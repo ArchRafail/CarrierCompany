@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 65px;
+  padding: 4px 24px 4px 24px;
+
+  #logo, #logo img {
+    width: 225px;
+  }
+
+  ::ng-deep.user-avatar {
+    background-color: #2e55aa;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    .p-avatar-icon {
+      color: white;
+      font-size: 1.25rem;
+    }
+  }
+}

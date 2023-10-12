@@ -23,9 +23,10 @@ public class TransporterController {
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String carModel,
-            @RequestParam(required = false) Double loadCapacity,
+            @RequestParam(required = false) Double loadCapacityFrom,
+            @RequestParam(required = false) Double loadCapacityTo,
             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
-        return transporterService.getAll(id, name, carModel, loadCapacity, pageable);
+        return transporterService.getAll(id, name, carModel, loadCapacityFrom, loadCapacityTo, pageable);
     }
 
     @GetMapping("/{id}")

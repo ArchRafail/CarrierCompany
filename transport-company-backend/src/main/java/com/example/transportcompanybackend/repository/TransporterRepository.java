@@ -15,7 +15,7 @@ public interface TransporterRepository extends JpaRepository<Transporter, Long> 
         WHERE (:id IS NULL OR t.id = :id)
         AND (:name IS NULL OR LOWER(t.name) LIKE CONCAT('%', LOWER(:name), '%'))
         AND (:carModel IS NULL OR LOWER(t.carModel) LIKE CONCAT('%', LOWER(:carModel), '%'))
-        AND (:loadCapacity IS NULL OR t.loadCapacity = :loadCapacity)
+        AND (:loadCapacityFrom IS NULL OR :loadCapacityTo IS NULL OR t.loadCapacity BETWEEN :loadCapacityFrom AND :loadCapacityTo)
         """)
-    Page<Transporter> findAllBy(Long id, String name, String carModel, Double loadCapacity, Pageable pageable);
+    Page<Transporter> findAllBy(Long id, String name, String carModel, Double loadCapacityFrom, Double loadCapacityTo, Pageable pageable);
 }

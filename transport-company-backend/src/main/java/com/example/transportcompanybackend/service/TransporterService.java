@@ -21,8 +21,8 @@ public class TransporterService {
     private final DeliveryRepository deliveryRepository;
     private final Mapper mapper;
 
-    public Page<TransporterDto> getAll(Long id, String name, String carModel, Double loadCapacity, Pageable pageable) {
-        return transporterRepository.findAllBy(id, name, carModel, loadCapacity, pageable).map(mapper::toTransporterDto);
+    public Page<TransporterDto> getAll(Long id, String name, String carModel, Double loadCapacityFrom, Double loadCapacityTo, Pageable pageable) {
+        return transporterRepository.findAllBy(id, name, carModel, loadCapacityFrom, loadCapacityTo, pageable).map(mapper::toTransporterDto);
     }
 
     public TransporterDto get(Long id) {
