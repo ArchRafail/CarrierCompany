@@ -8,6 +8,8 @@ import { SliderModule } from "primeng/slider";
 import { FormsModule } from "@angular/forms";
 import { InputTextModule } from "primeng/inputtext";
 import { ButtonModule } from "primeng/button";
+import { ContextMenuModule } from "primeng/contextmenu";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
 
 
 @NgModule({
@@ -15,18 +17,20 @@ import { ButtonModule } from "primeng/button";
     TransporterListComponent,
     TransporterItemComponent
   ],
-    imports: [
-        RouterModule.forChild([
-            {path: '', component: TransporterListComponent},
-            {path: 'item', component: TransporterItemComponent},
-            {path: 'item/:id', component: TransporterItemComponent}
-        ]),
-        CommonModule,
-        TableModule,
-        SliderModule,
-        FormsModule,
-        InputTextModule,
-        ButtonModule
-    ]
+  imports: [
+    RouterModule.forChild([
+      {path: '', component: TransporterListComponent},
+      {path: 'item', component: TransporterItemComponent},
+      {path: 'item/:id', component: TransporterItemComponent}
+    ]),
+    CommonModule,
+    TableModule,
+    SliderModule,
+    FormsModule,
+    InputTextModule,
+    ButtonModule,
+    ContextMenuModule,
+    ConfirmDialogModule
+  ]
 })
 export class TransportersModule { }

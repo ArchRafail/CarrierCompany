@@ -9,3 +9,15 @@
     }
   }
 }
+
+.p-toast-detail, .p-toast-summary {
+  overflow-wrap: break-word;
+}
+
+.p-toast-message-text {
+  min-width: 0;
+}
+
+.p-toast-icon-close {
+  flex-shrink: 0;
+}

@@ -54,12 +54,12 @@ export class TransporterItemComponent {
     this.submitDisable = true;
     if(this.transporterDto.id) {
       this.transporterHttpService.update(this.transporterDto).subscribe({
-        next: () => this.router.navigate([""]),
+        next: () => this.router.navigate(["/transporters"]),
         error: this.toastService.handleHttpError
       });
     } else {
       this.transporterHttpService.create(this.transporterDto).subscribe({
-        next: () => this.router.navigate([""]),
+        next: () => this.router.navigate(["/transporters"]),
         error: this.toastService.handleHttpError
       });
     }

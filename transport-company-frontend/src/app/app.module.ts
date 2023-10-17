@@ -11,7 +11,8 @@ import { AvatarModule } from "primeng/avatar";
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ButtonModule } from "primeng/button";
 import { HttpClientModule } from "@angular/common/http";
-import { MessageService } from "primeng/api";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 
 @NgModule({
@@ -20,10 +21,11 @@ import { MessageService } from "primeng/api";
     DashboardComponent,
     LayoutComponent,
     LayoutHeaderComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     TabMenuModule,
     AvatarModule,
@@ -31,7 +33,8 @@ import { MessageService } from "primeng/api";
     HttpClientModule,
   ],
   providers: [
-    MessageService
+    MessageService,
+    ConfirmationService,
   ],
   bootstrap: [AppComponent]
 })
