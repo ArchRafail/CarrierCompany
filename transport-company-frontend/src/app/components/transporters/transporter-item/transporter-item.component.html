@@ -1,1 +1,39 @@
-<p>transporter-item works!</p>
+<div *ngIf="!isLoading" class="form-display">
+  <div class="item-title" style="text-align: center; margin-bottom: 12px"><h3>{{transporterDto.id ? 'Update transporter #'+transporterDto.id : 'Add new transporter'}}</h3></div>
+
+  <form style="width: 100%" (ngSubmit)="onClickSubmit()">
+
+    <div class="form-fields-wrapper">
+      <label>Name:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-box"></i>
+          <input #name="ngModel" type="text" pInputText name="manufacturer" [(ngModel)]="transporterDto.name" required/>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Car model:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-truck"></i>
+          <input #carModel="ngModel" type="text" pInputText name="model" [(ngModel)]="transporterDto.car_model" required/>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Load capacity (kg):</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-ticket"></i>
+          <input #loadCapacity="ngModel" type="number" min="0" max="40000" pInputText name="year" [(ngModel)]="transporterDto.load_capacity" required/>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/transporters"></p-button>
+      <p-button
+        type="submit"
+        [disabled]="toBoolean(name.invalid || carModel.invalid || loadCapacity.invalid) || submitDisable"
+        label="Save" styleClass="p-button-raised" icon="pi pi-save"></p-button>
+    </div>
+
+  </form>
+</div>

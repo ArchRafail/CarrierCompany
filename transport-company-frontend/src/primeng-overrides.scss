@@ -1,0 +1,11 @@
+.p-tabmenu-nav {
+  background: transparent !important;
+
+  .p-menuitem-link {
+    background: transparent !important;
+
+    &.p-menuitem-link-active {
+      background: #f1f1f1 !important;
+    }
+  }
+}

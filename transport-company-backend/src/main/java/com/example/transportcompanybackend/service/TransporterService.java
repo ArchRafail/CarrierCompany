@@ -52,8 +52,10 @@ public class TransporterService {
         return mapper.toTransporterDto(transporterRepository.save(transporter));
     }
 
-    public void delete(Long id) {
+    public TransporterDto delete(Long id) {
+        TransporterDto transporterDto = mapper.toTransporterDto(retrieve(id));
         transporterRepository.deleteById(id);
+        return transporterDto;
     }
 
     public Transporter retrieve(Long id) {

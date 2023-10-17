@@ -2,7 +2,6 @@
   <h3>Transporters</h3>
 </div>
 <p-table
-  #transportersTable
   [value]="transporterPage?.content || []"
   [lazy]="true"
   (onLazyLoad)="onLazyLoad($event)"
@@ -22,6 +21,7 @@
       <th pSortableColumn="name">Name<p-sortIcon field="name"/></th>
       <th pSortableColumn="car_model">Car model<p-sortIcon field="car_model"/></th>
       <th pSortableColumn="load_capacity">Load capacity<p-sortIcon field="load_capacity"/></th>
+      <th>Actions</th>
     </tr>
     <tr>
       <th>
@@ -64,6 +64,7 @@
           </ng-template>
         </p-columnFilter>
       </th>
+      <th></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-transporter>
@@ -72,6 +73,12 @@
       <td>{{transporter.name}}</td>
       <td>{{transporter.car_model}}</td>
       <td>{{transporter.load_capacity}}</td>
+      <td>
+        <div class="flex flex-wrap gap-2 justify-content-center">
+          <p-button icon="pi pi-pencil" class="item-button" styleClass="p-button-rounded p-button-warning p-button-outlined" title="Edit" routerLink="item/{{transporter.id}}"/>
+          <p-button icon="pi pi-trash" class="item-button item-button-last" styleClass="p-button-rounded p-button-danger p-button-outlined" title="Delete" (click)="deleteTransporter(transporter.id)"/>
+        </div>
+      </td>
     </tr>
   </ng-template>
   <ng-template *ngIf="!transporterPage?.content" pTemplate="emptymessage">

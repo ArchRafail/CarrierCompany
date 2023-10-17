@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { PageDto } from "../../../api/models/page-dto";
 import { TransporterDto } from "../../../api/models/transporter-dto";
 import { debounce, distinctUntilChanged, finalize, interval, Subject } from "rxjs";
@@ -30,7 +30,6 @@ export class TransporterListComponent {
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
   private filtersPreviousState?: {[key: string]: FilterMetadata};
   loadCapacityRangeValues: number[] = [this.MIN_CAPACITY_LOAD, this.MAX_CAPACITY_LOAD];
-  @ViewChild('transportersTable') transportersTable: any;
 
   constructor(private transporterHttpService: TransporterHttpService,
               private toastService: ToastService
@@ -66,6 +65,18 @@ export class TransporterListComponent {
       )
       .subscribe({
         next: page => this.transporterPage = page,
+        error: this.toastService.handleHttpError
+      });
+  }
+
+  deleteTransporter(id: number) {
+    this.isLoading = true;
+    this.transporterHttpService.delete(id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: () => this.getAll(),
         error: this.toastService.handleHttpError
       });
   }

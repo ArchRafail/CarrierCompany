@@ -1,9 +1,11 @@
 :host {
+  background: aliceblue;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 65px;
+  height: 75px;
   padding: 4px 24px 4px 24px;
+  border-bottom: solid 5px lightgray;
 
   #logo, #logo img {
     width: 225px;

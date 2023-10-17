@@ -57,8 +57,8 @@ public class TransporterController {
     }
 
     @DeleteMapping("/{id}")
-    private void delete(@PathVariable Long id){
-        transporterService.delete(id);
+    private TransporterDto delete(@PathVariable Long id){
+        return transporterService.delete(id);
     }
 
 }
