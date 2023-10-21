@@ -16,9 +16,9 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
         AND (:title IS NULL OR LOWER(w.title) LIKE CONCAT('%', LOWER(:title), '%'))
         AND (:city IS NULL OR LOWER(w.address.city) LIKE CONCAT('%', LOWER(:city), '%'))
         AND (:street IS NULL OR LOWER(w.address.street) LIKE CONCAT('%', LOWER(:street), '%'))
-        AND (:latitude IS NULL OR w.address.location.latitude = :latitude)
-        AND (:longitude IS NULL OR w.address.location.longitude = :longitude)
+        AND (:latitudeFrom IS NULL OR :latitudeTo IS NULL OR w.address.location.latitude BETWEEN :latitudeFrom AND :latitudeTo)
+        AND (:longitudeFrom IS NULL OR :longitudeTo IS NULL OR w.address.location.longitude BETWEEN :longitudeFrom AND :longitudeTo)
         """)
-    Page<Warehouse> findAllBy(Long id, String title, String city, String street, Double latitude,
-                                 Double longitude, Pageable pageable);
+    Page<Warehouse> findAllBy(Long id, String title, String city, String street, Double latitudeFrom,
+                              Double latitudeTo, Double longitudeFrom, Double longitudeTo, Pageable pageable);
 }

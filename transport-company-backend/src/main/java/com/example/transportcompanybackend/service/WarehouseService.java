@@ -20,9 +20,11 @@ public class WarehouseService {
     private final DeliveryRepository deliveryRepository;
     private final Mapper mapper;
 
-    public Page<WarehouseDto> getAll(Long id, String title, String city, String street, Double latitude,
-                                     Double longitude, Pageable pageable){
-        return warehouseRepository.findAllBy(id, title, city, street, latitude, longitude, pageable).map(mapper::toWarehouseDto);
+    public Page<WarehouseDto> getAll(Long id, String title, String city, String street, Double latitudeFrom,
+                                     Double latitudeTo, Double longitudeFrom, Double longitudeTo, Pageable pageable){
+        return warehouseRepository
+                .findAllBy(id, title, city, street, latitudeFrom, latitudeTo, longitudeFrom, longitudeTo, pageable)
+                .map(mapper::toWarehouseDto);
     }
 
     public WarehouseDto get(Long id) {

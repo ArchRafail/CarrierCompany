@@ -24,10 +24,12 @@ public class WarehouseController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String street,
-            @RequestParam(required = false) Double latitude,
-            @RequestParam(required = false) Double longitude,
+            @RequestParam(required = false) Double latitudeFrom,
+            @RequestParam(required = false) Double latitudeTo,
+            @RequestParam(required = false) Double longitudeFrom,
+            @RequestParam(required = false) Double longitudeTo,
             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
-        return warehouseService.getAll(id, title, city, street, latitude, longitude, pageable);
+        return warehouseService.getAll(id, title, city, street, latitudeFrom, latitudeTo, longitudeFrom, longitudeTo, pageable);
     }
 
     @GetMapping("/{id}")

@@ -1,1 +1,152 @@
-<p>warehouse-list works!</p>
+<div class="component-header">
+  <h3>Warehouses</h3>
+  <p-button icon="pi pi-plus-circle" (onClick)="addWarehouse()" iconPos="right" label="Add warehouse"></p-button>
+</div>
+<p-contextMenu #warehouseActions [model]="contextMenuItems"/>
+<p-table
+  [value]="warehousePage?.content || []"
+  [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="warehousePage?.size"
+  [totalRecords]="warehousePage?.total_elements || 0"
+  [loading]="isLoading"
+  [showLoader]="false"
+  sortField="id"
+  [sortOrder]="1"
+  [(contextMenuSelection)]="selectedWarehouse"
+  [contextMenu]="warehouseActions"
+  styleClass="p-datatable-striped"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id">Id<p-sortIcon field="id"/></th>
+      <th pSortableColumn="title">Title<p-sortIcon field="title"/></th>
+      <th pSortableColumn="address.city">City<p-sortIcon field="address.city"/></th>
+      <th pSortableColumn="address.street">Street<p-sortIcon field="address.street"/></th>
+      <th pSortableColumn="address.location.latitude">Latitude<p-sortIcon field="address.location.latitude"/></th>
+      <th pSortableColumn="address.location.longitude">Longitude<p-sortIcon field="address.location.longitude"/></th>
+      <th>Actions</th>
+    </tr>
+    <tr>
+      <th class="id">
+        <p-columnFilter type="text" field="id" [showMenu]="false"
+                        [matchMode]="PrimengTableFilterCustomMatchMode.EQUALS_TEXT"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="title" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="city" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="street" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th class="location">
+        <p-columnFilter field="latitude" [showMenu]="false"
+                        [matchMode]="PrimengTableFilterCustomMatchMode.LOCATION_RANGE" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-event let-filter="filterCallback">
+            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
+              <label for="minLatitude">From</label>
+              <input type="text"
+                     pInputText
+                     id="minLatitude"
+                     [(ngModel)]="latitudeRangeValues[0]"
+                     class="w-4rem pt-2 pb-2"
+                     readonly
+              />
+              <label for="maxLatitude">To</label>
+              <input type="text"
+                     pInputText
+                     id="maxLatitude"
+                     [(ngModel)]="latitudeRangeValues[1]"
+                     class="w-4rem pt-2 pb-2"
+                     readonly
+              />
+            </div>
+            <p-slider [(ngModel)]="latitudeRangeValues" [range]="true" (onChange)="filter($event.values)"
+                      [min]="MIN_LOCATION" [max]="MAX_LOCATION"></p-slider>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th class="location">
+        <p-columnFilter field="longitude" [showMenu]="false"
+                        [matchMode]="PrimengTableFilterCustomMatchMode.LOCATION_RANGE" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-event let-filter="filterCallback">
+            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
+              <label for="minLongitude">From</label>
+              <input type="text"
+                     pInputText
+                     id="minLongitude"
+                     [(ngModel)]="longitudeRangeValues[0]"
+                     class="w-4rem pt-2 pb-2"
+                     readonly
+              />
+              <label for="maxLongitude">To</label>
+              <input type="text"
+                     pInputText
+                     id="maxLongitude"
+                     [(ngModel)]="longitudeRangeValues[1]"
+                     class="w-4rem pt-2 pb-2"
+                     readonly
+              />
+            </div>
+            <p-slider [(ngModel)]="longitudeRangeValues" [range]="true" (onChange)="filter($event.values)"
+                      [min]="MIN_LOCATION" [max]="MAX_LOCATION"></p-slider>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th></th>
+    </tr>
+    <p-confirmDialog header="Confirmation"
+                     message="Are you sure?"
+                     icon="pi pi-exclamation-triangle p-warn"
+                     rejectButtonStyleClass="p-button-outlined p-button-secondary"
+    />
+  </ng-template>
+  <ng-template pTemplate="body" let-warehouse>
+    <tr [pContextMenuRow]="warehouse">
+      <td>{{warehouse.id}}</td>
+      <td>{{warehouse.title}}</td>
+      <td>{{warehouse.address.city}}</td>
+      <td>{{warehouse.address.street}}</td>
+      <td>{{warehouse.address.location.latitude}}</td>
+      <td>{{warehouse.address.location.longitude}}</td>
+      <td>
+        <div class="flex flex-wrap gap-2 justify-content-center">
+          <p-button icon="pi pi-pencil"
+                    styleClass="p-button-rounded p-button-warning p-button-outlined"
+                    title="Edit"
+                    (click)="edit()"
+          />
+          <p-button icon="pi pi-trash"
+                    styleClass="p-button-rounded p-button-danger p-button-outlined"
+                    title="Delete"
+                    (click)="confirmDeleteById(warehouse.id)"
+          />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template *ngIf="!warehousePage?.content" pTemplate="emptymessage">
+    <tr>
+      <td colspan="6" class="no-table-data xs text-center text-400">Data not found</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="loadingbody">
+    <tr class="loading-fields" *ngFor="let _ of [].constructor(6)">
+      <td><p>xxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxx</p></td>
+      <td><p>xxxx</p></td>
+      <td><p>xxx</p></td>
+    </tr>
+  </ng-template>
+</p-table>
