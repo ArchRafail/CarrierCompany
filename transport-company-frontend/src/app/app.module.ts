@@ -13,6 +13,7 @@ import { ButtonModule } from "primeng/button";
 import { HttpClientModule } from "@angular/common/http";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ToastModule } from "primeng/toast";
 
 
 @NgModule({
@@ -23,15 +24,16 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     LayoutHeaderComponent,
     PageNotFoundComponent,
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    TabMenuModule,
-    AvatarModule,
-    ButtonModule,
-    HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        TabMenuModule,
+        AvatarModule,
+        ButtonModule,
+        HttpClientModule,
+        ToastModule,
+    ],
   providers: [
     MessageService,
     ConfirmationService,

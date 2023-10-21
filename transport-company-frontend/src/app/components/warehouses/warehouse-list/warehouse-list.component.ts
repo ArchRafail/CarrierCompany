@@ -98,7 +98,10 @@ export class WarehouseListComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: () => this.getAll(),
+        next: () => {
+          this.getAll();
+          this.toastService.success(`Warehouse was deleted successfully!`)
+        },
         error: this.toastService.handleHttpError
       });
   }

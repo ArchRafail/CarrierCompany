@@ -43,9 +43,7 @@ export class TransporterItemComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: transporterDto => {
-          this.transporterDto = transporterDto;
-        },
+        next: transporterDto => this.transporterDto = transporterDto,
         error: this.toastService.handleHttpError
     })
   }
@@ -53,13 +51,23 @@ export class TransporterItemComponent {
   onClickSubmit() {
     this.submitDisable = true;
     if(this.transporterDto.id) {
-      this.transporterHttpService.update(this.transporterDto).subscribe({
-        next: () => this.router.navigate(["/transporters"]),
+      this.transporterHttpService.update(this.transporterDto)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+        next: () => {
+          this.toastService.success(`Transporter was updated successfully!`);
+          this.router.navigate(["/transporters"]);
+        },
         error: this.toastService.handleHttpError
       });
     } else {
-      this.transporterHttpService.create(this.transporterDto).subscribe({
-        next: () => this.router.navigate(["/transporters"]),
+      this.transporterHttpService.create(this.transporterDto)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+        next: () => {
+          this.toastService.success(`Transporter was created successfully!`);
+          this.router.navigate(["/transporters"]);
+        },
         error: this.toastService.handleHttpError
       });
     }

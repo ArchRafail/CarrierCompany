@@ -98,7 +98,10 @@ export class TransporterListComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: () => this.getAll(),
+        next: () => {
+          this.getAll();
+          this.toastService.success(`Transporter was deleted successfully!`)
+          },
         error: this.toastService.handleHttpError
       });
   }

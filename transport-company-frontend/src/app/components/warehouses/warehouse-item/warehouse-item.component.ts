@@ -50,9 +50,7 @@ export class WarehouseItemComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: warehouseDto => {
-          this.warehouseDto = warehouseDto;
-        },
+        next: warehouseDto => this.warehouseDto = warehouseDto,
         error: this.toastService.handleHttpError
       })
   }
@@ -60,13 +58,23 @@ export class WarehouseItemComponent {
   onClickSubmit() {
     this.submitDisable = true;
     if(this.warehouseDto.id) {
-      this.warehouseHttpService.update(this.warehouseDto).subscribe({
-        next: () => this.router.navigate(["/warehouses"]),
+      this.warehouseHttpService.update(this.warehouseDto)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+        next: () => {
+          this.toastService.success(`Warehouse was updated successfully!`);
+          this.router.navigate(["/warehouses"]);
+        },
         error: this.toastService.handleHttpError
       });
     } else {
-      this.warehouseHttpService.create(this.warehouseDto).subscribe({
-        next: () => this.router.navigate(["/warehouses"]),
+      this.warehouseHttpService.create(this.warehouseDto)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+        next: () => {
+          this.toastService.success(`Warehouse was created successfully!`);
+          this.router.navigate(["/warehouses"]);
+        },
         error: this.toastService.handleHttpError
       });
     }
