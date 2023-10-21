@@ -1,1 +1,79 @@
-<p>warehouse-item works!</p>
+<div *ngIf="!isLoading" class="form-display">
+  <div class="item-title" style="text-align: center; margin-bottom: 12px"><h3>{{warehouseDto.id ? 'Update warehouse #'+warehouseDto.id : 'Add new warehouse'}}</h3></div>
+
+  <form style="width: 100%" (ngSubmit)="onClickSubmit()">
+
+    <div class="form-fields-wrapper">
+      <label>Title:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-box"></i>
+          <input #title="ngModel" type="text" pInputText name="title" [(ngModel)]="warehouseDto.title" required/>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>City:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-globe"></i>
+          <input #city="ngModel" type="text" pInputText name="city" [(ngModel)]="warehouseDto.address.city" required/>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Street:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-sitemap"></i>
+          <input #street="ngModel"
+                 type="text"
+                 pInputText
+                 name="street"
+                 [(ngModel)]="warehouseDto.address.street"
+                 required
+          />
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Latitude:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-map-marker"></i>
+          <input #latitude="ngModel"
+                 type="number"
+                 min="0" max="100"
+                 pInputText
+                 name="latitude"
+                 step="0.001"
+                 lang="en-US"
+                 [(ngModel)]="warehouseDto.address.location.latitude"
+                 required
+          />
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Longitude:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-map-marker"></i>
+          <input #longitude="ngModel"
+                 type="number"
+                 min="0" max="100"
+                 pInputText
+                 name="longitude"
+                 step="0.001"
+                 lang="en-US"
+                 [(ngModel)]="warehouseDto.address.location.longitude"
+                 required
+          />
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/warehouses"></p-button>
+      <p-button
+        type="submit"
+        [disabled]="toBoolean(title.invalid || city.invalid || street.invalid || latitude.invalid || longitude.invalid) || submitDisable"
+        label="Save" styleClass="p-button-raised" icon="pi pi-save"></p-button>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  width: 650px;
+  margin: auto;
+
+  form .form-fields-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    span, .color-list {
+      width: 75%;
+
+      input {
+        width: 100%;
+      }
+    }
+
+    span > i {
+      z-index: 100;
+    }
+
+    &:last-child {
+      width: 60%;
+      margin: 24px auto auto;
+    }
+  }
+}

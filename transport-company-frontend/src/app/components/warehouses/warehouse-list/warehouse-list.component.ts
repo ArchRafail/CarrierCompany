@@ -88,7 +88,7 @@ export class WarehouseListComponent {
   }
 
   addWarehouse() {
-    this.router.navigate(['/warehouse/item/']);
+    this.router.navigate(['/warehouses/item/']);
   }
 
   deleteById(id: number) {
@@ -104,7 +104,7 @@ export class WarehouseListComponent {
   }
 
   edit() {
-    this.router.navigate([`/warehouse/item/${this.selectedWarehouse.id}`]);
+    this.router.navigate([`/warehouses/item/${this.selectedWarehouse.id}`]);
   }
 
   private confirmDelete() {

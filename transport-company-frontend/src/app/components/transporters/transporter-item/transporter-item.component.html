@@ -7,7 +7,7 @@
       <label>Name:</label>
       <span class="p-input-icon-left">
           <i class="pi pi-box"></i>
-          <input #name="ngModel" type="text" pInputText name="manufacturer" [(ngModel)]="transporterDto.name" required/>
+          <input #name="ngModel" type="text" pInputText name="name" [(ngModel)]="transporterDto.name" required/>
       </span>
     </div>
 
@@ -23,7 +23,7 @@
       <label>Load capacity (kg):</label>
       <span class="p-input-icon-left">
           <i class="pi pi-ticket"></i>
-          <input #loadCapacity="ngModel" type="number" min="0" max="40000" pInputText name="year" [(ngModel)]="transporterDto.load_capacity" required/>
+          <input #loadCapacity="ngModel" type="number" min="0" max="40000" pInputText name="capacity" [(ngModel)]="transporterDto.load_capacity" required/>
       </span>
     </div>
 
