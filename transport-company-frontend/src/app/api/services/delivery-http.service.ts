@@ -34,4 +34,12 @@ export class DeliveryHttpService {
   delete(id: number) {
     return this.http.delete<DeliveryDto>(`${this.URL}/${id}`);
   }
+
+  push(id: number) {
+    return this.http.put<DeliveryDto>(`${this.URL}/${id}/push`, null);
+  }
+
+  decline(id: number) {
+    return this.http.put<DeliveryDto>(`${this.URL}/${id}/decline`, null);
+  }
 }

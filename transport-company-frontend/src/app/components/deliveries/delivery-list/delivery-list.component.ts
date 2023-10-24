@@ -26,6 +26,7 @@ export class DeliveryListComponent {
   public readonly MIN_CARGO_AMOUNT: number = 0;
   public readonly MAX_CARGO_AMOUNT: number = 40000;
   public readonly FilterMatchMode = FilterMatchMode;
+  public readonly DeliveryStatus = DeliveryStatus;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
   deliveryPage?: PageDto<DeliveryDto>;
   isLoading = true;
@@ -63,6 +64,16 @@ export class DeliveryListComponent {
         command: () => this.edit()
       },
       {
+        label: 'Push',
+        icon: 'pi pi-fast-forward',
+        command: () => this.push()
+      },
+      {
+        label: 'Decline',
+        icon: 'pi pi-ban',
+        command: () => this.confirmDecline()
+      },
+      {
         label: 'Delete',
         icon: 'pi pi-trash',
         command: () => this.confirmDelete()
@@ -95,9 +106,7 @@ export class DeliveryListComponent {
   deleteById(id: number) {
     this.isLoading = true;
     this.deliveryHttpService.delete(id)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef)
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           this.getAll();
@@ -122,5 +131,46 @@ export class DeliveryListComponent {
       icon: 'pi pi-exclamation-triangle p-error',
       accept: () => this.deleteById(id)
     })
+  }
+
+  private push() {
+    this.pushById(this.selectedDelivery.id);
+  }
+
+  pushById(id: number) {
+    this.deliveryHttpService.push(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.getAll();
+          this.toastService.success(`Delivery was pushed successfully!`);
+        },
+        error: this.toastService.handleHttpError
+      });
+  }
+
+  private confirmDecline() {
+    this.confirmDeclineById(this.selectedDelivery.id);
+  }
+
+  confirmDeclineById(id: number) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to DECLINE this delivery?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle p-warn',
+      accept: () => this.declineById(id)
+    })
+  }
+
+  declineById(id: number) {
+    this.deliveryHttpService.decline(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.getAll();
+          this.toastService.success(`Delivery was declined successfully!`);
+        },
+        error: this.toastService.handleHttpError
+      });
   }
 }

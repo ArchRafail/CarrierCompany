@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -59,7 +61,11 @@ public class WarehouseService {
         warehouseRepository.deleteById(id);
     }
 
-    public Warehouse retrieve(Long id) {
+    private Warehouse retrieve(Long id) {
         return warehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Warehouse", id));
+    }
+
+    public List<WarehouseDto> getListOfTransporters() {
+        return warehouseRepository.findAll().stream().map(mapper::toWarehouseDto).toList();
     }
 }

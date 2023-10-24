@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -58,12 +60,16 @@ public class TransporterService {
         return transporterDto;
     }
 
-    public Transporter retrieve(Long id) {
+    private Transporter retrieve(Long id) {
         return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
     }
 
-    public void validateLoadCapacity(Double loadCapacity) {
+    private void validateLoadCapacity(Double loadCapacity) {
         if (loadCapacity != null && loadCapacity < 0)
             throw new WrongParametersException("Load capacity can't be less then zero.");
+    }
+
+    public List<TransporterDto> getListOfTransporters() {
+        return transporterRepository.findAll().stream().map(mapper::toTransporterDto).toList();
     }
 }

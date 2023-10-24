@@ -154,11 +154,23 @@
       <td>{{delivery.cargo_amount}}</td>
       <td>{{delivery.status}}</td>
       <td>
-        <div class="flex flex-wrap gap-2 justify-content-center">
+        <div class="flex flex-wrap gap-2 justify-content-center actions">
           <p-button icon="pi pi-pencil"
                     styleClass="p-button-rounded p-button-warning p-button-outlined"
                     title="Edit"
                     routerLink="item/{{delivery.id}}"
+          />
+          <p-button icon="pi pi-fast-forward"
+                    styleClass="p-button-rounded p-button-success p-button-outlined"
+                    title="Push"
+                    (click)="pushById(delivery.id)"
+                    [disabled]="delivery.status==DeliveryStatus.DELIVERED || delivery.status==DeliveryStatus.DECLINED"
+          />
+          <p-button icon="pi pi-ban"
+                    styleClass="p-button-rounded p-button-help p-button-outlined"
+                    title="Decline"
+                    (click)="confirmDeclineById(delivery.id)"
+                    [disabled]="delivery.status==DeliveryStatus.DELIVERED || delivery.status==DeliveryStatus.DECLINED"
           />
           <p-button icon="pi pi-trash"
                     styleClass="p-button-rounded p-button-danger p-button-outlined"

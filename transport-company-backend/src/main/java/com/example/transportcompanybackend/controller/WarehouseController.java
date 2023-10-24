@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -69,5 +71,10 @@ public class WarehouseController {
     @DeleteMapping("/{id}")
     private void delete(@PathVariable Long id){
         warehouseService.delete(id);
+    }
+
+    @GetMapping("/list")
+    public List<WarehouseDto> getListOfWarehouses() {
+        return warehouseService.getListOfTransporters();
     }
 }

@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  width: 750px;
+  margin: auto;
+
+  ::ng-deep {
+    .p-dropdown {
+      width: 100%;
+
+      .p-dropdown-label {
+        padding-left: 2.5rem;
+      }
+    }
+  }
+}

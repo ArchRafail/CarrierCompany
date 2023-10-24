@@ -25,11 +25,12 @@ public class DeliveryController {
             @RequestParam(required = false) String warehouseToTitle,
             @RequestParam(required = false) String transporterName,
             @RequestParam(required = false) String cargoName,
-            @RequestParam(required = false) Double cargoAmount,
+            @RequestParam(required = false) Double cargoAmountFrom,
+            @RequestParam(required = false) Double cargoAmountTo,
             @RequestParam(required = false) DeliveryStatus status,
             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
         return deliveryService.getAll(id, warehouseFromTitle, warehouseToTitle, transporterName,
-                cargoName, cargoAmount, status, pageable);
+                cargoName, cargoAmountFrom, cargoAmountTo, status, pageable);
     }
 
     @GetMapping("/{id}")
@@ -57,4 +58,13 @@ public class DeliveryController {
         deliveryService.delete(id);
     }
 
+    @PutMapping("/{id}/push")
+    private DeliveryDto push(@PathVariable Long id){
+        return deliveryService.push(id);
+    }
+
+    @PutMapping("/{id}/decline")
+    private DeliveryDto decline(@PathVariable Long id){
+        return deliveryService.decline(id);
+    }
 }

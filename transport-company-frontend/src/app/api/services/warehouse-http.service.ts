@@ -34,4 +34,8 @@ export class WarehouseHttpService {
   delete(id: number) {
     return this.http.delete<WarehouseDto>(`${this.URL}/${id}`);
   }
+
+  getList() {
+    return this.http.get<WarehouseDto[]>(`${this.URL}/list`);
+  }
 }

@@ -34,4 +34,8 @@ export class TransporterHttpService {
   delete(id: number) {
     return this.http.delete<TransporterDto>(`${this.URL}/${id}`);
   }
+
+  getList() {
+    return this.http.get<TransporterDto[]>(`${this.URL}/list`);
+  }
 }

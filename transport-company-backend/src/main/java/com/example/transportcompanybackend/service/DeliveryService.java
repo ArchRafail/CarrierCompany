@@ -26,9 +26,10 @@ public class DeliveryService {
     private final Mapper mapper;
 
     public Page<DeliveryDto> getAll(Long id, String warehouseFromTitle, String warehouseToTitle, String transporterName,
-                                    String cargoName, Double cargoAmount, DeliveryStatus status, Pageable pageable){
+                                    String cargoName, Double cargoAmountFrom, Double cargoAmountTo,
+                                    DeliveryStatus status, Pageable pageable){
         return deliveryRepository.findAllBy(id, warehouseFromTitle, warehouseToTitle, transporterName, cargoName,
-                        cargoAmount, status, pageable).map(mapper::toDeliveryDto);
+                cargoAmountFrom, cargoAmountTo, status, pageable).map(mapper::toDeliveryDto);
     }
 
     public DeliveryDto get(Long id) {
@@ -109,4 +110,25 @@ public class DeliveryService {
         throw new WrongParametersException("Cargo amount is more then transporter's load capacity!");
     }
 
+    public DeliveryDto push(Long id) {
+        Delivery delivery = retrieve(id);
+        if (delivery.getStatus() == DeliveryStatus.DELIVERED || delivery.getStatus() == DeliveryStatus.DECLINED) {
+            return mapper.toDeliveryDto(delivery);
+        }
+        switch (delivery.getStatus()) {
+            case CREATED -> delivery.setStatus(DeliveryStatus.PROCESSING);
+            case PROCESSING -> delivery.setStatus(DeliveryStatus.SHIPPING);
+            case SHIPPING -> delivery.setStatus(DeliveryStatus.DELIVERED);
+        }
+        return mapper.toDeliveryDto(deliveryRepository.save(delivery));
+    }
+
+    public DeliveryDto decline(Long id) {
+        Delivery delivery = retrieve(id);
+        if (delivery.getStatus() == DeliveryStatus.DELIVERED || delivery.getStatus() == DeliveryStatus.DECLINED) {
+            return mapper.toDeliveryDto(delivery);
+        }
+        delivery.setStatus(DeliveryStatus.DECLINED);
+        return mapper.toDeliveryDto(deliveryRepository.save(delivery));
+    }
 }

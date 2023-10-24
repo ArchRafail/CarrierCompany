@@ -19,11 +19,12 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
         AND (:warehouseToTitle IS NULL OR LOWER(d.warehouseTo.title) LIKE CONCAT('%', LOWER(:warehouseToTitle), '%'))
         AND (:transporterName IS NULL OR LOWER(d.transporter.name) LIKE CONCAT('%', LOWER(:transporterName), '%'))
         AND (:cargoName IS NULL OR LOWER(d.cargoName) LIKE CONCAT('%', LOWER(:cargoName), '%'))
-        AND (:cargoAmount IS NULL OR d.cargoAmount = :cargoAmount)
+        AND (:cargoAmountFrom IS NULL OR :cargoAmountTo IS NULL OR d.cargoAmount BETWEEN :cargoAmountFrom AND :cargoAmountTo)
         AND (:status IS NULL OR d.status = :status)
         """)
     Page<Delivery> findAllBy(Long id, String warehouseFromTitle, String warehouseToTitle, String transporterName,
-                             String cargoName, Double cargoAmount, DeliveryStatus status, Pageable pageable);
+                             String cargoName, Double cargoAmountFrom, Double cargoAmountTo, DeliveryStatus status,
+                             Pageable pageable);
 
     Page<Delivery> findAllByWarehouseFromId(Long id, Pageable pageable);
     Page<Delivery> findAllByWarehouseToId(Long id, Pageable pageable);

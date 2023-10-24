@@ -1,1 +1,133 @@
-<p>delivery-item works!</p>
+<div *ngIf="!isLoading" class="form-display">
+  <div class="item-title" style="text-align: center; margin-bottom: 12px"><h3>{{deliveryDto.id ? 'Update delivery #'+deliveryDto.id : 'Add new delivery'}}</h3></div>
+
+  <form style="width: 100%" (ngSubmit)="onClickSubmit()">
+
+    <div class="form-fields-wrapper">
+      <label>Source warehouse:</label>
+      <span class="p-input-icon-left">
+        <i class="pi pi-upload"></i>
+        <p-dropdown #sourceWarehouse="ngModel"
+                    [options]="warehouses"
+                    name="warehouse_from"
+                    [(ngModel)]="selectedDeliveryData.warehouse_from"
+                    [filter]="true"
+                    filterBy="title,address.city,address.street"
+                    [showClear]="false"
+                    [required]="true"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="selectedDeliveryData.warehouse_from as warehouse">
+              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
+            </div>
+          </ng-template>
+          <ng-template let-warehouse pTemplate="item">
+            <div>
+              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Destination warehouse:</label>
+      <span class="p-input-icon-left">
+        <i class="pi pi-download"></i>
+        <p-dropdown #destinationWarehouse="ngModel"
+                    [options]="warehouses"
+                    name="warehouse_to"
+                    [(ngModel)]="selectedDeliveryData.warehouse_to"
+                    [filter]="true"
+                    filterBy="title,address.city,address.street"
+                    [showClear]="false"
+                    [required]="true"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="selectedDeliveryData.warehouse_to as warehouse">
+              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
+            </div>
+          </ng-template>
+          <ng-template let-warehouse pTemplate="item">
+            <div>
+              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Transporter:</label>
+      <span class="p-input-icon-left">
+        <i class="pi pi-truck"></i>
+        <p-dropdown #transporter="ngModel"
+                    [options]="transporters"
+                    name="transporter"
+                    [(ngModel)]="selectedDeliveryData.transporter"
+                    [filter]="true"
+                    filterBy="name,car_model"
+                    [showClear]="false"
+                    [required]="true"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="selectedDeliveryData.transporter as transporter">
+              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>
+            </div>
+          </ng-template>
+          <ng-template let-transporter pTemplate="item">
+            <div>
+              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Cargo name:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-id-card"></i>
+          <input #cargoName="ngModel" type="text" pInputText name="city" [(ngModel)]="deliveryDto.cargo_name" required/>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Cargo amount:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-chart-pie"></i>
+          <input #cargoAmount="ngModel"
+                 type="number"
+                 min="1" max="40000"
+                 pInputText
+                 name="cargoAmount"
+                 [(ngModel)]="deliveryDto.cargo_amount"
+                 required
+          />
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <label>Status:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-eye"></i>
+          <p-dropdown appendTo="body" [options]="statuses" [(ngModel)]="deliveryDto.status" name="status"></p-dropdown>
+      </span>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/deliveries"></p-button>
+      <p-button
+        type="submit"
+        [disabled]="toBoolean( sourceWarehouse.invalid ||
+          destinationWarehouse.invalid ||
+          selectedDeliveryData.warehouse_from?.id === selectedDeliveryData.warehouse_to?.id ||
+          transporter.invalid ||
+          cargoName.invalid ||
+          cargoAmount.invalid) ||
+          submitDisable"
+        label="Save" styleClass="p-button-raised" icon="pi pi-save"></p-button>
+    </div>
+
+  </form>
+</div>
