@@ -1,0 +1,7 @@
+export enum DeliveryStatus {
+  CREATED = "CREATED",
+  PROCESSING = "PROCESSING",
+  SHIPPING = "SHIPPING",
+  DELIVERED = "DELIVERED",
+  DECLINED = "DECLINED",
+}

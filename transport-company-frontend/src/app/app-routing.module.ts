@@ -9,7 +9,7 @@ const routes: Routes = [
   {path: 'warehouses', loadChildren: () => import('./components/warehouses/warehouses.module').then(m => m.WarehousesModule)},
   {path: 'transporters', loadChildren: () => import('./components/transporters/transporters.module').then(m => m.TransportersModule)},
   {path: 'deliveries', loadChildren: () => import('./components/deliveries/deliveries.module').then(m => m.DeliveriesModule)},
-  { path: '**', component: PageNotFoundComponent }
+  {path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({

@@ -1,1 +1,195 @@
-<p>delivery-list works!</p>
+<div class="component-header">
+  <h3>Deliveries</h3>
+  <p-button icon="pi pi-plus-circle" (onClick)="addDelivery()" iconPos="right" label="Add delivery"></p-button>
+</div>
+<p-contextMenu #deliveryActions [model]="contextMenuItems"/>
+<p-table
+  [value]="deliveryPage?.content || []"
+  [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="deliveryPage?.size"
+  [totalRecords]="deliveryPage?.total_elements || 0"
+  [loading]="isLoading"
+  [showLoader]="false"
+  sortField="id"
+  [sortOrder]="1"
+  [(contextMenuSelection)]="selectedDelivery"
+  [contextMenu]="deliveryActions"
+  styleClass="p-datatable-striped"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th rowspan="2" pSortableColumn="id">Id<p-sortIcon field="id"/></th>
+      <th colspan="3">Source warehouse</th>
+      <th colspan="3">Destination warehouse</th>
+      <th colspan="3">Transporter</th>
+      <th rowspan="2" pSortableColumn="cargo_name">Cargo name<p-sortIcon field="cargo_name"/></th>
+      <th rowspan="2" pSortableColumn="cargo_capacity">Cargo capacity<p-sortIcon field="cargo_capacity"/></th>
+      <th rowspan="2" pSortableColumn="status">Status<p-sortIcon field="status"/></th>
+      <th rowspan="2">Actions</th>
+    </tr>
+    <tr>
+      <th pSortableColumn="warehouse_from.title">Title<p-sortIcon field="warehouse_from.title"/></th>
+      <th pSortableColumn="warehouse_from.address.city">City<p-sortIcon field="warehouse_from.address.city"/></th>
+      <th>Street</th>
+      <th pSortableColumn="warehouse_to.title">Title<p-sortIcon field="warehouse_to.title"/></th>
+      <th pSortableColumn="warehouse_to.address.city">City<p-sortIcon field="warehouse_to.address.city"/></th>
+      <th>Street</th>
+      <th pSortableColumn="transporter.name">Name<p-sortIcon field="transporter.name"/></th>
+      <th pSortableColumn="transporter.car_model">Car model<p-sortIcon field="transporter.car_model"/></th>
+      <th pSortableColumn="transporter.load_capacity">Load capacity<p-sortIcon field="transporter.load_capacity"/></th>
+    </tr>
+    <tr>
+      <th class="id">
+        <p-columnFilter type="text" field="id" [showMenu]="false"
+                        [matchMode]="PrimengTableFilterCustomMatchMode.EQUALS_TEXT"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="warehouse_from_title" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="warehouse_from_address.city" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="warehouse_from_address.street" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="warehouse_to_title" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="warehouse_to_address.city" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="warehouse_to_address.street" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="transporter_name" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="transporter_car_model" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th></th>
+      <th>
+        <p-columnFilter type="text" field="cargo_name" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th class="cargo-amount">
+        <p-columnFilter field="cargo_amount" [showMenu]="false" [matchMode]="PrimengTableFilterCustomMatchMode.WEIGHT_RANGE"
+                        [showClearButton]="false">
+          <ng-template pTemplate="filter" let-event let-filter="filterCallback">
+            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
+              <label for="minCargoAmount">From</label>
+              <input type="text"
+                     pInputText
+                     id="minCargoAmount"
+                     [(ngModel)]="cargoAmountRangeValues[0]"
+                     class="w-6rem pt-2 pb-2"
+                     readonly
+              />
+              <label for="maxCargoAmount">To</label>
+              <input type="text"
+                     pInputText
+                     id="maxCargoAmount"
+                     [(ngModel)]="cargoAmountRangeValues[1]"
+                     class="w-6rem pt-2 pb-2"
+                     readonly
+              />
+            </div>
+            <p-slider [(ngModel)]="cargoAmountRangeValues" [range]="true" (onChange)="filter($event.values)"
+                      [min]="MIN_CARGO_AMOUNT" [max]="MAX_CARGO_AMOUNT"></p-slider>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter field="status" [showMenu]="false" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="statuses"
+              (onChange)="filter($event.value)"
+              placeholder="All"
+              [showClear]="true"
+              scrollHeight="220px"
+              appendTo="body"
+            >
+              <ng-template let-option pTemplate="item">
+                <span class="role {{option | lowercase}}">{{option}}</span>
+              </ng-template>
+            </p-dropdown>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th></th>
+    </tr>
+    <p-confirmDialog header="Confirmation"
+                     message="Are you sure?"
+                     icon="pi pi-exclamation-triangle p-warn"
+                     rejectButtonStyleClass="p-button-outlined p-button-secondary"
+    />
+  </ng-template>
+  <ng-template pTemplate="body" let-delivery>
+    <tr [pContextMenuRow]="delivery">
+      <td>{{delivery.id}}</td>
+      <td>{{delivery.warehouse_from.title}}</td>
+      <td>{{delivery.warehouse_from.address.city}}</td>
+      <td>{{delivery.warehouse_from.address.street}}</td>
+      <td>{{delivery.warehouse_to.title}}</td>
+      <td>{{delivery.warehouse_to.address.city}}</td>
+      <td>{{delivery.warehouse_to.address.street}}</td>
+      <td>{{delivery.transporter.name}}</td>
+      <td>{{delivery.transporter.car_model}}</td>
+      <td>{{delivery.transporter.load_capacity}}</td>
+      <td>{{delivery.cargo_name}}</td>
+      <td>{{delivery.cargo_amount}}</td>
+      <td>{{delivery.status}}</td>
+      <td>
+        <div class="flex flex-wrap gap-2 justify-content-center">
+          <p-button icon="pi pi-pencil"
+                    styleClass="p-button-rounded p-button-warning p-button-outlined"
+                    title="Edit"
+                    routerLink="item/{{delivery.id}}"
+          />
+          <p-button icon="pi pi-trash"
+                    styleClass="p-button-rounded p-button-danger p-button-outlined"
+                    title="Delete"
+                    (click)="confirmDeleteById(delivery.id)"
+          />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template *ngIf="!deliveryPage?.content" pTemplate="emptymessage">
+    <tr>
+      <td colspan="6" class="no-table-data xs text-center text-400">Data not found</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="loadingbody">
+    <tr class="loading-fields" *ngFor="let _ of [].constructor(6)">
+      <td><p>xxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxx</p></td>
+    </tr>
+  </ng-template>
+</p-table>
