@@ -1,13 +1,28 @@
 # Carrier Company
 
-</br>
-</br>
-Java course project that realize program for managing deliveries on BackEnd.</br>
-</br>
-</br>
-Program operating conditions.</br>
-1. Programm totally based on Spring Framwork.</br>
-2. There are 3 entities in the program: transporter, warehouse, delivery.</br>
-3. Program work with PostgreSQL on Docker. Port 2345, database carrier_company.</br>
-4. To check how to work program: open browser and type into address "http://localhost:8080/swagger". </br>
-5. Realized REST API requests: POST, PUT, GET, PATCH, DELETE.</br>
+## Development guide
+
+### Docker
+1. Download Docker Desktop installation file from url `https://www.docker.com/products/docker-desktop` and install it on your local environment.
+2. Run Docker Desktop application.
+3. Run `docker-compose --project-name="carrier-company" up --detach` from `provisioning\dev` folder.
+* If you already have installed Docker Desktop with `carrier-company` cluster, just launch it.
+
+### Backend
+Backend is presented by a Spring Boot Java application located in the `transport-company-backend` folder.
+1. Run application from `src\main\java\com\example\transportcompanybackend\TransportCompanyBackendApplication.java` with your IDE.
+2. Check `http://localhost:8080`.
+3. API Swagger documentation at `http://localhost:8080/swagger`.
+
+### Frontend
+Frontend is presented by an Angular application located in the `transport-company-frontend` folder.
+1. Run `npm install`.
+2. Run `start` script from `package.json` with IDE or with the following command `npm run start`.
+3. Check `http://localhost:4200`.
+
+### Tools
+* I recommend to use `Intellij IDEA` for full-stack development.
+* For DB view and modification you can use integrated into the Intellij IDEA DB viewer, pgAdmin application or any other tool.
+
+### Hints
+* All scripts and tools must be launched with local administrator rights. 
