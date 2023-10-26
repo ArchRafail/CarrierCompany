@@ -4,8 +4,7 @@ import { PrimengTableFilterCustomMatchMode } from "../models/primeng-table-filte
 
 export const PRIMENG_TABLE_FILTER_MATCH_MODES_WITH_DEBOUNCE = [
   PrimengTableFilterCustomMatchMode.EQUALS_TEXT,
-  PrimengTableFilterCustomMatchMode.WEIGHT_RANGE,
-  PrimengTableFilterCustomMatchMode.LOCATION_RANGE,
+  PrimengTableFilterCustomMatchMode.RANGE,
   FilterMatchMode.STARTS_WITH,
   FilterMatchMode.CONTAINS,
 ]

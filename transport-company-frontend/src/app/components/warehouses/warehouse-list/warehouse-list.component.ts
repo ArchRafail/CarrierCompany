@@ -22,16 +22,15 @@ import { primeNgTableFiltersToRequestParams } from "../../../helpers/PrimeNgHelp
 })
 export class WarehouseListComponent {
   private readonly destroyRef = inject(DestroyRef);
-  public readonly MIN_LOCATION: number = 0;
-  public readonly MAX_LOCATION: number = 100;
+  public readonly LOCATION_RANGE: number[] = [0, 100];
   public readonly FilterMatchMode = FilterMatchMode;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
   warehousePage?: PageDto<WarehouseDto>;
   isLoading = true;
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
   private filtersPreviousState?: {[key: string]: FilterMetadata};
-  latitudeRangeValues: number[] = [this.MIN_LOCATION, this.MAX_LOCATION];
-  longitudeRangeValues: number[] = [this.MIN_LOCATION, this.MAX_LOCATION];
+  latitudeRangeValues: number[] = [this.LOCATION_RANGE[0], this.LOCATION_RANGE[1]];
+  longitudeRangeValues: number[] = [this.LOCATION_RANGE[0], this.LOCATION_RANGE[1]];
   contextMenuItems: MenuItem[] = [];
   selectedWarehouse!: WarehouseDto;
 

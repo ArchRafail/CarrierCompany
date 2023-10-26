@@ -42,29 +42,25 @@
                         [showClearButton]="false" placeholder="Search..." />
       </th>
       <th class="load-capacity">
-        <p-columnFilter field="load_capacity" [showMenu]="false" [matchMode]="PrimengTableFilterCustomMatchMode.WEIGHT_RANGE"
+        <p-columnFilter field="load_capacity" [showMenu]="false" [matchMode]="PrimengTableFilterCustomMatchMode.RANGE"
                         [showClearButton]="false">
           <ng-template pTemplate="filter" let-event let-filter="filterCallback">
-            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
-              <label for="minLoadCapacity">From</label>
-              <input type="text"
-                     pInputText
-                     id="minLoadCapacity"
-                     [(ngModel)]="loadCapacityRangeValues[0]"
-                     class="w-6rem pt-2 pb-2"
-                     readonly
-              />
-              <label for="maxLoadCapacity">To</label>
-              <input type="text"
-                     pInputText
-                     id="maxLoadCapacity"
-                     [(ngModel)]="loadCapacityRangeValues[1]"
-                     class="w-6rem pt-2 pb-2"
-                     readonly
-              />
+            <div class="flex justify-content-center align-items-center gap-2 mb-2">
+              <span *ngIf="amountSlider.values?.length">
+                ({{amountSlider.values?.[0]}} - {{amountSlider.values?.[1]}} )
+              </span>
+              <i class="pi pi-times text-gray-500 cursor-pointer"
+                 (click)="amountSlider.writeValue([CAPACITY_LOAD_RANGE[0], CAPACITY_LOAD_RANGE[1]]); filter()"
+                 title="Clear">
+              </i>
             </div>
-            <p-slider [(ngModel)]="loadCapacityRangeValues" [range]="true" (onChange)="filter($event.values)"
-                      [min]="MIN_CAPACITY_LOAD" [max]="MAX_CAPACITY_LOAD"></p-slider>
+            <p-slider #amountSlider
+                      [ngModel]="loadCapacityRangeValues"
+                      [range]="true"
+                      (onChange)="filter($event.values)"
+                      [min]="CAPACITY_LOAD_RANGE[0]"
+                      [max]="CAPACITY_LOAD_RANGE[1]"
+            />
           </ng-template>
         </p-columnFilter>
       </th>

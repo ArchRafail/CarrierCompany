@@ -49,55 +49,47 @@
       </th>
       <th class="location">
         <p-columnFilter field="latitude" [showMenu]="false"
-                        [matchMode]="PrimengTableFilterCustomMatchMode.LOCATION_RANGE" [showClearButton]="false">
+                        [matchMode]="PrimengTableFilterCustomMatchMode.RANGE" [showClearButton]="false">
           <ng-template pTemplate="filter" let-event let-filter="filterCallback">
-            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
-              <label for="minLatitude">From</label>
-              <input type="text"
-                     pInputText
-                     id="minLatitude"
-                     [(ngModel)]="latitudeRangeValues[0]"
-                     class="w-4rem pt-2 pb-2"
-                     readonly
-              />
-              <label for="maxLatitude">To</label>
-              <input type="text"
-                     pInputText
-                     id="maxLatitude"
-                     [(ngModel)]="latitudeRangeValues[1]"
-                     class="w-4rem pt-2 pb-2"
-                     readonly
-              />
+            <div class="flex justify-content-center align-items-center gap-2 mb-2 flex-nowrap">
+              <span *ngIf="latitudeSlider.values?.length">
+                ({{latitudeSlider.values?.[0]}} - {{latitudeSlider.values?.[1]}} )
+              </span>
+              <i class="pi pi-times text-gray-500 cursor-pointer"
+                 (click)="latitudeSlider.writeValue([LOCATION_RANGE[0], LOCATION_RANGE[1]]); filter()"
+                 title="Clear">
+              </i>
             </div>
-            <p-slider [(ngModel)]="latitudeRangeValues" [range]="true" (onChange)="filter($event.values)"
-                      [min]="MIN_LOCATION" [max]="MAX_LOCATION"></p-slider>
+            <p-slider #latitudeSlider
+                      [ngModel]="latitudeRangeValues"
+                      [range]="true"
+                      (onChange)="filter($event.values)"
+                      [min]="LOCATION_RANGE[0]"
+                      [max]="LOCATION_RANGE[1]"
+            />
           </ng-template>
         </p-columnFilter>
       </th>
       <th class="location">
         <p-columnFilter field="longitude" [showMenu]="false"
-                        [matchMode]="PrimengTableFilterCustomMatchMode.LOCATION_RANGE" [showClearButton]="false">
+                        [matchMode]="PrimengTableFilterCustomMatchMode.RANGE" [showClearButton]="false">
           <ng-template pTemplate="filter" let-event let-filter="filterCallback">
-            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
-              <label for="minLongitude">From</label>
-              <input type="text"
-                     pInputText
-                     id="minLongitude"
-                     [(ngModel)]="longitudeRangeValues[0]"
-                     class="w-4rem pt-2 pb-2"
-                     readonly
-              />
-              <label for="maxLongitude">To</label>
-              <input type="text"
-                     pInputText
-                     id="maxLongitude"
-                     [(ngModel)]="longitudeRangeValues[1]"
-                     class="w-4rem pt-2 pb-2"
-                     readonly
-              />
+            <div class="flex justify-content-center align-items-center gap-2 mb-2 flex-nowrap">
+              <span *ngIf="longitudeSlider.values?.length">
+                ({{longitudeSlider.values?.[0]}} - {{longitudeSlider.values?.[1]}} )
+              </span>
+              <i class="pi pi-times text-gray-500 cursor-pointer"
+                 (click)="longitudeSlider.writeValue([LOCATION_RANGE[0], LOCATION_RANGE[1]]); filter()"
+                 title="Clear">
+              </i>
             </div>
-            <p-slider [(ngModel)]="longitudeRangeValues" [range]="true" (onChange)="filter($event.values)"
-                      [min]="MIN_LOCATION" [max]="MAX_LOCATION"></p-slider>
+            <p-slider #longitudeSlider
+                      [ngModel]="longitudeRangeValues"
+                      [range]="true"
+                      (onChange)="filter($event.values)"
+                      [min]="LOCATION_RANGE[0]"
+                      [max]="LOCATION_RANGE[1]"
+            />
           </ng-template>
         </p-columnFilter>
       </th>

@@ -11,8 +11,7 @@ export function primeNgTableFiltersToRequestParams(filters?: {
     const filter = filterMetadata as FilterMetadata;
     const value = filter?.value;
     if (!value) return;
-    if (filter.matchMode === PrimengTableFilterCustomMatchMode.WEIGHT_RANGE
-      || filter.matchMode === PrimengTableFilterCustomMatchMode.LOCATION_RANGE) {
+    if (filter.matchMode === PrimengTableFilterCustomMatchMode.RANGE) {
       if ((value[0] || value[0] == 0) && value[1]) {
         params[key + "_from"] = value[0];
         params[key + "_to"] = value[1];

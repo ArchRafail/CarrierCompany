@@ -10,10 +10,6 @@
   }
 }
 
-.p-warn {
-  color: darkorange !important;
-}
-
 .p-toast-detail, .p-toast-summary {
   overflow-wrap: break-word;
 }
@@ -24,4 +20,16 @@
 
 .p-toast-icon-close {
   flex-shrink: 0;
+}
+
+.menuitem-danger {
+  .p-menuitem-icon, .p-menuitem-text {
+    color: red !important;
+  }
+}
+
+.menuitem-warning {
+  .p-menuitem-icon, .p-menuitem-text {
+    color: darkorange !important;
+  }
 }

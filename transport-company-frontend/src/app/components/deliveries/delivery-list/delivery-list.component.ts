@@ -23,8 +23,8 @@ import { DeliveryStatus } from "../../../api/models/delivery-status";
 })
 export class DeliveryListComponent {
   private readonly destroyRef = inject(DestroyRef);
-  public readonly MIN_CARGO_AMOUNT: number = 0;
-  public readonly MAX_CARGO_AMOUNT: number = 40000;
+  public readonly CARGO_AMOUNT_RANGE: number[] = [0, 40000];
+  public readonly TERMINAL_DELIVERY_STATUSES: DeliveryStatus[] = [DeliveryStatus.DELIVERED, DeliveryStatus.DECLINED];
   public readonly FilterMatchMode = FilterMatchMode;
   public readonly DeliveryStatus = DeliveryStatus;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
@@ -32,7 +32,7 @@ export class DeliveryListComponent {
   isLoading = true;
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
   private filtersPreviousState?: {[key: string]: FilterMetadata};
-  cargoAmountRangeValues: number[] = [this.MIN_CARGO_AMOUNT, this.MAX_CARGO_AMOUNT];
+  cargoAmountRangeValues: number[] = [this.CARGO_AMOUNT_RANGE[0], this.CARGO_AMOUNT_RANGE[1]];
   contextMenuItems: MenuItem[] = [];
   selectedDelivery!: DeliveryDto;
   statuses: string[] = Object.values(DeliveryStatus);
@@ -57,28 +57,6 @@ export class DeliveryListComponent {
       this.getAll(primeNgTableFiltersToRequestParams(event.filters), Pageable.fromPrimeNg(event));
       this.filtersPreviousState = structuredClone(event.filters as {[s: string]: FilterMetadata});
     });
-    this.contextMenuItems = [
-      {
-        label: 'Edit',
-        icon: 'pi pi-pencil',
-        command: () => this.edit()
-      },
-      {
-        label: 'Push',
-        icon: 'pi pi-fast-forward',
-        command: () => this.push()
-      },
-      {
-        label: 'Decline',
-        icon: 'pi pi-ban',
-        command: () => this.confirmDecline()
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-trash',
-        command: () => this.confirmDelete()
-      },
-    ];
   }
 
   onLazyLoad(event: TableLazyLoadEvent) {
@@ -99,11 +77,53 @@ export class DeliveryListComponent {
       });
   }
 
+  setupContextMenu() {
+    this.contextMenuItems = [
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.edit()
+      },
+      {
+        label: 'Push',
+        icon: 'pi pi-fast-forward',
+        visible: !this.TERMINAL_DELIVERY_STATUSES.includes(this.selectedDelivery?.status),
+        command: () => this.push()
+      },
+      {
+        label: 'Decline',
+        icon: 'pi pi-ban p-warn',
+        styleClass: 'menuitem-warning',
+        visible: !this.TERMINAL_DELIVERY_STATUSES.includes(this.selectedDelivery?.status),
+        command: () => this.confirmDecline()
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash p-error',
+        styleClass: 'menuitem-danger',
+        command: () => this.confirmDelete()
+      },
+    ];
+  }
+
   addDelivery() {
     this.router.navigate(['/deliveries/item/']);
   }
 
-  deleteById(id: number) {
+  private edit() {
+    this.router.navigate([`/deliveries/item/${this.selectedDelivery.id}`]);
+  }
+
+  private confirmDelete() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to DELETE this delivery?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle p-error',
+      accept: () => this.delete(this.selectedDelivery.id)
+    })
+  }
+
+  private delete(id: number) {
     this.isLoading = true;
     this.deliveryHttpService.delete(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -116,29 +136,8 @@ export class DeliveryListComponent {
       });
   }
 
-  edit() {
-    this.router.navigate([`/deliveries/item/${this.selectedDelivery.id}`]);
-  }
-
-  private confirmDelete() {
-    this.confirmDeleteById(this.selectedDelivery.id);
-  }
-
-  confirmDeleteById(id: number) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to DELETE this delivery?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle p-error',
-      accept: () => this.deleteById(id)
-    })
-  }
-
   private push() {
-    this.pushById(this.selectedDelivery.id);
-  }
-
-  pushById(id: number) {
-    this.deliveryHttpService.push(id)
+    this.deliveryHttpService.push(this.selectedDelivery.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
@@ -150,19 +149,15 @@ export class DeliveryListComponent {
   }
 
   private confirmDecline() {
-    this.confirmDeclineById(this.selectedDelivery.id);
-  }
-
-  confirmDeclineById(id: number) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to DECLINE this delivery?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle p-warn',
-      accept: () => this.declineById(id)
+      accept: () => this.decline(this.selectedDelivery.id)
     })
   }
 
-  declineById(id: number) {
+  decline(id: number) {
     this.deliveryHttpService.decline(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

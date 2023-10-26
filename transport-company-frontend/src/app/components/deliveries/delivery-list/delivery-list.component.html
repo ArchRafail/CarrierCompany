@@ -3,6 +3,7 @@
   <p-button icon="pi pi-plus-circle" (onClick)="addDelivery()" iconPos="right" label="Add delivery"></p-button>
 </div>
 <p-contextMenu #deliveryActions [model]="contextMenuItems"/>
+<p-menu #popupDeliveryActions [model]="contextMenuItems" [popup]="true"/>
 <p-table
   [value]="deliveryPage?.content || []"
   [lazy]="true"
@@ -17,6 +18,7 @@
   [sortOrder]="1"
   [(contextMenuSelection)]="selectedDelivery"
   [contextMenu]="deliveryActions"
+  (onContextMenuSelect)="setupContextMenu()"
   styleClass="p-datatable-striped"
 >
   <ng-template pTemplate="header">
@@ -28,7 +30,7 @@
       <th rowspan="2" pSortableColumn="cargo_name">Cargo name<p-sortIcon field="cargo_name"/></th>
       <th rowspan="2" pSortableColumn="cargo_capacity">Cargo capacity<p-sortIcon field="cargo_capacity"/></th>
       <th rowspan="2" pSortableColumn="status">Status<p-sortIcon field="status"/></th>
-      <th rowspan="2">Actions</th>
+      <th rowspan="2"></th>
     </tr>
     <tr>
       <th pSortableColumn="warehouse_from.title">Title<p-sortIcon field="warehouse_from.title"/></th>
@@ -85,29 +87,25 @@
                         [showClearButton]="false" placeholder="Search..." />
       </th>
       <th class="cargo-amount">
-        <p-columnFilter field="cargo_amount" [showMenu]="false" [matchMode]="PrimengTableFilterCustomMatchMode.WEIGHT_RANGE"
+        <p-columnFilter field="cargo_amount" [showMenu]="false" [matchMode]="PrimengTableFilterCustomMatchMode.RANGE"
                         [showClearButton]="false">
           <ng-template pTemplate="filter" let-event let-filter="filterCallback">
-            <div class="flex flex-wrap justify-content-center align-items-center gap-3 w-auto mb-2">
-              <label for="minCargoAmount">From</label>
-              <input type="text"
-                     pInputText
-                     id="minCargoAmount"
-                     [(ngModel)]="cargoAmountRangeValues[0]"
-                     class="w-6rem pt-2 pb-2"
-                     readonly
-              />
-              <label for="maxCargoAmount">To</label>
-              <input type="text"
-                     pInputText
-                     id="maxCargoAmount"
-                     [(ngModel)]="cargoAmountRangeValues[1]"
-                     class="w-6rem pt-2 pb-2"
-                     readonly
-              />
+            <div class="flex justify-content-center align-items-center gap-2 mb-2 flex-nowrap">
+              <span *ngIf="amountSlider.values?.length">
+                ({{amountSlider.values?.[0]}} - {{amountSlider.values?.[1]}} )
+              </span>
+              <i class="pi pi-times text-gray-500 cursor-pointer"
+                 (click)="amountSlider.writeValue([CARGO_AMOUNT_RANGE[0], CARGO_AMOUNT_RANGE[1]]); filter()"
+                 title="Clear">
+              </i>
             </div>
-            <p-slider [(ngModel)]="cargoAmountRangeValues" [range]="true" (onChange)="filter($event.values)"
-                      [min]="MIN_CARGO_AMOUNT" [max]="MAX_CARGO_AMOUNT"></p-slider>
+            <p-slider #amountSlider
+                      [ngModel]="cargoAmountRangeValues"
+                      [range]="true"
+                      (onChange)="filter($event.values)"
+                      [min]="CARGO_AMOUNT_RANGE[0]"
+                      [max]="CARGO_AMOUNT_RANGE[1]"
+            />
           </ng-template>
         </p-columnFilter>
       </th>
@@ -120,11 +118,11 @@
               (onChange)="filter($event.value)"
               placeholder="All"
               [showClear]="true"
-              scrollHeight="220px"
+              scrollHeight="250px"
               appendTo="body"
             >
               <ng-template let-option pTemplate="item">
-                <span class="role {{option | lowercase}}">{{option}}</span>
+                <span>{{option}}</span>
               </ng-template>
             </p-dropdown>
           </ng-template>
@@ -154,30 +152,11 @@
       <td>{{delivery.cargo_amount}}</td>
       <td>{{delivery.status}}</td>
       <td>
-        <div class="flex flex-wrap gap-2 justify-content-center actions">
-          <p-button icon="pi pi-pencil"
-                    styleClass="p-button-rounded p-button-warning p-button-outlined"
-                    title="Edit"
-                    routerLink="item/{{delivery.id}}"
-          />
-          <p-button icon="pi pi-fast-forward"
-                    styleClass="p-button-rounded p-button-success p-button-outlined"
-                    title="Push"
-                    (click)="pushById(delivery.id)"
-                    [disabled]="delivery.status==DeliveryStatus.DELIVERED || delivery.status==DeliveryStatus.DECLINED"
-          />
-          <p-button icon="pi pi-ban"
-                    styleClass="p-button-rounded p-button-help p-button-outlined"
-                    title="Decline"
-                    (click)="confirmDeclineById(delivery.id)"
-                    [disabled]="delivery.status==DeliveryStatus.DELIVERED || delivery.status==DeliveryStatus.DECLINED"
-          />
-          <p-button icon="pi pi-trash"
-                    styleClass="p-button-rounded p-button-danger p-button-outlined"
-                    title="Delete"
-                    (click)="confirmDeleteById(delivery.id)"
-          />
-        </div>
+        <p-button icon="pi pi-ellipsis-v"
+                  styleClass="p-button-rounded p-button-warning p-button-outlined"
+                  title="Menu"
+                  (click)="selectedDelivery = delivery; setupContextMenu(); popupDeliveryActions.toggle($event)"
+        />
       </td>
     </tr>
   </ng-template>

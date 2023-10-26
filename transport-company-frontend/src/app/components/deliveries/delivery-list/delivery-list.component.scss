@@ -6,20 +6,4 @@
     padding: 0 24px;
   }
 
-  ::ng-deep {
-    .cargo-amount {
-      .p-column-filter-row {
-        max-width: 340px !important;
-      }
-    }
-
-    .actions .p-button-rounded {
-      height: 2rem !important;
-      width: 2rem !important;
-
-      .p-button-icon {
-        font-size: 0.8rem !important;
-      }
-    }
-  }
 }

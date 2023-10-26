@@ -23,15 +23,14 @@ import { Router } from "@angular/router";
 })
 export class TransporterListComponent {
   private readonly destroyRef = inject(DestroyRef);
-  public readonly MIN_CAPACITY_LOAD: number = 2000;
-  public readonly MAX_CAPACITY_LOAD: number = 30000;
+  public readonly CAPACITY_LOAD_RANGE: number[] = [2000, 30000];
   public readonly FilterMatchMode = FilterMatchMode;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
   transporterPage?: PageDto<TransporterDto>;
   isLoading = true;
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
   private filtersPreviousState?: {[key: string]: FilterMetadata};
-  loadCapacityRangeValues: number[] = [this.MIN_CAPACITY_LOAD, this.MAX_CAPACITY_LOAD];
+  loadCapacityRangeValues: number[] = [this.CAPACITY_LOAD_RANGE[0], this.CAPACITY_LOAD_RANGE[1]];
   contextMenuItems: MenuItem[] = [];
   selectedTransporter!: TransporterDto;
 
