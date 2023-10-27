@@ -5,8 +5,8 @@
 ### Docker
 1. Download Docker Desktop installation file from url `https://www.docker.com/products/docker-desktop` and install it on your local environment.
 2. Run Docker Desktop application.
-3. Run `docker-compose --project-name="carrier-company" up --detach` from `provisioning\dev` folder.
-* If you already have installed Docker Desktop with `carrier-company` cluster, just launch it.
+3. Run `docker-compose --project-name="transport-company" up --detach` from `provisioning\dev` folder.
+* If you already have installed Docker Desktop with `transport-company` cluster, just launch it.
 
 ### Backend
 Backend is presented by a Spring Boot Java application located in the `transport-company-backend` folder.

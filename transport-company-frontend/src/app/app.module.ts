@@ -14,6 +14,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastModule } from "primeng/toast";
+import { PageUnderConstructionComponent } from './components/page-under-construction/page-under-construction.component';
 
 
 @NgModule({
@@ -23,17 +24,18 @@ import { ToastModule } from "primeng/toast";
     LayoutComponent,
     LayoutHeaderComponent,
     PageNotFoundComponent,
+    PageUnderConstructionComponent,
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        TabMenuModule,
-        AvatarModule,
-        ButtonModule,
-        HttpClientModule,
-        ToastModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    TabMenuModule,
+    AvatarModule,
+    ButtonModule,
+    HttpClientModule,
+    ToastModule,
+  ],
   providers: [
     MessageService,
     ConfirmationService,

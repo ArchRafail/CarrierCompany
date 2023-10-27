@@ -153,7 +153,7 @@
       <td>{{delivery.status}}</td>
       <td>
         <p-button icon="pi pi-ellipsis-v"
-                  styleClass="p-button-rounded p-button-warning p-button-outlined"
+                  styleClass="p-button-rounded p-button-warning p-button-outlined w-2rem h-2rem"
                   title="Menu"
                   (click)="selectedDelivery = delivery; setupContextMenu(); popupDeliveryActions.toggle($event)"
         />
@@ -162,7 +162,7 @@
   </ng-template>
   <ng-template *ngIf="!deliveryPage?.content" pTemplate="emptymessage">
     <tr>
-      <td colspan="6" class="no-table-data xs text-center text-400">Data not found</td>
+      <td colspan="14" class="no-table-data xs text-center text-400">Data not found</td>
     </tr>
   </ng-template>
   <ng-template pTemplate="loadingbody">

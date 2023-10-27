@@ -1,15 +1,15 @@
 version: "3.9"
 services:
   postgres:
-    container_name: carrier_company_postgres
+    container_name: transport_company_postgres
     image: postgres:16.0
-    restart: always
+    restart: unless-stopped
     ports:
       - "2345:5432"
     environment:
-      - POSTGRES_DB=carrier_company
+      - POSTGRES_DB=transport_company
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - carrier-company-postgresql-data:/var/lib/postgresql/data
+      - transport-company-postgresql-data:/var/lib/postgresql/data
 volumes:
-  carrier-company-postgresql-data:
+  transport-company-postgresql-data:

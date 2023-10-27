@@ -5,5 +5,5 @@ cd provisioning/dev
 
 2. Run docker compose file to start development cluster
 ```commandline
-docker-compose --project-name="carrier-company" up --detach
+docker-compose --project-name="transport-company" up --detach
 ```

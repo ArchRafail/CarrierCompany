@@ -26,7 +26,6 @@ export class DeliveryListComponent {
   public readonly CARGO_AMOUNT_RANGE: number[] = [0, 40000];
   public readonly TERMINAL_DELIVERY_STATUSES: DeliveryStatus[] = [DeliveryStatus.DELIVERED, DeliveryStatus.DECLINED];
   public readonly FilterMatchMode = FilterMatchMode;
-  public readonly DeliveryStatus = DeliveryStatus;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
   deliveryPage?: PageDto<DeliveryDto>;
   isLoading = true;
