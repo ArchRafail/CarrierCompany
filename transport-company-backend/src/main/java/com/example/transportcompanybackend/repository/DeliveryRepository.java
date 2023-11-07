@@ -43,4 +43,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
         AND (d.status NOT IN (com.example.transportcompanybackend.entity.enums.DeliveryStatus.DELIVERED, com.example.transportcompanybackend.entity.enums.DeliveryStatus.DECLINED))
         """)
     Long countByWarehouseId(Long warehouseId);
+
+    Long countAllByStatus(DeliveryStatus deliveryStatus);
 }

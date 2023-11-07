@@ -15,6 +15,7 @@ import { ConfirmationService, MessageService } from "primeng/api";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastModule } from "primeng/toast";
 import { PageUnderConstructionComponent } from './components/page-under-construction/page-under-construction.component';
+import { NgChartsModule } from "ng2-charts";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { PageUnderConstructionComponent } from './components/page-under-construc
     ButtonModule,
     HttpClientModule,
     ToastModule,
+    NgChartsModule,
   ],
   providers: [
     MessageService,
