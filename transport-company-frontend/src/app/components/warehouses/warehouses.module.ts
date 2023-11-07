@@ -7,18 +7,17 @@ import { ButtonModule } from "primeng/button";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { InputTextModule } from "primeng/inputtext";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { SliderModule } from "primeng/slider";
 import { TableModule } from "primeng/table";
 import { DropdownModule } from "primeng/dropdown";
 import { SharedModule } from "../shared/shared.module";
-import { RadioButtonModule } from "primeng/radiobutton";
 
 
 @NgModule({
   declarations: [
     WarehouseListComponent,
-    WarehouseItemComponent
+    WarehouseItemComponent,
   ],
   imports: [
     RouterModule.forChild([
@@ -31,14 +30,11 @@ import { RadioButtonModule } from "primeng/radiobutton";
     ConfirmDialogModule,
     ContextMenuModule,
     InputTextModule,
-    ReactiveFormsModule,
-    SharedModule,
     SliderModule,
     TableModule,
     FormsModule,
     DropdownModule,
     SharedModule,
-    RadioButtonModule
   ]
 })
 export class WarehousesModule { }

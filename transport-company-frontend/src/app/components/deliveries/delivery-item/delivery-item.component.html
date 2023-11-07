@@ -90,26 +90,6 @@
             </div>
           </ng-template>
         </p-autoComplete>
-<!--        <p-dropdown #transporter="ngModel"-->
-<!--                    [options]="transporters"-->
-<!--                    name="transporter"-->
-<!--                    [(ngModel)]="deliveryDto.transporter"-->
-<!--                    [filter]="true"-->
-<!--                    filterBy="name,car_model"-->
-<!--                    [showClear]="false"-->
-<!--                    [required]="true"-->
-<!--        >-->
-<!--          <ng-template pTemplate="selectedItem">-->
-<!--            <div *ngIf="deliveryDto.transporter as transporter">-->
-<!--              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>-->
-<!--            </div>-->
-<!--          </ng-template>-->
-<!--          <ng-template let-transporter pTemplate="item">-->
-<!--            <div>-->
-<!--              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>-->
-<!--            </div>-->
-<!--          </ng-template>-->
-<!--        </p-dropdown>-->
       </span>
     </div>
 
@@ -149,7 +129,7 @@
       <p-button
         type="submit"
         [disabled]="toBoolean( sourceWarehouseAutocompleteModel.invalid ||
-          sourceWarehouseAutocompleteModel.invalid ||
+          destinationWarehouseAutocompleteModel.invalid ||
           transporterAutocompleteModel.invalid ||
           cargoName.invalid ||
           cargoAmount.invalid) ||

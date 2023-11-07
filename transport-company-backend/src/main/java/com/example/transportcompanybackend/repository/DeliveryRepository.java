@@ -29,4 +29,18 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
     Page<Delivery> findAllByWarehouseFromId(Long id, Pageable pageable);
     Page<Delivery> findAllByWarehouseToId(Long id, Pageable pageable);
     Page<Delivery> findAllByTransporterId(Long id, Pageable pageable);
+
+    @Query("""
+        SELECT COUNT(*) FROM Delivery d
+        WHERE (d.transporter.id = :transporterId)
+        AND (d.status NOT IN (com.example.transportcompanybackend.entity.enums.DeliveryStatus.DELIVERED, com.example.transportcompanybackend.entity.enums.DeliveryStatus.DECLINED))
+        """)
+    Long countByTransporterId(Long transporterId);
+
+    @Query("""
+        SELECT COUNT(*) FROM Delivery d
+        WHERE (d.warehouseFrom.id = :warehouseId) OR (d.warehouseTo.id = :warehouseId)
+        AND (d.status NOT IN (com.example.transportcompanybackend.entity.enums.DeliveryStatus.DELIVERED, com.example.transportcompanybackend.entity.enums.DeliveryStatus.DECLINED))
+        """)
+    Long countByWarehouseId(Long warehouseId);
 }

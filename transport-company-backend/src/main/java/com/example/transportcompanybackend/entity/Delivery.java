@@ -3,8 +3,6 @@ package com.example.transportcompanybackend.entity;
 import com.example.transportcompanybackend.entity.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 
 @AllArgsConstructor
@@ -21,17 +19,14 @@ public class Delivery {
     private Long id;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "warehouse_from")
     private Warehouse warehouseFrom;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "warehouse_to")
     private Warehouse warehouseTo;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "transporter_id")
     private Transporter transporter;
 

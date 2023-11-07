@@ -11,7 +11,6 @@ import { ButtonModule } from "primeng/button";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DropdownModule } from "primeng/dropdown";
-import { RadioButtonModule } from "primeng/radiobutton";
 import { SharedModule } from "../shared/shared.module";
 
 
@@ -35,7 +34,6 @@ import { SharedModule } from "../shared/shared.module";
     ContextMenuModule,
     ConfirmDialogModule,
     DropdownModule,
-    RadioButtonModule,
     SharedModule
   ]
 })

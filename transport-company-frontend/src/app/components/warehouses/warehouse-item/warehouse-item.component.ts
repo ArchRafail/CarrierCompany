@@ -5,7 +5,6 @@ import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { WarehouseDto } from "../../../api/models/warehouse-dto";
 import { WarehouseHttpService } from "../../../api/services/warehouse-http.service";
-import { ACTIVATE_OPTIONS } from "../../../constants/constants";
 
 
 @Component({
@@ -15,7 +14,6 @@ import { ACTIVATE_OPTIONS } from "../../../constants/constants";
 })
 export class WarehouseItemComponent {
   private readonly destroyRef = inject(DestroyRef);
-  public readonly ACTIVATE_OPTIONS = ACTIVATE_OPTIONS;
   warehouseDto: WarehouseDto = {
     id: 0,
     title: "",
@@ -29,8 +27,8 @@ export class WarehouseItemComponent {
     },
     is_active: true
   };
-  submitDisable = false;
-  isLoading = false;
+  saving = false;
+  loading = false;
 
   constructor(private route: ActivatedRoute,
               private warehouseHttpService: WarehouseHttpService,
@@ -40,16 +38,14 @@ export class WarehouseItemComponent {
 
     if(id) {
       this.getWarehouse(id);
-    } else {
-      this.isLoading = false;
     }
   }
 
   getWarehouse(id: number) {
-    this.isLoading = true;
+    this.loading = true;
     this.warehouseHttpService.get(id)
       .pipe(
-        finalize(() => this.isLoading = false),
+        finalize(() => this.loading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -59,10 +55,13 @@ export class WarehouseItemComponent {
   }
 
   onClickSubmit() {
-    this.submitDisable = true;
+    this.saving = true;
     if(this.warehouseDto.id) {
       this.warehouseHttpService.update(this.warehouseDto)
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(
+          finalize(() => this.saving = false),
+          takeUntilDestroyed(this.destroyRef)
+        )
         .subscribe({
         next: () => {
           this.toastService.success(`Warehouse was updated successfully!`);
@@ -72,7 +71,10 @@ export class WarehouseItemComponent {
       });
     } else {
       this.warehouseHttpService.create(this.warehouseDto)
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(
+          finalize(() => this.saving = false),
+          takeUntilDestroyed(this.destroyRef)
+        )
         .subscribe({
         next: () => {
           this.toastService.success(`Warehouse was created successfully!`);

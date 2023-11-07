@@ -42,4 +42,12 @@ export class DeliveryHttpService {
   decline(id: number) {
     return this.http.put<DeliveryDto>(`${this.URL}/${id}/decline`, null);
   }
+
+  getQuantityByTransporter(transporterId: number) {
+    return this.http.get<number>(`${this.URL}/transporter/${transporterId}`);
+  }
+
+  getQuantityByWarehouse(warehouseId: number) {
+    return this.http.get<number>(`${this.URL}/warehouse/${warehouseId}`);
+  }
 }

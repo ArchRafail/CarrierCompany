@@ -131,4 +131,14 @@ public class DeliveryService {
         delivery.setStatus(DeliveryStatus.DECLINED);
         return mapper.toDeliveryDto(deliveryRepository.save(delivery));
     }
+
+    public Long getQuantityByTransporter(Long transporterId) {
+        searchTransporter(transporterId);
+        return deliveryRepository.countByTransporterId(transporterId);
+    }
+
+    public Long getQuantityByWarehouse(Long warehouseId) {
+        searchWarehouse(warehouseId);
+        return deliveryRepository.countByWarehouseId(warehouseId);
+    }
 }

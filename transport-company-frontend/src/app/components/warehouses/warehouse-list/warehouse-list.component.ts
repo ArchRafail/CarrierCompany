@@ -13,6 +13,7 @@ import { WarehouseDto } from "../../../api/models/warehouse-dto";
 import { PrimengTableFilterCustomMatchMode } from "../../../models/primeng-table-filter-custom-match-mode";
 import { WarehouseHttpService } from "../../../api/services/warehouse-http.service";
 import { primeNgTableFiltersToRequestParams } from "../../../helpers/PrimeNgHelper";
+import { DeliveryHttpService } from "../../../api/services/delivery-http.service";
 
 
 @Component({
@@ -28,7 +29,7 @@ export class WarehouseListComponent {
   public readonly DROPDOWN_BOOL_OPTIONS = DROPDOWN_BOOL_OPTIONS;
   @ViewChild("table") private table!: Table;
   warehousePage?: PageDto<WarehouseDto>;
-  isLoading = true;
+  loading = true;
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
   private filtersPreviousState?: {[key: string]: FilterMetadata};
   latitudeRangeValues: number[] = [this.LOCATION_RANGE[0], this.LOCATION_RANGE[1]];
@@ -39,8 +40,8 @@ export class WarehouseListComponent {
   constructor(private warehouseHttpService: WarehouseHttpService,
               private toastService: ToastService,
               private confirmationService: ConfirmationService,
-              private router: Router
-  ) {
+              private router: Router,
+              private deliveryHttpService: DeliveryHttpService) {
     this.tableLazyLoad$
       .pipe(
         distinctUntilChanged(),
@@ -83,7 +84,7 @@ export class WarehouseListComponent {
   }
 
   onLazyLoad(event: TableLazyLoadEvent) {
-    this.isLoading = true;
+    this.loading = true;
     this.warehousePage = undefined;
     this.tableLazyLoad$.next(event);
   }
@@ -91,7 +92,7 @@ export class WarehouseListComponent {
   private getAll(filters: any = {}, pageable: Pageable = new Pageable()){
     this.warehouseHttpService.getAll(filters, pageable)
       .pipe(
-        finalize(() => this.isLoading = false),
+        finalize(() => this.loading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -109,10 +110,10 @@ export class WarehouseListComponent {
   }
 
   private updateActive(isActive: boolean) {
-    this.isLoading = true;
+    this.loading = true;
     this.warehouseHttpService.updateActive(this.selectedWarehouse.id, isActive)
       .pipe(
-        finalize(() => this.isLoading = false),
+        finalize(() => this.loading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -133,8 +134,27 @@ export class WarehouseListComponent {
       message: 'Are you sure you want to DELETE this warehouse?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle p-error',
-      accept: () => this.updateActive(false)
+      accept: () => this.checkDeactivationAbility()
     })
+  }
+
+  private checkDeactivationAbility() {
+    this.loading = true;
+    this.deliveryHttpService.getQuantityByWarehouse(this.selectedWarehouse.id)
+      .pipe(
+        finalize(() => this.loading = false),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: quantity => {
+          if (quantity === 0) {
+            this.updateActive(false);
+          } else {
+            this.toastService.warning(`Unable to deactivate warehouse. Decline ${quantity} active deliveries with this warehouse first.`)
+          }
+        },
+        error: this.toastService.handleHttpError
+      })
   }
 
   onContextMenuSelect(event: any) {

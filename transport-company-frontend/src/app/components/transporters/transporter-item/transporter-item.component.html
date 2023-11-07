@@ -1,4 +1,4 @@
-<div *ngIf="!isLoading" class="form-display">
+<div *ngIf="!loading" class="form-display">
   <div class="item-title" style="text-align: center; margin-bottom: 12px"><h3>{{transporterDto.id ? 'Update transporter #'+transporterDto.id : 'Add new transporter'}}</h3></div>
 
   <form style="width: 100%" (ngSubmit)="onClickSubmit()">
@@ -28,23 +28,11 @@
     </div>
 
     <div class="form-fields-wrapper">
-      <label>Active:</label>
-      <div class="flex flex-wrap gap-3 options">
-        <div class="flex justify-content-start align-items-center gap-3">
-          <div *ngFor="let activeOption of ACTIVATE_OPTIONS">
-            <p-radioButton [inputId]="activeOption.name" name="category" [value]="activeOption.value" [(ngModel)]="transporterDto.is_active"></p-radioButton>
-            <label [for]="activeOption.name" class="ml-2">{{ activeOption.name }}</label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-fields-wrapper">
       <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/transporters"></p-button>
       <p-button
         type="submit"
-        [disabled]="toBoolean(name.invalid || carModel.invalid || loadCapacity.invalid) || submitDisable"
-        label="Save" styleClass="p-button-raised" icon="pi pi-save"></p-button>
+        [disabled]="toBoolean(name.invalid || carModel.invalid || loadCapacity.invalid) || saving"
+        label="Save" styleClass="p-button-raised" icon="{{saving ? 'pi pi-spin pi-sync' : 'pi pi-save'}}"></p-button>
     </div>
 
   </form>

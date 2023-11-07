@@ -13,6 +13,7 @@ import { TransporterHttpService } from "../../../api/services/transporter-http.s
 import { primeNgTableFiltersToRequestParams } from "../../../helpers/PrimeNgHelper";
 import { ToastService } from "../../../services/toast.service";
 import { Router } from "@angular/router";
+import { DeliveryHttpService } from "../../../api/services/delivery-http.service";
 
 
 @Component({
@@ -39,8 +40,8 @@ export class TransporterListComponent {
   constructor(private transporterHttpService: TransporterHttpService,
               private toastService: ToastService,
               private confirmationService: ConfirmationService,
-              private router: Router
-  ) {
+              private router: Router,
+              private deliveryHttpService: DeliveryHttpService) {
     this.tableLazyLoad$
       .pipe(
         distinctUntilChanged(),
@@ -133,8 +134,27 @@ export class TransporterListComponent {
       message: 'Are you sure you want to DEACTIVATE this transporter?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle p-error',
-      accept: () => this.updateActive(false)
+      accept: () => this.checkDeactivationAbility()
     })
+  }
+
+  private checkDeactivationAbility() {
+    this.loading = true;
+    this.deliveryHttpService.getQuantityByTransporter(this.selectedTransporter.id)
+      .pipe(
+        finalize(() => this.loading = false),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: quantity => {
+          if (quantity === 0) {
+            this.updateActive(false);
+          } else {
+            this.toastService.warning(`Unable to deactivate transporter. Decline ${quantity} active deliveries with this transporter first.`)
+          }
+        },
+        error: this.toastService.handleHttpError
+      })
   }
 
   onContextMenuSelect(event: any) {

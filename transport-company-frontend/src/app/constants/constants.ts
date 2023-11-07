@@ -7,8 +7,3 @@ export const DROPDOWN_BOOL_OPTIONS = [
   {value: true, label: "Yes"},
   {value: false, label: "No"},
 ];
-
-export const ACTIVATE_OPTIONS = [
-  { name: 'Yes', value: true },
-  { name: 'No', value: false },
-];

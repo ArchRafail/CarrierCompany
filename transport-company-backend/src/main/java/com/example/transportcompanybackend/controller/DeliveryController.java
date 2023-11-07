@@ -39,32 +39,42 @@ public class DeliveryController {
     }
 
     @PostMapping()
-    private DeliveryDto create(@RequestBody DeliveryDto delivery){
+    public DeliveryDto create(@RequestBody DeliveryDto delivery){
         return deliveryService.create(delivery);
     }
 
     @PatchMapping("/{id}")
-    private DeliveryDto patch(@PathVariable Long id, @RequestBody DeliveryDto delivery) {
+    public DeliveryDto patch(@PathVariable Long id, @RequestBody DeliveryDto delivery) {
         return deliveryService.patch(id, delivery);
     }
 
     @PutMapping("/{id}")
-    private DeliveryDto update(@PathVariable Long id, @RequestBody DeliveryDto delivery){
+    public DeliveryDto update(@PathVariable Long id, @RequestBody DeliveryDto delivery){
         return deliveryService.update(id, delivery);
     }
 
     @DeleteMapping("/{id}")
-    private void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id){
         deliveryService.delete(id);
     }
 
     @PutMapping("/{id}/push")
-    private DeliveryDto push(@PathVariable Long id){
+    public DeliveryDto push(@PathVariable Long id){
         return deliveryService.push(id);
     }
 
     @PutMapping("/{id}/decline")
-    private DeliveryDto decline(@PathVariable Long id){
+    public DeliveryDto decline(@PathVariable Long id){
         return deliveryService.decline(id);
+    }
+
+    @GetMapping("/transporter/{transporterId}")
+    public Long getQuantityByTransporter(@PathVariable Long transporterId) {
+        return deliveryService.getQuantityByTransporter(transporterId);
+    }
+
+    @GetMapping("/warehouse/{warehouseId}")
+    public Long getQuantityByWarehouse(@PathVariable Long warehouseId) {
+        return deliveryService.getQuantityByWarehouse(warehouseId);
     }
 }

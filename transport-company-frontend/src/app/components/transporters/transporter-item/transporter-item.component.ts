@@ -5,7 +5,6 @@ import { TransporterHttpService } from "../../../api/services/transporter-http.s
 import { ToastService } from "../../../services/toast.service";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { ACTIVATE_OPTIONS } from "../../../constants/constants";
 
 
 @Component({
@@ -15,7 +14,6 @@ import { ACTIVATE_OPTIONS } from "../../../constants/constants";
 })
 export class TransporterItemComponent {
   private readonly destroyRef = inject(DestroyRef);
-  public readonly ACTIVATE_OPTIONS = ACTIVATE_OPTIONS;
   transporterDto: TransporterDto = {
     id: 0,
     name: "",
@@ -23,8 +21,8 @@ export class TransporterItemComponent {
     load_capacity: 0,
     is_active: true,
   };
-  submitDisable = false;
-  isLoading = false;
+  saving = false;
+  loading = false;
 
   constructor(private route: ActivatedRoute,
               private transporterHttpService: TransporterHttpService,
@@ -34,16 +32,14 @@ export class TransporterItemComponent {
 
     if(id) {
       this.getTransporter(id);
-    } else {
-      this.isLoading = false;
     }
   }
 
   getTransporter(id: number) {
-    this.isLoading = true;
+    this.loading = true;
     this.transporterHttpService.get(id)
       .pipe(
-        finalize(() => this.isLoading = false),
+        finalize(() => this.loading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -53,10 +49,13 @@ export class TransporterItemComponent {
   }
 
   onClickSubmit() {
-    this.submitDisable = true;
+    this.saving = true;
     if(this.transporterDto.id) {
       this.transporterHttpService.update(this.transporterDto)
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(
+          finalize(() => this.saving = false),
+          takeUntilDestroyed(this.destroyRef)
+        )
         .subscribe({
         next: () => {
           this.toastService.success(`Transporter was updated successfully!`);
@@ -66,7 +65,10 @@ export class TransporterItemComponent {
       });
     } else {
       this.transporterHttpService.create(this.transporterDto)
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(
+          finalize(() => this.saving = false),
+          takeUntilDestroyed(this.destroyRef)
+        )
         .subscribe({
         next: () => {
           this.toastService.success(`Transporter was created successfully!`);
