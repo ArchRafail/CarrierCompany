@@ -21,6 +21,7 @@ public class Transporter {
     private String name;
     private String carModel;
     private Double loadCapacity;
+    private Boolean isActive;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "transporter")

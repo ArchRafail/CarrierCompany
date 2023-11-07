@@ -139,18 +139,36 @@
   <ng-template pTemplate="body" let-delivery>
     <tr [pContextMenuRow]="delivery">
       <td>{{delivery.id}}</td>
-      <td>{{delivery.warehouse_from.title}}</td>
+      <td>
+        <span [ngClass]="{'deactivated': !delivery.warehouse_from.is_active}" pTooltip="Deactivated"
+              [tooltipDisabled]="delivery.warehouse_from.is_active"
+        >
+          {{delivery.warehouse_from.title}}
+        </span>
+      </td>
       <td>{{delivery.warehouse_from.address.city}}</td>
       <td>{{delivery.warehouse_from.address.street}}</td>
-      <td>{{delivery.warehouse_to.title}}</td>
+      <td>
+        <span [ngClass]="{'deactivated': !delivery.warehouse_to.is_active}" pTooltip="Deactivated"
+              [tooltipDisabled]="delivery.warehouse_to.is_active"
+        >
+          {{delivery.warehouse_to.title}}
+        </span>
+      </td>
       <td>{{delivery.warehouse_to.address.city}}</td>
       <td>{{delivery.warehouse_to.address.street}}</td>
-      <td>{{delivery.transporter.name}}</td>
+      <td>
+        <span [ngClass]="{'deactivated': !delivery.transporter.is_active}" pTooltip="Deactivated"
+              [tooltipDisabled]="delivery.transporter.is_active"
+        >
+          {{delivery.transporter.name}}
+        </span>
+      </td>
       <td>{{delivery.transporter.car_model}}</td>
       <td>{{delivery.transporter.load_capacity}}</td>
       <td>{{delivery.cargo_name}}</td>
       <td>{{delivery.cargo_amount}}</td>
-      <td>{{delivery.status}}</td>
+      <td class="status"><span [ngClass]="delivery.status | lowercase">{{delivery.status | lowercase | titlecase}}</span></td>
       <td>
         <p-button icon="pi pi-ellipsis-v"
                   styleClass="p-button-rounded p-button-warning p-button-outlined w-2rem h-2rem"

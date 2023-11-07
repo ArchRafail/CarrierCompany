@@ -5,6 +5,7 @@ import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { WarehouseDto } from "../../../api/models/warehouse-dto";
 import { WarehouseHttpService } from "../../../api/services/warehouse-http.service";
+import { ACTIVATE_OPTIONS } from "../../../constants/constants";
 
 
 @Component({
@@ -14,6 +15,7 @@ import { WarehouseHttpService } from "../../../api/services/warehouse-http.servi
 })
 export class WarehouseItemComponent {
   private readonly destroyRef = inject(DestroyRef);
+  public readonly ACTIVATE_OPTIONS = ACTIVATE_OPTIONS;
   warehouseDto: WarehouseDto = {
     id: 0,
     title: "",
@@ -24,7 +26,8 @@ export class WarehouseItemComponent {
         latitude: 0,
         longitude: 0
       }
-    }
+    },
+    is_active: true
   };
   submitDisable = false;
   isLoading = false;

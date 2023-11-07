@@ -28,6 +28,18 @@
     </div>
 
     <div class="form-fields-wrapper">
+      <label>Active:</label>
+      <div class="flex flex-wrap gap-3 options">
+        <div class="flex justify-content-start align-items-center gap-3">
+          <div *ngFor="let activeOption of ACTIVATE_OPTIONS">
+            <p-radioButton [inputId]="activeOption.name" name="category" [value]="activeOption.value" [(ngModel)]="transporterDto.is_active"></p-radioButton>
+            <label [for]="activeOption.name" class="ml-2">{{ activeOption.name }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-fields-wrapper">
       <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/transporters"></p-button>
       <p-button
         type="submit"

@@ -10,12 +10,15 @@ import { InputTextModule } from "primeng/inputtext";
 import { ButtonModule } from "primeng/button";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DropdownModule } from "primeng/dropdown";
+import { RadioButtonModule } from "primeng/radiobutton";
+import { SharedModule } from "../shared/shared.module";
 
 
 @NgModule({
   declarations: [
     TransporterListComponent,
-    TransporterItemComponent
+    TransporterItemComponent,
   ],
   imports: [
     RouterModule.forChild([
@@ -30,7 +33,10 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
     InputTextModule,
     ButtonModule,
     ContextMenuModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    DropdownModule,
+    RadioButtonModule,
+    SharedModule
   ]
 })
 export class TransportersModule { }

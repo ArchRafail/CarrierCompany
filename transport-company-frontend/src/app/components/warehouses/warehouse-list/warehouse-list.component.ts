@@ -1,12 +1,12 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ViewChild } from '@angular/core';
 import { PageDto } from "../../../api/models/page-dto";
 import { debounce, distinctUntilChanged, finalize, interval, Subject } from "rxjs";
-import { TableLazyLoadEvent } from "primeng/table";
+import { Table, TableLazyLoadEvent } from "primeng/table";
 import { ConfirmationService, FilterMatchMode, FilterMetadata, MenuItem } from "primeng/api";
 import { ToastService } from "../../../services/toast.service";
 import { Router } from "@angular/router";
 import { PRIMENG_TABLE_FILTER_MATCH_MODES_WITH_DEBOUNCE } from "../../../constants/primeng-constants";
-import { PRIMENG_TABLE_FILTER_DEBOUNCE_TIME } from "../../../constants/constants";
+import { DROPDOWN_BOOL_OPTIONS, PRIMENG_TABLE_FILTER_DEBOUNCE_TIME } from "../../../constants/constants";
 import { Pageable } from "../../../api/models/pageable";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { WarehouseDto } from "../../../api/models/warehouse-dto";
@@ -25,6 +25,8 @@ export class WarehouseListComponent {
   public readonly LOCATION_RANGE: number[] = [0, 100];
   public readonly FilterMatchMode = FilterMatchMode;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
+  public readonly DROPDOWN_BOOL_OPTIONS = DROPDOWN_BOOL_OPTIONS;
+  @ViewChild("table") private table!: Table;
   warehousePage?: PageDto<WarehouseDto>;
   isLoading = true;
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
@@ -54,6 +56,10 @@ export class WarehouseListComponent {
       this.getAll(primeNgTableFiltersToRequestParams(event.filters), Pageable.fromPrimeNg(event));
       this.filtersPreviousState = structuredClone(event.filters as {[s: string]: FilterMetadata});
     });
+    this.initContextMenu();
+  }
+
+  initContextMenu() {
     this.contextMenuItems = [
       {
         label: 'Edit',
@@ -61,9 +67,17 @@ export class WarehouseListComponent {
         command: () => this.edit()
       },
       {
-        label: 'Delete',
+        label: 'Activate',
+        icon: 'pi pi-check-circle',
+        command: () => this.updateActive(true),
+        visible: this.selectedWarehouse && !this.selectedWarehouse.is_active
+      },
+      {
+        label: 'Deactivate',
         icon: 'pi pi-trash',
-        command: () => this.confirmDelete()
+        command: () => this.confirmDeactivation(),
+        visible: this.selectedWarehouse && this.selectedWarehouse.is_active,
+        styleClass: "menuitem-danger"
       },
     ];
   }
@@ -90,35 +104,40 @@ export class WarehouseListComponent {
     this.router.navigate(['/warehouses/item/']);
   }
 
-  deleteById(id: number) {
+  edit() {
+    this.router.navigate([`/warehouses/item/${this.selectedWarehouse.id}`]);
+  }
+
+  private updateActive(isActive: boolean) {
     this.isLoading = true;
-    this.warehouseHttpService.delete(id)
+    this.warehouseHttpService.updateActive(this.selectedWarehouse.id, isActive)
       .pipe(
+        finalize(() => this.isLoading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: () => {
-          this.getAll();
-          this.toastService.success(`Warehouse was deleted successfully!`)
+          if (isActive) {
+            this.toastService.success(`Warehouse was activated successfully!`);
+          } else {
+            this.toastService.success(`Warehouse was deactivated successfully!`);
+          }
+          this.table.onLazyLoad.emit(this.table.createLazyLoadMetadata());
         },
         error: this.toastService.handleHttpError
       });
   }
 
-  edit() {
-    this.router.navigate([`/warehouses/item/${this.selectedWarehouse.id}`]);
-  }
-
-  private confirmDelete() {
-    this.confirmDeleteById(this.selectedWarehouse.id);
-  }
-
-  confirmDeleteById(id: number) {
+  private confirmDeactivation() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to DELETE this warehouse?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle p-error',
-      accept: () => this.deleteById(id)
+      accept: () => this.updateActive(false)
     })
+  }
+
+  onContextMenuSelect(event: any) {
+    this.initContextMenu();
   }
 }

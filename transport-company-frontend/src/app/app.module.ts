@@ -40,6 +40,7 @@ import { PageUnderConstructionComponent } from './components/page-under-construc
     MessageService,
     ConfirmationService,
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

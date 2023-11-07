@@ -29,6 +29,34 @@ export class Pageable {
     }
     return pageable;
   }
+
+  static allItems() {
+    return new Pageable(0, 2147483647);
+  }
+
+  nextPage(): Pageable {
+    this.page! += 1;
+    return this;
+  }
+
+  mutate(page?: any, size?: any, sort?: any) {
+    if (page !== null) this.page = page;
+    if (size !== null) this.size = size;
+    if (sort !== null) this.sort = sort;
+    return this
+  }
+
+  mutatePage(page: any) {
+    return this.mutate(page)
+  }
+
+  mutateSize(size: any) {
+    return this.mutate(undefined, size)
+  }
+
+  mutateSort(sort: any) {
+    return this.mutate(undefined, undefined, sort)
+  }
 }
 
 export enum SortOrder {

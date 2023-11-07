@@ -13,8 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +21,11 @@ public class TransporterService {
     private final DeliveryRepository deliveryRepository;
     private final Mapper mapper;
 
-    public Page<TransporterDto> getAll(Long id, String name, String carModel, Double loadCapacityFrom, Double loadCapacityTo, Pageable pageable) {
-        return transporterRepository.findAllBy(id, name, carModel, loadCapacityFrom, loadCapacityTo, pageable).map(mapper::toTransporterDto);
+    public Page<TransporterDto> getAll(Long id, String name, String carModel, Double loadCapacityFrom,
+                                       Double loadCapacityTo, Boolean isActive, Pageable pageable) {
+        return transporterRepository
+                .findAllBy(id, name, carModel, loadCapacityFrom, loadCapacityTo, isActive, pageable)
+                .map(mapper::toTransporterDto);
     }
 
     public TransporterDto get(Long id) {
@@ -54,10 +55,14 @@ public class TransporterService {
         return mapper.toTransporterDto(transporterRepository.save(transporter));
     }
 
-    public TransporterDto delete(Long id) {
-        TransporterDto transporterDto = mapper.toTransporterDto(retrieve(id));
-        transporterRepository.deleteById(id);
-        return transporterDto;
+    public TransporterDto updateActive(Long id, Boolean isActive) {
+        Transporter transporter = retrieve(id);
+        transporter.setIsActive(isActive);
+        return mapper.toTransporterDto(transporterRepository.save(transporter));
+    }
+
+    public Page<TransporterDto> getOptions(String searchTerm, Pageable pageable) {
+        return transporterRepository.findAllActive(searchTerm, pageable).map(mapper::toTransporterDto);
     }
 
     private Transporter retrieve(Long id) {
@@ -67,9 +72,5 @@ public class TransporterService {
     private void validateLoadCapacity(Double loadCapacity) {
         if (loadCapacity != null && loadCapacity < 0)
             throw new WrongParametersException("Load capacity can't be less then zero.");
-    }
-
-    public List<TransporterDto> getListOfTransporters() {
-        return transporterRepository.findAll().stream().map(mapper::toTransporterDto).toList();
     }
 }

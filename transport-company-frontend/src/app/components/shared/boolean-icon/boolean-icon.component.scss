@@ -1,0 +1,25 @@
+:host {
+  i {
+    font-size: 1.5rem;
+  }
+
+  .true-icon {
+    color: #22C55E;
+
+    &.inverted {
+      color: red;
+    }
+  }
+
+  .false-icon {
+    color: red;
+
+    &.inverted {
+      color: #22C55E;
+    }
+  }
+
+  .neutral {
+    color: grey !important;
+  }
+}

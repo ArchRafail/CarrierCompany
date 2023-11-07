@@ -31,11 +31,12 @@ export class WarehouseHttpService {
     return this.http.put<WarehouseDto>(`${this.URL}/${warehouseDto.id}`, warehouseDto);
   }
 
-  delete(id: number) {
-    return this.http.delete<WarehouseDto>(`${this.URL}/${id}`);
+  updateActive(id: number, isActive: boolean) {
+    return this.http.patch<WarehouseDto>(`${this.URL}/${id}/active?isActive=${isActive}`, null);
   }
 
-  getList() {
-    return this.http.get<WarehouseDto[]>(`${this.URL}/list`);
+  getOptions(filters: any = {}, pageable: Pageable) {
+    let params: HttpParams = new HttpParams({fromObject: {...filters, ...pageable}});
+    return this.http.get<PageDto<WarehouseDto>>(`${this.URL}/options`, { params });
   }
 }

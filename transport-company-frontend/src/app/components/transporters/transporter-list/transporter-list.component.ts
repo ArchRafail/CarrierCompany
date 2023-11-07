@@ -1,14 +1,14 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ViewChild } from '@angular/core';
 import { PageDto } from "../../../api/models/page-dto";
 import { TransporterDto } from "../../../api/models/transporter-dto";
 import { debounce, distinctUntilChanged, finalize, interval, Subject } from "rxjs";
-import { TableLazyLoadEvent } from "primeng/table";
+import { Table, TableLazyLoadEvent } from "primeng/table";
 import { ConfirmationService, FilterMatchMode, FilterMetadata, MenuItem } from "primeng/api";
 import { PrimengTableFilterCustomMatchMode } from "../../../models/primeng-table-filter-custom-match-mode";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { Pageable } from "../../../api/models/pageable";
 import { PRIMENG_TABLE_FILTER_MATCH_MODES_WITH_DEBOUNCE } from "../../../constants/primeng-constants";
-import { PRIMENG_TABLE_FILTER_DEBOUNCE_TIME } from "../../../constants/constants";
+import { DROPDOWN_BOOL_OPTIONS, PRIMENG_TABLE_FILTER_DEBOUNCE_TIME } from "../../../constants/constants";
 import { TransporterHttpService } from "../../../api/services/transporter-http.service";
 import { primeNgTableFiltersToRequestParams } from "../../../helpers/PrimeNgHelper";
 import { ToastService } from "../../../services/toast.service";
@@ -26,8 +26,10 @@ export class TransporterListComponent {
   public readonly CAPACITY_LOAD_RANGE: number[] = [2000, 30000];
   public readonly FilterMatchMode = FilterMatchMode;
   public readonly PrimengTableFilterCustomMatchMode = PrimengTableFilterCustomMatchMode;
+  public readonly DROPDOWN_BOOL_OPTIONS = DROPDOWN_BOOL_OPTIONS;
+  @ViewChild("table") private table!: Table;
   transporterPage?: PageDto<TransporterDto>;
-  isLoading = true;
+  loading = true;
   private tableLazyLoad$: Subject<TableLazyLoadEvent> = new Subject<TableLazyLoadEvent>();
   private filtersPreviousState?: {[key: string]: FilterMetadata};
   loadCapacityRangeValues: number[] = [this.CAPACITY_LOAD_RANGE[0], this.CAPACITY_LOAD_RANGE[1]];
@@ -54,6 +56,10 @@ export class TransporterListComponent {
       this.getAll(primeNgTableFiltersToRequestParams(event.filters), Pageable.fromPrimeNg(event));
       this.filtersPreviousState = structuredClone(event.filters as {[s: string]: FilterMetadata});
     });
+    this.initContextMenu();
+  }
+
+  initContextMenu() {
     this.contextMenuItems = [
       {
         label: 'Edit',
@@ -61,15 +67,23 @@ export class TransporterListComponent {
         command: () => this.edit()
       },
       {
-        label: 'Delete',
+        label: 'Activate',
+        icon: 'pi pi-check-circle',
+        command: () => this.updateActive(true),
+        visible: this.selectedTransporter && !this.selectedTransporter.is_active
+      },
+      {
+        label: 'Deactivate',
         icon: 'pi pi-trash',
-        command: () => this.confirmDelete()
+        command: () => this.confirmDeactivation(),
+        visible: this.selectedTransporter && this.selectedTransporter.is_active,
+        styleClass: "menuitem-danger"
       },
     ];
   }
 
   onLazyLoad(event: TableLazyLoadEvent) {
-    this.isLoading = true;
+    this.loading = true;
     this.transporterPage = undefined;
     this.tableLazyLoad$.next(event);
   }
@@ -77,7 +91,7 @@ export class TransporterListComponent {
   private getAll(filters: any = {}, pageable: Pageable = new Pageable()){
     this.transporterHttpService.getAll(filters, pageable)
       .pipe(
-        finalize(() => this.isLoading = false),
+        finalize(() => this.loading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -90,35 +104,40 @@ export class TransporterListComponent {
     this.router.navigate(['/transporters/item/']);
   }
 
-  deleteById(id: number) {
-    this.isLoading = true;
-    this.transporterHttpService.delete(id)
+  private edit() {
+    this.router.navigate([`/transporters/item/${this.selectedTransporter.id}`]);
+  }
+
+  private updateActive(isActive: boolean) {
+    this.loading = true;
+    this.transporterHttpService.updateActive(this.selectedTransporter.id, isActive)
       .pipe(
+        finalize(() => this.loading = false),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: () => {
-          this.getAll();
-          this.toastService.success(`Transporter was deleted successfully!`)
-          },
+          if (isActive) {
+            this.toastService.success(`Transporter was activated successfully!`);
+          } else {
+            this.toastService.success(`Transporter was deactivated successfully!`);
+          }
+          this.table.onLazyLoad.emit(this.table.createLazyLoadMetadata());
+        },
         error: this.toastService.handleHttpError
       });
   }
 
-  edit() {
-    this.router.navigate([`/transporters/item/${this.selectedTransporter.id}`]);
-  }
-
-  private confirmDelete() {
-    this.confirmDeleteById(this.selectedTransporter.id);
-  }
-
-  confirmDeleteById(id: number) {
+  private confirmDeactivation() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to DELETE this transporter?',
+      message: 'Are you sure you want to DEACTIVATE this transporter?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle p-error',
-      accept: () => this.deleteById(id)
+      accept: () => this.updateActive(false)
     })
+  }
+
+  onContextMenuSelect(event: any) {
+    this.initContextMenu();
   }
 }

@@ -10,7 +10,7 @@ import { WarehouseDto } from "../../../api/models/warehouse-dto";
 import { TransporterDto } from "../../../api/models/transporter-dto";
 import { TransporterHttpService } from "../../../api/services/transporter-http.service";
 import { WarehouseHttpService } from "../../../api/services/warehouse-http.service";
-import { DeliveryData } from "../../../models/delivery-data";
+import { Pageable } from "../../../api/models/pageable";
 
 
 @Component({
@@ -31,10 +31,13 @@ export class DeliveryItemComponent {
   };
   submitDisable = false;
   isLoading = false;
-  warehouses: WarehouseDto[] = [];
-  transporters: TransporterDto[] = [];
+  filteredWarehousesFrom: WarehouseDto[] = [];
+  filteredWarehousesTo: WarehouseDto[] = [];
+  filteredTransporters: TransporterDto[] = [];
   statuses: DeliveryStatus[] = Object.values(DeliveryStatus);
-  selectedDeliveryData: DeliveryData = {warehouse_from: undefined, warehouse_to: undefined, transporter: undefined};
+  warehousesFromLoading: boolean = false;
+  warehousesToLoading: boolean = false;
+  transportersLoading: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private deliveryHttpService: DeliveryHttpService,
@@ -49,8 +52,6 @@ export class DeliveryItemComponent {
     } else {
       this.isLoading = false;
     }
-    this.getWarehouses();
-    this.getTransporters();
   }
 
   getDelivery(id: number) {
@@ -61,37 +62,69 @@ export class DeliveryItemComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: deliveryDto => {
-          this.deliveryDto = deliveryDto;
-          this.getDeliveryData().then(deliveryData => this.selectedDeliveryData = deliveryData);
-          },
+        next: deliveryDto => this.deliveryDto = deliveryDto,
         error: this.toastService.handleHttpError
       })
   }
 
-  getWarehouses() {
-    this.warehouseHttpService.getList()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+  filterWarehousesFrom(searchTerm = '') {
+    if (this.warehousesFromLoading) return;
+    this.warehousesFromLoading = true;
+    let params: any = {};
+    if (searchTerm) params.searchTerm = searchTerm;
+    this.warehouseHttpService.getOptions(params, Pageable.allItems().mutateSort("title,ASC"))
+      .pipe(
+        finalize(() => this.warehousesFromLoading = false),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe({
-        next: warehousesDto => this.warehouses = warehousesDto,
+        next: items => this.filteredWarehousesFrom = items.content,
         error: this.toastService.handleHttpError
       })
   }
 
-  getTransporters() {
-    this.transporterHttpService.getList()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+  filterWarehousesTo(searchTerm = '') {
+    if (this.warehousesToLoading) return;
+    this.warehousesToLoading = true;
+    let params: any = {};
+    if (searchTerm) params.searchTerm = searchTerm;
+    this.warehouseHttpService.getOptions(params, Pageable.allItems().mutateSort("title,ASC"))
+      .pipe(
+        finalize(() => this.warehousesToLoading = false),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
-        next: transportersDto => this.transporters = transportersDto,
+        next: items => this.filteredWarehousesTo = items.content.filter(w => w.id !== this.deliveryDto.warehouse_from?.id),
         error: this.toastService.handleHttpError
       })
+  }
+
+  warehouseDropdownValueConverter(warehouse: WarehouseDto) {
+    return warehouse?.id ? `${warehouse.title}, ${warehouse.address.city}` : ''
+  }
+
+  filterTransporters(searchTerm = '') {
+    if (this.transportersLoading) return;
+    this.transportersLoading = true;
+    let params: any = {};
+    if (searchTerm) params.searchTerm = searchTerm;
+    this.transporterHttpService.getOptions(params, Pageable.allItems().mutateSort("name,ASC"))
+      .pipe(
+        finalize(() => this.transportersLoading = false),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: items => this.filteredTransporters = items.content,
+        error: this.toastService.handleHttpError
+      })
+  }
+
+  transporterDropdownValueConverter(transporter: TransporterDto) {
+    return transporter?.id ? `${transporter.name}` : ''
   }
 
   onClickSubmit() {
     this.submitDisable = true;
-    this.deliveryDto.warehouse_from = this.selectedDeliveryData.warehouse_from;
-    this.deliveryDto.warehouse_to = this.selectedDeliveryData.warehouse_to;
-    this.deliveryDto.transporter = this.selectedDeliveryData.transporter;
     if(this.deliveryDto.id) {
       this.deliveryHttpService.update(this.deliveryDto)
         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -118,14 +151,4 @@ export class DeliveryItemComponent {
   toBoolean(value: boolean | null) :boolean {
     return value === true;
   }
-
-  async getDeliveryData() : Promise<DeliveryData> {
-    return {
-      warehouse_from: this.deliveryDto.warehouse_from!,
-      warehouse_to: this.deliveryDto.warehouse_to!,
-      transporter: this.deliveryDto.transporter!
-    };
-  }
-
-
 }

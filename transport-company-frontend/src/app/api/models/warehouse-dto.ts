@@ -5,4 +5,5 @@ export interface WarehouseDto {
   id: number;
   title: string;
   address: AddressDto;
+  is_active: boolean;
 }

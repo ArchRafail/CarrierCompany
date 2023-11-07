@@ -40,7 +40,7 @@ form .form-fields-wrapper {
   align-items: center;
   margin-bottom: 12px;
 
-  span {
+  span, .options {
     width: 75%;
 
     input {
@@ -50,6 +50,10 @@ form .form-fields-wrapper {
 
   span > i {
     z-index: 100;
+  }
+
+  .options {
+    height: 46px;
   }
 
   &:last-child {

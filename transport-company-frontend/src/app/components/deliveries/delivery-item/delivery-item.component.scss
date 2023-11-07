@@ -3,11 +3,23 @@
   width: 750px;
   margin: auto;
 
+  .select-item .info {
+    color: #9d9d9d;
+  }
+
   ::ng-deep {
+    .p-autocomplete {
+      width: 100%;
+
+      .p-autocomplete-input {
+        padding-left: 2.5rem;
+      }
+    }
+
     .p-dropdown {
       width: 100%;
 
-      .p-dropdown-label {
+      .p-dropdown-label{
         padding-left: 2.5rem;
       }
     }

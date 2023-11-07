@@ -9,4 +9,5 @@ public class TransporterDto {
     private String name;
     private String carModel;
     private Double loadCapacity;
+    private Boolean isActive;
 }

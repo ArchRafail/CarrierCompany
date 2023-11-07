@@ -31,11 +31,12 @@ export class TransporterHttpService {
     return this.http.put<TransporterDto>(`${this.URL}/${transporterDto.id}`, transporterDto);
   }
 
-  delete(id: number) {
-    return this.http.delete<TransporterDto>(`${this.URL}/${id}`);
+  updateActive(id: number, isActive: boolean) {
+    return this.http.patch<TransporterDto>(`${this.URL}/${id}/active?isActive=${isActive}`, null);
   }
 
-  getList() {
-    return this.http.get<TransporterDto[]>(`${this.URL}/list`);
+  getOptions(filters: any = {}, pageable: Pageable) {
+    let params: HttpParams = new HttpParams({fromObject: {...filters, ...pageable}});
+    return this.http.get<PageDto<TransporterDto>>(`${this.URL}/options`, { params });
   }
 }

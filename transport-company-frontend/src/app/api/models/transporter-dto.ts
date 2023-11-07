@@ -3,4 +3,5 @@ export interface TransporterDto {
   name: string;
   car_model: string;
   load_capacity: number;
+  is_active: boolean;
 }

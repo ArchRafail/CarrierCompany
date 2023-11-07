@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @RestController
@@ -27,8 +25,9 @@ public class TransporterController {
             @RequestParam(required = false) String carModel,
             @RequestParam(required = false) Double loadCapacityFrom,
             @RequestParam(required = false) Double loadCapacityTo,
+            @RequestParam(required = false) Boolean isActive,
             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
-        return transporterService.getAll(id, name, carModel, loadCapacityFrom, loadCapacityTo, pageable);
+        return transporterService.getAll(id, name, carModel, loadCapacityFrom, loadCapacityTo, isActive, pageable);
     }
 
     @GetMapping("/{id}")
@@ -58,13 +57,15 @@ public class TransporterController {
         return transporterService.update(id, transporter);
     }
 
-    @DeleteMapping("/{id}")
-    private TransporterDto delete(@PathVariable Long id){
-        return transporterService.delete(id);
+    @GetMapping("/options")
+    public Page<TransporterDto> getOptions(
+            @RequestParam(required = false) String searchTerm,
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return transporterService.getOptions(searchTerm, pageable);
     }
 
-    @GetMapping("/list")
-    public List<TransporterDto> getListOfTransporters() {
-        return transporterService.getListOfTransporters();
+    @PatchMapping("/{id}/active")
+    public TransporterDto updateActive(@PathVariable Long id, @RequestParam(defaultValue = "true") boolean isActive) {
+        return transporterService.updateActive(id, isActive);
     }
 }

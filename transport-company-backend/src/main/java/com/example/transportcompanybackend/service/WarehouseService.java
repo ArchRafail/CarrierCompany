@@ -12,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @Service
@@ -23,9 +21,11 @@ public class WarehouseService {
     private final Mapper mapper;
 
     public Page<WarehouseDto> getAll(Long id, String title, String city, String street, Double latitudeFrom,
-                                     Double latitudeTo, Double longitudeFrom, Double longitudeTo, Pageable pageable){
+                                     Double latitudeTo, Double longitudeFrom, Double longitudeTo, Boolean isActive,
+                                     Pageable pageable){
         return warehouseRepository
-                .findAllBy(id, title, city, street, latitudeFrom, latitudeTo, longitudeFrom, longitudeTo, pageable)
+                .findAllBy(id, title, city, street, latitudeFrom, latitudeTo, longitudeFrom, longitudeTo, isActive,
+                        pageable)
                 .map(mapper::toWarehouseDto);
     }
 
@@ -57,15 +57,17 @@ public class WarehouseService {
         return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
     }
 
-    public void delete(Long id) {
-        warehouseRepository.deleteById(id);
+    public WarehouseDto updateActive(Long id, Boolean isActive) {
+        Warehouse warehouse = retrieve(id);
+        warehouse.setIsActive(isActive);
+        return mapper.toWarehouseDto(warehouseRepository.save(warehouse));
+    }
+
+    public Page<WarehouseDto> getOptions(String searchTerm, Pageable pageable) {
+        return warehouseRepository.findAllActive(searchTerm, pageable).map(mapper::toWarehouseDto);
     }
 
     private Warehouse retrieve(Long id) {
         return warehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Warehouse", id));
-    }
-
-    public List<WarehouseDto> getListOfTransporters() {
-        return warehouseRepository.findAll().stream().map(mapper::toWarehouseDto).toList();
     }
 }

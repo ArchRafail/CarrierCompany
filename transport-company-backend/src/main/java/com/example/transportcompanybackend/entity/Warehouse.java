@@ -19,6 +19,7 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    private Boolean isActive;
 
     @Embedded
     private Address address;

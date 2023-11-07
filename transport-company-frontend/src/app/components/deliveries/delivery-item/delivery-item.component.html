@@ -7,26 +7,29 @@
       <label>Source warehouse:</label>
       <span class="p-input-icon-left">
         <i class="pi pi-upload"></i>
-        <p-dropdown #sourceWarehouse="ngModel"
-                    [options]="warehouses"
-                    name="warehouse_from"
-                    [(ngModel)]="selectedDeliveryData.warehouse_from"
-                    [filter]="true"
-                    filterBy="title,address.city,address.street"
-                    [showClear]="false"
-                    [required]="true"
-        >
-          <ng-template pTemplate="selectedItem">
-            <div *ngIf="selectedDeliveryData.warehouse_from as warehouse">
-              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
-            </div>
-          </ng-template>
+        <p-autoComplete
+          #sourceWarehouseAutocompleteModel="ngModel"
+          name="sourceWarehouseAutocomplete"
+          [(ngModel)]="deliveryDto.warehouse_from"
+          [suggestions]="filteredWarehousesFrom"
+          (completeMethod)="filterWarehousesFrom($event.query)"
+          placeholder="Choose source warehouse"
+          [field]="$any(warehouseDropdownValueConverter)"
+          type="search"
+          inputId="sourceWarehouseAutocomplete"
+          [forceSelection]="true"
+          (ngModelChange)="deliveryDto.warehouse_from = deliveryDto.warehouse_from ? deliveryDto.warehouse_from : undefined"
+          [completeOnFocus]="true"
+          [dropdown]="true"
+          dropdownIcon="pi pi-search"
+          [required]="true">
           <ng-template let-warehouse pTemplate="item">
-            <div>
-              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
+            <div class="select-item">
+              <div>{{warehouse.title}}</div>
+              <div class="info">{{warehouse.address.city}}, {{warehouse.address.street}}</div>
             </div>
           </ng-template>
-        </p-dropdown>
+        </p-autoComplete>
       </span>
     </div>
 
@@ -34,26 +37,29 @@
       <label>Destination warehouse:</label>
       <span class="p-input-icon-left">
         <i class="pi pi-download"></i>
-        <p-dropdown #destinationWarehouse="ngModel"
-                    [options]="warehouses"
-                    name="warehouse_to"
-                    [(ngModel)]="selectedDeliveryData.warehouse_to"
-                    [filter]="true"
-                    filterBy="title,address.city,address.street"
-                    [showClear]="false"
-                    [required]="true"
-        >
-          <ng-template pTemplate="selectedItem">
-            <div *ngIf="selectedDeliveryData.warehouse_to as warehouse">
-              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
-            </div>
-          </ng-template>
+        <p-autoComplete
+          #destinationWarehouseAutocompleteModel="ngModel"
+          name="destinationWarehouseAutocompleteModel"
+          [(ngModel)]="deliveryDto.warehouse_to"
+          [suggestions]="filteredWarehousesTo"
+          (completeMethod)="filterWarehousesTo($event.query)"
+          placeholder="Choose destination warehouse"
+          [field]="$any(warehouseDropdownValueConverter)"
+          type="search"
+          inputId="destinationWarehouseAutocomplete"
+          [forceSelection]="true"
+          (ngModelChange)="deliveryDto.warehouse_to = deliveryDto.warehouse_to ? deliveryDto.warehouse_to : undefined"
+          [completeOnFocus]="true"
+          [dropdown]="true"
+          dropdownIcon="pi pi-search"
+          [required]="true">
           <ng-template let-warehouse pTemplate="item">
-            <div>
-              <span>{{warehouse.title}}, {{warehouse.address.city}}, {{warehouse.address.street}}</span>
+            <div class="select-item">
+              <div>{{warehouse.title}}</div>
+              <div class="info">{{warehouse.address.city}}, {{warehouse.address.street}}</div>
             </div>
           </ng-template>
-        </p-dropdown>
+        </p-autoComplete>
       </span>
     </div>
 
@@ -61,26 +67,49 @@
       <label>Transporter:</label>
       <span class="p-input-icon-left">
         <i class="pi pi-truck"></i>
-        <p-dropdown #transporter="ngModel"
-                    [options]="transporters"
-                    name="transporter"
-                    [(ngModel)]="selectedDeliveryData.transporter"
-                    [filter]="true"
-                    filterBy="name,car_model"
-                    [showClear]="false"
-                    [required]="true"
-        >
-          <ng-template pTemplate="selectedItem">
-            <div *ngIf="selectedDeliveryData.transporter as transporter">
-              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>
-            </div>
-          </ng-template>
+        <p-autoComplete
+          #transporterAutocompleteModel="ngModel"
+          name="transporterAutocomplete"
+          [(ngModel)]="deliveryDto.transporter"
+          [suggestions]="filteredTransporters"
+          (completeMethod)="filterTransporters($event.query)"
+          placeholder="Choose transporter"
+          [field]="$any(transporterDropdownValueConverter)"
+          type="search"
+          inputId="transporterAutocomplete"
+          [forceSelection]="true"
+          (ngModelChange)="deliveryDto.transporter = deliveryDto.transporter ? deliveryDto.transporter : undefined"
+          [completeOnFocus]="true"
+          [dropdown]="true"
+          dropdownIcon="pi pi-search"
+          [required]="true">
           <ng-template let-transporter pTemplate="item">
-            <div>
-              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>
+            <div class="select-item">
+              <div>{{transporter.name}}</div>
+              <div class="info">{{transporter.car_model}}, {{transporter.load_capacity}} kg.</div>
             </div>
           </ng-template>
-        </p-dropdown>
+        </p-autoComplete>
+<!--        <p-dropdown #transporter="ngModel"-->
+<!--                    [options]="transporters"-->
+<!--                    name="transporter"-->
+<!--                    [(ngModel)]="deliveryDto.transporter"-->
+<!--                    [filter]="true"-->
+<!--                    filterBy="name,car_model"-->
+<!--                    [showClear]="false"-->
+<!--                    [required]="true"-->
+<!--        >-->
+<!--          <ng-template pTemplate="selectedItem">-->
+<!--            <div *ngIf="deliveryDto.transporter as transporter">-->
+<!--              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>-->
+<!--            </div>-->
+<!--          </ng-template>-->
+<!--          <ng-template let-transporter pTemplate="item">-->
+<!--            <div>-->
+<!--              <span>{{transporter.name}}, {{transporter.car_model}}, {{transporter.load_capacity}}</span>-->
+<!--            </div>-->
+<!--          </ng-template>-->
+<!--        </p-dropdown>-->
       </span>
     </div>
 
@@ -119,10 +148,9 @@
       <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/deliveries"></p-button>
       <p-button
         type="submit"
-        [disabled]="toBoolean( sourceWarehouse.invalid ||
-          destinationWarehouse.invalid ||
-          selectedDeliveryData.warehouse_from?.id === selectedDeliveryData.warehouse_to?.id ||
-          transporter.invalid ||
+        [disabled]="toBoolean( sourceWarehouseAutocompleteModel.invalid ||
+          sourceWarehouseAutocompleteModel.invalid ||
+          transporterAutocompleteModel.invalid ||
           cargoName.invalid ||
           cargoAmount.invalid) ||
           submitDisable"

@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @RestController
@@ -30,8 +28,10 @@ public class WarehouseController {
             @RequestParam(required = false) Double latitudeTo,
             @RequestParam(required = false) Double longitudeFrom,
             @RequestParam(required = false) Double longitudeTo,
+            @RequestParam(required = false) Boolean isActive,
             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable) {
-        return warehouseService.getAll(id, title, city, street, latitudeFrom, latitudeTo, longitudeFrom, longitudeTo, pageable);
+        return warehouseService.getAll(id, title, city, street, latitudeFrom, latitudeTo, longitudeFrom, longitudeTo,
+                isActive, pageable);
     }
 
     @GetMapping("/{id}")
@@ -68,13 +68,15 @@ public class WarehouseController {
         return warehouseService.update(id, warehouse);
     }
 
-    @DeleteMapping("/{id}")
-    private void delete(@PathVariable Long id){
-        warehouseService.delete(id);
+    @GetMapping("/options")
+    public Page<WarehouseDto> getOptions(
+            @RequestParam(required = false) String searchTerm,
+            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return warehouseService.getOptions(searchTerm, pageable);
     }
 
-    @GetMapping("/list")
-    public List<WarehouseDto> getListOfWarehouses() {
-        return warehouseService.getListOfTransporters();
+    @PatchMapping("/{id}/active")
+    public WarehouseDto updateActive(@PathVariable Long id, @RequestParam(defaultValue = "true") boolean isActive) {
+        return warehouseService.updateActive(id, isActive);
     }
 }

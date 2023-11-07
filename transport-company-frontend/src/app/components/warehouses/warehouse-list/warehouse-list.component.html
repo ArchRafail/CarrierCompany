@@ -4,6 +4,7 @@
 </div>
 <p-contextMenu #warehouseActions [model]="contextMenuItems"/>
 <p-table
+  #table
   [value]="warehousePage?.content || []"
   [lazy]="true"
   (onLazyLoad)="onLazyLoad($event)"
@@ -17,6 +18,7 @@
   [sortOrder]="1"
   [(contextMenuSelection)]="selectedWarehouse"
   [contextMenu]="warehouseActions"
+  (onContextMenuSelect)="onContextMenuSelect($event)"
   styleClass="p-datatable-striped"
 >
   <ng-template pTemplate="header">
@@ -27,7 +29,7 @@
       <th pSortableColumn="address.street">Street<p-sortIcon field="address.street"/></th>
       <th pSortableColumn="address.location.latitude">Latitude<p-sortIcon field="address.location.latitude"/></th>
       <th pSortableColumn="address.location.longitude">Longitude<p-sortIcon field="address.location.longitude"/></th>
-      <th>Actions</th>
+      <th pSortableColumn="is_active">Active<p-sortIcon field="is_active"/></th>
     </tr>
     <tr>
       <th class="id">
@@ -93,7 +95,20 @@
           </ng-template>
         </p-columnFilter>
       </th>
-      <th></th>
+      <th>
+        <p-columnFilter field="is_active" [matchMode]="FilterMatchMode.EQUALS" [showMenu]="false" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="DROPDOWN_BOOL_OPTIONS"
+              placeholder="All"
+              (onChange)="filter($event.value)"
+              class="table-filter"
+              appendTo="body"
+            />
+          </ng-template>
+        </p-columnFilter>
+      </th>
     </tr>
     <p-confirmDialog header="Confirmation"
                      message="Are you sure?"
@@ -109,25 +124,12 @@
       <td>{{warehouse.address.street}}</td>
       <td>{{warehouse.address.location.latitude}}</td>
       <td>{{warehouse.address.location.longitude}}</td>
-      <td>
-        <div class="flex flex-wrap gap-2 justify-content-center">
-          <p-button icon="pi pi-pencil"
-                    styleClass="p-button-rounded p-button-warning p-button-outlined"
-                    title="Edit"
-                    routerLink="item/{{warehouse.id}}"
-          />
-          <p-button icon="pi pi-trash"
-                    styleClass="p-button-rounded p-button-danger p-button-outlined"
-                    title="Delete"
-                    (click)="confirmDeleteById(warehouse.id)"
-          />
-        </div>
-      </td>
+      <td><app-boolean-icon [value]="warehouse.is_active" /></td>
     </tr>
   </ng-template>
   <ng-template *ngIf="!warehousePage?.content" pTemplate="emptymessage">
     <tr>
-      <td colspan="6" class="no-table-data xs text-center text-400">Data not found</td>
+      <td colspan="7" class="no-table-data xs text-center text-400">Data not found</td>
     </tr>
   </ng-template>
   <ng-template pTemplate="loadingbody">

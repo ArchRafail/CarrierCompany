@@ -10,7 +10,7 @@ export function primeNgTableFiltersToRequestParams(filters?: {
   Object.entries(filters).forEach(([key, filterMetadata]) => {
     const filter = filterMetadata as FilterMetadata;
     const value = filter?.value;
-    if (!value) return;
+    if (value == null) return;
     if (filter.matchMode === PrimengTableFilterCustomMatchMode.RANGE) {
       if ((value[0] || value[0] == 0) && value[1]) {
         params[key + "_from"] = value[0];

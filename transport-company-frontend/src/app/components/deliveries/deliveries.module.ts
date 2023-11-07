@@ -13,6 +13,7 @@ import { TableModule } from "primeng/table";
 import { DropdownModule } from "primeng/dropdown";
 import { MenuModule } from "primeng/menu";
 import { ToastModule } from "primeng/toast";
+import { AutoCompleteModule } from "primeng/autocomplete";
 
 
 @NgModule({
@@ -20,23 +21,24 @@ import { ToastModule } from "primeng/toast";
     DeliveryListComponent,
     DeliveryItemComponent
   ],
-  imports: [
-    RouterModule.forChild([
-      {path: '', component: DeliveryListComponent},
-      {path: 'item', component: DeliveryItemComponent},
-      {path: 'item/:id', component: DeliveryItemComponent}
-    ]),
-    CommonModule,
-    ButtonModule,
-    FormsModule,
-    InputTextModule,
-    ConfirmDialogModule,
-    ContextMenuModule,
-    SliderModule,
-    TableModule,
-    DropdownModule,
-    MenuModule,
-    ToastModule
-  ]
+    imports: [
+        RouterModule.forChild([
+            {path: '', component: DeliveryListComponent},
+            {path: 'item', component: DeliveryItemComponent},
+            {path: 'item/:id', component: DeliveryItemComponent}
+        ]),
+        CommonModule,
+        ButtonModule,
+        FormsModule,
+        InputTextModule,
+        ConfirmDialogModule,
+        ContextMenuModule,
+        SliderModule,
+        TableModule,
+        DropdownModule,
+        MenuModule,
+        ToastModule,
+        AutoCompleteModule
+    ]
 })
 export class DeliveriesModule { }

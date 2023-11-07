@@ -8,9 +8,11 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { InputTextModule } from "primeng/inputtext";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SharedModule } from "primeng/api";
 import { SliderModule } from "primeng/slider";
 import { TableModule } from "primeng/table";
+import { DropdownModule } from "primeng/dropdown";
+import { SharedModule } from "../shared/shared.module";
+import { RadioButtonModule } from "primeng/radiobutton";
 
 
 @NgModule({
@@ -33,7 +35,10 @@ import { TableModule } from "primeng/table";
     SharedModule,
     SliderModule,
     TableModule,
-    FormsModule
+    FormsModule,
+    DropdownModule,
+    SharedModule,
+    RadioButtonModule
   ]
 })
 export class WarehousesModule { }

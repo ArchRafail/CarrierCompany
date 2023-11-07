@@ -6,4 +6,30 @@
     padding: 0 24px;
   }
 
+  .deactivated {
+    color: #909090;
+  }
+
+  .status {
+    font-weight: bold;
+    .created {
+      color: dodgerblue;
+    }
+
+    .processing {
+      color: lightsalmon;
+    }
+
+    .shipping {
+      color: orange;
+    }
+
+    .delivered {
+      color: forestgreen;
+    }
+
+    .declined {
+      color: red;
+    }
+  }
 }

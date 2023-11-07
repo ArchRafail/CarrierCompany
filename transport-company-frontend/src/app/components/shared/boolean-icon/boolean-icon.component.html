@@ -1,0 +1,11 @@
+<ng-template [ngIf]="value" [ngIfElse]="falseIcon">
+  <div class="true-icon" [ngClass]="{neutral: neutralTrue, inverted: invertedColors}">
+    <i class="pi pi-check-circle"></i>
+  </div>
+</ng-template>
+
+<ng-template #falseIcon>
+  <div class="false-icon" [ngClass]="{neutral: neutralFalse, inverted: invertedColors}">
+    <i class="pi pi-times-circle"></i>
+  </div>
+</ng-template>

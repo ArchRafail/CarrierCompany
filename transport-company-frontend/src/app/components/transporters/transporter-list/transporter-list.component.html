@@ -4,6 +4,7 @@
 </div>
 <p-contextMenu #transportsActions [model]="contextMenuItems"/>
 <p-table
+  #table
   [value]="transporterPage?.content || []"
   [lazy]="true"
   (onLazyLoad)="onLazyLoad($event)"
@@ -11,12 +12,13 @@
   [paginator]="true"
   [rows]="transporterPage?.size"
   [totalRecords]="transporterPage?.total_elements || 0"
-  [loading]="isLoading"
+  [loading]="loading"
   [showLoader]="false"
   sortField="id"
   [sortOrder]="1"
   [(contextMenuSelection)]="selectedTransporter"
   [contextMenu]="transportsActions"
+  (onContextMenuSelect)="onContextMenuSelect($event)"
   styleClass="p-datatable-striped"
 >
   <ng-template pTemplate="header">
@@ -25,7 +27,7 @@
       <th pSortableColumn="name">Name<p-sortIcon field="name"/></th>
       <th pSortableColumn="car_model">Car model<p-sortIcon field="car_model"/></th>
       <th pSortableColumn="load_capacity">Load capacity<p-sortIcon field="load_capacity"/></th>
-      <th>Actions</th>
+      <th pSortableColumn="is_active">Active<p-sortIcon field="is_active"/></th>
     </tr>
     <tr>
       <th>
@@ -46,9 +48,7 @@
                         [showClearButton]="false">
           <ng-template pTemplate="filter" let-event let-filter="filterCallback">
             <div class="flex justify-content-center align-items-center gap-2 mb-2">
-              <span *ngIf="amountSlider.values?.length">
-                ({{amountSlider.values?.[0]}} - {{amountSlider.values?.[1]}} )
-              </span>
+              ({{amountSlider.values?.[0]}} - {{amountSlider.values?.[1]}} )
               <i class="pi pi-times text-gray-500 cursor-pointer"
                  (click)="amountSlider.writeValue([CAPACITY_LOAD_RANGE[0], CAPACITY_LOAD_RANGE[1]]); filter()"
                  title="Clear">
@@ -64,7 +64,20 @@
           </ng-template>
         </p-columnFilter>
       </th>
-      <th></th>
+      <th>
+        <p-columnFilter field="is_active" [matchMode]="FilterMatchMode.EQUALS" [showMenu]="false" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="DROPDOWN_BOOL_OPTIONS"
+              placeholder="All"
+              (onChange)="filter($event.value)"
+              class="table-filter"
+              appendTo="body"
+            />
+          </ng-template>
+        </p-columnFilter>
+      </th>
     </tr>
     <p-confirmDialog header="Confirmation"
                      message="Are you sure?"
@@ -78,25 +91,12 @@
       <td>{{transporter.name}}</td>
       <td>{{transporter.car_model}}</td>
       <td>{{transporter.load_capacity}}</td>
-      <td>
-        <div class="flex flex-wrap gap-2 justify-content-center">
-          <p-button icon="pi pi-pencil"
-                    styleClass="p-button-rounded p-button-warning p-button-outlined"
-                    title="Edit"
-                    routerLink="item/{{transporter.id}}"
-          />
-          <p-button icon="pi pi-trash"
-                    styleClass="p-button-rounded p-button-danger p-button-outlined"
-                    title="Delete"
-                    (click)="confirmDeleteById(transporter.id)"
-          />
-        </div>
-      </td>
+      <td><app-boolean-icon [value]="transporter.is_active" /></td>
     </tr>
   </ng-template>
   <ng-template *ngIf="!transporterPage?.content" pTemplate="emptymessage">
     <tr>
-      <td colspan="6" class="no-table-data xs text-center text-400">Data not found</td>
+      <td colspan="5" class="no-table-data xs text-center text-400">Data not found</td>
     </tr>
   </ng-template>
   <ng-template pTemplate="loadingbody">

@@ -5,6 +5,8 @@ import { TransporterHttpService } from "../../../api/services/transporter-http.s
 import { ToastService } from "../../../services/toast.service";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ACTIVATE_OPTIONS } from "../../../constants/constants";
+
 
 @Component({
   selector: 'app-transporter-item',
@@ -13,11 +15,13 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export class TransporterItemComponent {
   private readonly destroyRef = inject(DestroyRef);
+  public readonly ACTIVATE_OPTIONS = ACTIVATE_OPTIONS;
   transporterDto: TransporterDto = {
     id: 0,
     name: "",
     car_model: "",
-    load_capacity: 0
+    load_capacity: 0,
+    is_active: true,
   };
   submitDisable = false;
   isLoading = false;

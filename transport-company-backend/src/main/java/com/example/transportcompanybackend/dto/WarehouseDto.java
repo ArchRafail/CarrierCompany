@@ -9,4 +9,5 @@ public class WarehouseDto {
     private Long id;
     private String title;
     private Address address;
+    private Boolean isActive;
 }
