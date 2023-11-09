@@ -3,11 +3,10 @@
     <h2>Orders by status</h2>
     <canvas baseChart
             [type]="'pie'"
-            [datasets]="pieChartDatasets"
-            [labels]="pieChartLabels"
+            [data]="pieChartData"
+            [labels]="pieChartData.labels"
             [options]="pieChartOptions"
             [plugins]="pieChartPlugins"
-            [legend]="pieChartLegend"
             class="pie-chart">
     </canvas>
   </div>

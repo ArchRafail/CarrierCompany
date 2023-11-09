@@ -6,8 +6,8 @@
     padding: 0 24px;
   }
 
-  .deactivated {
-    color: #909090;
+  .del-header, .del-filter, .del-body {
+    font-size: 0.9rem;
   }
 
   .status {
@@ -30,6 +30,36 @@
 
     .declined {
       color: red;
+    }
+  }
+
+  ::ng-deep {
+    .p-datatable {
+      .p-datatable-thead > tr > th {
+        padding: 0.8rem 1rem;
+
+        .p-icon {
+          width: 0.9rem;
+          height: 0.9rem;
+        }
+
+        .p-inputtext {
+          font-size: 0.9rem;
+        }
+      }
+
+      .p-datatable-tbody > tr > td {
+        padding: 0.8rem 1rem;
+
+        .p-button.p-button-icon-only.p-button-rounded {
+          height: 1.8rem;
+          width: 1.8rem;
+
+          .pi {
+            font-size: 0.8rem;
+          }
+        }
+      }
     }
   }
 }

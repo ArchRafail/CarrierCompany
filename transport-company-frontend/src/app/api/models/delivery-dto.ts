@@ -11,4 +11,7 @@ export interface DeliveryDto {
   cargo_name: string;
   cargo_amount: number;
   status: DeliveryStatus;
+  created?: string;
+  scheduled?: string;
+  actual?: string;
 }

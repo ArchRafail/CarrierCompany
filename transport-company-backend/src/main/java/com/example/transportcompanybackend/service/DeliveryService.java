@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 
 @RequiredArgsConstructor
 @Service
@@ -25,11 +27,15 @@ public class DeliveryService {
     private final TransporterRepository transporterRepository;
     private final Mapper mapper;
 
-    public Page<DeliveryDto> getAll(Long id, String warehouseFromTitle, String warehouseToTitle, String transporterName,
+    public Page<DeliveryDto> getAll(Long id, String warehouseFromTitle, String warehouseFromAddressCity,
+                                    String warehouseToTitle, String warehouseToAddressCity, String transporterName,
                                     String cargoName, Double cargoAmountFrom, Double cargoAmountTo,
-                                    DeliveryStatus status, Pageable pageable){
-        return deliveryRepository.findAllBy(id, warehouseFromTitle, warehouseToTitle, transporterName, cargoName,
-                cargoAmountFrom, cargoAmountTo, status, pageable).map(mapper::toDeliveryDto);
+                                    Timestamp createdFrom, Timestamp createdTo, Timestamp scheduledFrom,
+                                    Timestamp scheduledTo, Timestamp actualFrom, Timestamp actualTo,
+                                    DeliveryStatus status, Pageable pageable) {
+        return deliveryRepository.findAllBy(id, warehouseFromTitle, warehouseFromAddressCity, warehouseToTitle,
+                warehouseToAddressCity, transporterName, cargoName, cargoAmountFrom, cargoAmountTo, createdFrom,
+                createdTo, scheduledFrom, scheduledTo, actualFrom, actualTo, status, pageable).map(mapper::toDeliveryDto);
     }
 
     public DeliveryDto get(Long id) {
@@ -44,8 +50,9 @@ public class DeliveryService {
         delivery.setWarehouseFrom(warehouseFrom);
         delivery.setWarehouseTo(warehouseTo);
         delivery.setTransporter(transporter);
-        if (deliveryDto.getStatus() == null)
-            delivery.setStatus(DeliveryStatus.CREATED);
+        if (deliveryDto.getStatus() == null) {
+            deliveryDto.setStatus(DeliveryStatus.CREATED);
+        }
         return mapper.toDeliveryDto(deliveryRepository.save(transporterValidation(delivery)));
     }
 
@@ -74,6 +81,9 @@ public class DeliveryService {
         delivery.setTransporter(transporter);
         if (deliveryDto.getStatus() == null)
             delivery.setStatus(DeliveryStatus.CREATED);
+        if (deliveryDto.getStatus() != DeliveryStatus.DELIVERED) {
+            deliveryDto.setActual(null);
+        }
         return mapper.toDeliveryDto(deliveryRepository.save(transporterValidation(delivery)));
     }
 
@@ -118,7 +128,10 @@ public class DeliveryService {
         switch (delivery.getStatus()) {
             case CREATED -> delivery.setStatus(DeliveryStatus.PROCESSING);
             case PROCESSING -> delivery.setStatus(DeliveryStatus.SHIPPING);
-            case SHIPPING -> delivery.setStatus(DeliveryStatus.DELIVERED);
+            case SHIPPING -> {
+                delivery.setStatus(DeliveryStatus.DELIVERED);
+                delivery.setActual(new Timestamp(System.currentTimeMillis()));
+            }
         }
         return mapper.toDeliveryDto(deliveryRepository.save(delivery));
     }

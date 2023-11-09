@@ -1,4 +1,4 @@
-<div *ngIf="!isLoading" class="form-display">
+<div *ngIf="!loading" class="form-display">
   <div class="item-title" style="text-align: center; margin-bottom: 12px"><h3>{{deliveryDto.id ? 'Update delivery #'+deliveryDto.id : 'Add new delivery'}}</h3></div>
 
   <form style="width: 100%" (ngSubmit)="onClickSubmit()">
@@ -97,7 +97,7 @@
       <label>Cargo name:</label>
       <span class="p-input-icon-left">
           <i class="pi pi-id-card"></i>
-          <input #cargoName="ngModel" type="text" pInputText name="city" [(ngModel)]="deliveryDto.cargo_name" required/>
+          <input #cargoName="ngModel" type="text" pInputText name="cargoName" [(ngModel)]="deliveryDto.cargo_name" required/>
       </span>
     </div>
 
@@ -125,6 +125,25 @@
     </div>
 
     <div class="form-fields-wrapper">
+      <label>Scheduled del. date:</label>
+      <span class="p-input-icon-left">
+          <i class="pi pi-calendar"></i>
+          <p-calendar #scheduledDeliveryDate="ngModel"
+                      [(ngModel)]="scheduledDate"
+                      [showButtonBar]="true"
+                      (ngModelChange)="scheduledDate = scheduledDate ? scheduledDate : undefined"
+                      name="scheduled"
+                      dateFormat="dd.mm.yy"
+                      [minDate]="MINIMUM_DATE"
+                      [readonlyInput]="true"
+                      [required]="true"
+          >
+            <ng-template pTemplate="header">Pick up last day of delivery</ng-template>
+          </p-calendar>
+        </span>
+    </div>
+
+    <div class="form-fields-wrapper">
       <p-button label="Back" styleClass="p-button-raised" icon="pi pi-arrow-left" routerLink="/deliveries"></p-button>
       <p-button
         type="submit"
@@ -132,9 +151,12 @@
           destinationWarehouseAutocompleteModel.invalid ||
           transporterAutocompleteModel.invalid ||
           cargoName.invalid ||
-          cargoAmount.invalid) ||
-          submitDisable"
-        label="Save" styleClass="p-button-raised" icon="pi pi-save"></p-button>
+          cargoAmount.invalid ||
+          scheduledDeliveryDate.invalid) ||
+          saving"
+        label="Save"
+        styleClass="p-button-raised"
+        icon="{{saving ? 'pi pi-spin pi-sync' : 'pi pi-save'}}"></p-button>
     </div>
 
   </form>

@@ -2,7 +2,10 @@ package com.example.transportcompanybackend.entity;
 
 import com.example.transportcompanybackend.entity.enums.DeliveryStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.sql.Timestamp;
 
 
 @AllArgsConstructor
@@ -32,6 +35,12 @@ public class Delivery {
 
     private String cargoName;
     private Double cargoAmount;
+
+    @NotNull
+    private Timestamp created;
+    @NotNull
+    private Timestamp scheduled;
+    private Timestamp actual;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;

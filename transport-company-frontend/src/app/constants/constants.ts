@@ -7,3 +7,5 @@ export const DROPDOWN_BOOL_OPTIONS = [
   {value: true, label: "Yes"},
   {value: false, label: "No"},
 ];
+
+export const LUXON_DATE_TIME_ZONED_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZZ";

@@ -14,6 +14,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { MenuModule } from "primeng/menu";
 import { ToastModule } from "primeng/toast";
 import { AutoCompleteModule } from "primeng/autocomplete";
+import { CalendarModule } from "primeng/calendar";
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { AutoCompleteModule } from "primeng/autocomplete";
         DropdownModule,
         MenuModule,
         ToastModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        CalendarModule
     ]
 })
 export class DeliveriesModule { }

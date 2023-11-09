@@ -4,6 +4,8 @@ import com.example.transportcompanybackend.entity.enums.DeliveryStatus;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 
 @Data
 public class DeliveryDto {
@@ -14,4 +16,7 @@ public class DeliveryDto {
     private String cargoName;
     private Double cargoAmount;
     private DeliveryStatus status;
+    private Timestamp created;
+    private Timestamp scheduled;
+    private Timestamp actual;
 }

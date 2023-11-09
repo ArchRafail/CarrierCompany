@@ -19,7 +19,15 @@
     .p-dropdown {
       width: 100%;
 
-      .p-dropdown-label{
+      .p-dropdown-label {
+        padding-left: 2.5rem;
+      }
+    }
+
+    .p-calendar {
+      width: 100%;
+
+      .p-inputtext {
         padding-left: 2.5rem;
       }
     }
