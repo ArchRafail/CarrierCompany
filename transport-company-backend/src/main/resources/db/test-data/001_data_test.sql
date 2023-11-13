@@ -23,6 +23,7 @@ INSERT INTO transporter (name, car_model, load_capacity, is_active) VALUES
 ('Dachser Group', 'Man TGL', 10400, true);
 
 INSERT INTO delivery (warehouse_from, warehouse_to, transporter_id, cargo_name, cargo_amount, created, scheduled, actual, status) VALUES
+(1, 2, 10, 'Sugar', 11960, '2023-08-22T09:29:00', '2023-10-02T23:59:59', '2023-10-05T11:41:15', 'DELIVERED'),
 (2, 4, 2, 'Banana', 13800, '2023-09-22T11:22:00', '2023-11-02T23:59:59', '2023-11-01T16:32:03', 'DELIVERED'),
 (3, 4, 5, 'Pineapple', 5280, '2023-09-27T10:44:00', '2023-11-29T23:59:59', null, 'SHIPPING'),
 (1, 2, 1, 'Tomato', 4000, '2023-10-02T13:15:00', '2023-11-22T23:59:59', null, 'CREATED'),

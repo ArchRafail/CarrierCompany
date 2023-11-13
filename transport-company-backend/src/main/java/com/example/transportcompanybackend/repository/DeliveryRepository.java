@@ -54,4 +54,18 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
     Long countByWarehouseId(Long warehouseId);
 
     Long countAllByStatus(DeliveryStatus deliveryStatus);
+
+    @Query("""
+        SELECT COUNT(*) FROM Delivery d
+        WHERE (d.actual IS NULL AND d.scheduled >= NOW() AND d.status <> com.example.transportcompanybackend.entity.enums.DeliveryStatus.DECLINED)
+        OR (d.actual <= d.scheduled)
+        """)
+    Long countAllOnTime();
+
+    @Query("""
+        SELECT COUNT(*) FROM Delivery d
+        WHERE (d.actual IS NULL AND d.scheduled < NOW() AND d.status <> com.example.transportcompanybackend.entity.enums.DeliveryStatus.DECLINED)
+        OR (d.actual > d.scheduled)
+        """)
+    Long countAllDelayed();
 }

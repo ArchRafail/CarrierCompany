@@ -1,5 +1,6 @@
 package com.example.transportcompanybackend.controller;
 
+import com.example.transportcompanybackend.dto.DeliveriesOnTimeStructuralDto;
 import com.example.transportcompanybackend.dto.DeliveriesStatusStructuralDto;
 import com.example.transportcompanybackend.service.StatisticService;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,10 @@ public class StatisticController {
     @GetMapping("/deliveries-statuses")
     public List<DeliveriesStatusStructuralDto> deliveriesStatusesStructuralStatistic() {
         return statisticService.deliveriesStatusesStructuralStatistic();
+    }
+
+    @GetMapping("/deliveries-on-time")
+    public List<DeliveriesOnTimeStructuralDto> deliveriesOnTimeStructuralStatistic() {
+        return statisticService.deliveriesOnTimeStructuralStatistic();
     }
 }

@@ -41,4 +41,6 @@ export const COLORS_MAP: PlainObject = {
   SHIPPING: "#2690a1",
   DELIVERED: "#76db9b",
   DECLINED: "#f99baf",
+  ON_TIME: "#76db9b",
+  DELAYED: "#ff6074",
 }

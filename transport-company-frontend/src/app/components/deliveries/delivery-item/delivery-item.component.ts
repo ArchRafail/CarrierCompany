@@ -137,7 +137,8 @@ export class DeliveryItemComponent {
     if (this.deliveryDto.created === undefined) {
       this.deliveryDto.created = DateTime.fromJSDate(new Date()).toFormat(LUXON_DATE_TIME_ZONED_FORMAT);
     }
-    if (this.scheduledDate!.getHours() === 0) {
+    if (this.scheduledDate!.getHours() != 23 && this.scheduledDate!.getMinutes() != 59 && this.scheduledDate!.getSeconds() != 59) {
+      this.scheduledDate!.setHours(0, 0, 0, 0);
       this.deliveryDto.scheduled = DateTime.fromJSDate(new Date(this.scheduledDate!.getTime() + this.END_OF_DAY_TIME_IN_MILLIS)).toFormat(LUXON_DATE_TIME_ZONED_FORMAT);
     } else {
       this.deliveryDto.scheduled = DateTime.fromJSDate(this.scheduledDate!).toFormat(LUXON_DATE_TIME_ZONED_FORMAT);

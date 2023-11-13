@@ -1,12 +1,25 @@
 <div class="flex justify-content-center align-items-center gap-5">
   <div class="flex flex-column align-items-center">
-    <h2>Structure of deliveries</h2>
+    <h2>Structure of statuses deliveries</h2>
     <p-chart
-      *ngIf="deliveryStructural.datasets.length > 0"
-      #deliveryStructuralPie
+      *ngIf="statusesDeliveryStructural.datasets.length > 0"
+      #statusesDeliveryStructuralPie
       width="450" height="450"
       type="pie"
-      [data]="deliveryStructural"
+      [data]="statusesDeliveryStructural"
+      [options]="defaultOptionsPie"
+      [plugins]="$any(plugin)">
+    </p-chart>
+  </div>
+
+  <div class="flex flex-column align-items-center">
+    <h2>Structure of on time deliveries</h2>
+    <p-chart
+      *ngIf="onTimeDeliveryStructural.datasets.length > 0"
+      #onTimeDeliveryStructuralPie
+      width="450" height="450"
+      type="pie"
+      [data]="onTimeDeliveryStructural"
       [options]="defaultOptionsPie"
       [plugins]="$any(plugin)">
     </p-chart>

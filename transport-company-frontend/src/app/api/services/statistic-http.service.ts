@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { API } from "../../constants/constants";
 import { DeliveriesStatusStructuralDto } from "../models/deliveries-status-structural-dto";
+import { DeliveriesOnTimeStructuralDto } from "../models/deliveries-on-time-structural-dto";
 
 
 @Injectable({
@@ -12,7 +13,11 @@ export class StatisticHttpService {
 
   constructor(private http: HttpClient) { }
 
-  getDeliveriesStructuralStatistic() {
+  getDeliveriesStatusesStructuralStatistic() {
     return this.http.get<DeliveriesStatusStructuralDto[]>(`${this.URL}/deliveries-statuses`);
+  }
+
+  getDeliveriesOnTimeStructuralStatistic() {
+    return this.http.get<DeliveriesOnTimeStructuralDto[]>(`${this.URL}/deliveries-on-time`);
   }
 }
