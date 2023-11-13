@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastModule } from "primeng/toast";
 import { PageUnderConstructionComponent } from './components/page-under-construction/page-under-construction.component';
 import { NgChartsModule } from "ng2-charts";
+import { ChartModule } from "primeng/chart";
 
 
 @NgModule({
@@ -27,17 +28,18 @@ import { NgChartsModule } from "ng2-charts";
     PageNotFoundComponent,
     PageUnderConstructionComponent,
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    TabMenuModule,
-    AvatarModule,
-    ButtonModule,
-    HttpClientModule,
-    ToastModule,
-    NgChartsModule,
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        TabMenuModule,
+        AvatarModule,
+        ButtonModule,
+        HttpClientModule,
+        ToastModule,
+        NgChartsModule,
+        ChartModule,
+    ],
   providers: [
     MessageService,
     ConfirmationService,

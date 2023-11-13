@@ -1,13 +1,14 @@
 <div class="flex justify-content-center align-items-center gap-5">
   <div class="flex flex-column align-items-center">
-    <h2>Orders by status</h2>
-    <canvas baseChart
-            [type]="'pie'"
-            [data]="pieChartData"
-            [labels]="pieChartData.labels"
-            [options]="pieChartOptions"
-            [plugins]="pieChartPlugins"
-            class="pie-chart">
-    </canvas>
+    <h2>Structure of deliveries</h2>
+    <p-chart
+      *ngIf="deliveryStructural.datasets.length > 0"
+      #deliveryStructuralPie
+      width="450" height="450"
+      type="pie"
+      [data]="deliveryStructural"
+      [options]="defaultOptionsPie"
+      [plugins]="$any(plugin)">
+    </p-chart>
   </div>
 </div>

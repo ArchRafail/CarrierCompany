@@ -12,7 +12,7 @@ export class StatisticHttpService {
 
   constructor(private http: HttpClient) { }
 
-  getDeliveriesStatusesStructuralStatistic() {
+  getDeliveriesStructuralStatistic() {
     return this.http.get<DeliveriesStatusStructuralDto[]>(`${this.URL}/deliveries-statuses`);
   }
 }
