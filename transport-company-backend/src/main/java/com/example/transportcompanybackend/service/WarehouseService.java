@@ -3,7 +3,7 @@ package com.example.transportcompanybackend.service;
 import com.example.transportcompanybackend.dto.DeliveryDto;
 import com.example.transportcompanybackend.dto.WarehouseDto;
 import com.example.transportcompanybackend.entity.Warehouse;
-import com.example.transportcompanybackend.exception.EntityNotFoundException;
+import com.example.transportcompanybackend.exception.ItemNotFoundException;
 import com.example.transportcompanybackend.mapper.Mapper;
 import com.example.transportcompanybackend.repository.DeliveryRepository;
 import com.example.transportcompanybackend.repository.WarehouseRepository;
@@ -68,6 +68,6 @@ public class WarehouseService {
     }
 
     private Warehouse retrieve(Long id) {
-        return warehouseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Warehouse", id));
+        return warehouseRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(Warehouse.class, id));
     }
 }

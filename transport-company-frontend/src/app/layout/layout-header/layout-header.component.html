@@ -3,12 +3,21 @@
     <img src="assets/logo.png" alt="company logo">
   </a>
 
-  <div class="card">
+  <div *ngIf="authService.user$ | async as user" class="card">
     <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
   </div>
 </div>
 
-<p-avatar icon="pi pi-user"
-          styleClass="user-avatar"
-          shape="circle"
-/>
+<div *ngIf="authService.user$ | async as user" class="flex align-items-center cursor-pointer">
+  <p-avatar (click)="accountMenu.toggle($event)"
+    icon="pi pi-user"
+    styleClass="user-avatar"
+    shape="circle"
+  />
+  <p-menu
+    #accountMenu
+    [model]="(accountMenuItems$ | async) ?? []"
+    [popup]="true"
+    styleClass="theme-menu"
+  />
+</div>

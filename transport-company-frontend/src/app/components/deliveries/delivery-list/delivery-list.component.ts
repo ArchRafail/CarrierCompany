@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ViewChild } from '@angular/core';
 import { Router } from "@angular/router";
 import { ToastService } from "../../../services/toast.service";
 import { debounce, distinctUntilChanged, finalize, interval, Subject } from "rxjs";
@@ -23,6 +23,7 @@ import { DeliveryStatus } from "../../../api/models/delivery-status";
 })
 export class DeliveryListComponent {
   private readonly destroyRef = inject(DestroyRef);
+  @ViewChild("deliveriesTable") table: any;
   public readonly CARGO_AMOUNT_RANGE: number[] = [0, 40000];
   public readonly TERMINAL_DELIVERY_STATUSES: DeliveryStatus[] = [DeliveryStatus.DELIVERED, DeliveryStatus.DECLINED];
   public readonly FilterMatchMode = FilterMatchMode;
@@ -128,8 +129,8 @@ export class DeliveryListComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.getAll();
-          this.toastService.success(`Delivery was deleted successfully!`)
+          this.toastService.success(`Delivery was deleted successfully!`);
+          this.refresh();
         },
         error: this.toastService.handleHttpError
       });
@@ -140,8 +141,8 @@ export class DeliveryListComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.getAll();
           this.toastService.success(`Delivery was pushed successfully!`);
+          this.refresh();
         },
         error: this.toastService.handleHttpError
       });
@@ -161,10 +162,14 @@ export class DeliveryListComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.getAll();
           this.toastService.success(`Delivery was declined successfully!`);
+          this.refresh();
         },
         error: this.toastService.handleHttpError
       });
+  }
+
+  refresh() {
+    this.table.onLazyLoad.emit(this.table.createLazyLoadMetadata());
   }
 }

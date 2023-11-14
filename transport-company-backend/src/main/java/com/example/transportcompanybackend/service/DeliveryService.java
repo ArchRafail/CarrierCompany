@@ -5,7 +5,7 @@ import com.example.transportcompanybackend.dto.TransporterDto;
 import com.example.transportcompanybackend.dto.WarehouseDto;
 import com.example.transportcompanybackend.entity.*;
 import com.example.transportcompanybackend.entity.enums.DeliveryStatus;
-import com.example.transportcompanybackend.exception.EntityNotFoundException;
+import com.example.transportcompanybackend.exception.ItemNotFoundException;
 import com.example.transportcompanybackend.exception.WrongParametersException;
 import com.example.transportcompanybackend.mapper.Mapper;
 import com.example.transportcompanybackend.repository.DeliveryRepository;
@@ -92,7 +92,7 @@ public class DeliveryService {
     }
 
     public Delivery retrieve(Long id) {
-        return deliveryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Delivery", id));
+        return deliveryRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(Delivery.class, id));
     }
 
     public Warehouse pickWarehouse(WarehouseDto warehouse) {
@@ -105,12 +105,12 @@ public class DeliveryService {
 
     public Warehouse searchWarehouse(Long warehouseId) {
         return warehouseRepository.findById(warehouseId)
-                .orElseThrow(() -> new EntityNotFoundException("Warehouse", warehouseId));
+                .orElseThrow(() -> new ItemNotFoundException(Warehouse.class, warehouseId));
     }
 
     public Transporter searchTransporter(Long transporterId) {
         return transporterRepository.findById(transporterId)
-                .orElseThrow(() -> new EntityNotFoundException("Transporter", transporterId));
+                .orElseThrow(() -> new ItemNotFoundException(Transporter.class, transporterId));
     }
 
     public Delivery transporterValidation(Delivery delivery) {

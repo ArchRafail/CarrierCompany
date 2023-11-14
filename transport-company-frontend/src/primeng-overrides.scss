@@ -37,3 +37,12 @@
 .p-warn {
   color: darkorange !important;
 }
+
+.p-menu.theme-menu {
+  width: fit-content;
+  padding: 0;
+
+  .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-icon {
+    width: 18px;
+  }
+}

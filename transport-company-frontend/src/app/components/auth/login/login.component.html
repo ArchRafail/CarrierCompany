@@ -1,0 +1,63 @@
+<div class="col-md-12">
+  <div class="card card-container">
+    <div class="card-name">
+      <h1>Login</h1>
+    </div>
+    <form
+      name="form"
+      (ngSubmit)="form.valid && login()"
+      #form="ngForm"
+      novalidate
+    >
+      <div class="formgroup">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-user"></i>
+          </span>
+          <input
+            pInputText
+            placeholder="Email"
+            class="form-control"
+            name="email"
+            [(ngModel)]="credentials.email"
+            required
+            email
+            #email="ngModel"
+            (ngModelChange)="showErrorMessage = false"
+          />
+        </div>
+        <div [ngxErrors]="email.control" class="p-error mt-1">
+          <div ngxError="required">Email is required!</div>
+          <div ngxError="email">Email address is not valid</div>
+        </div>
+      </div>
+      <div class="formgroup">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-lock"></i>
+          </span>
+          <input
+            pInputText
+            type="password"
+            placeholder="Password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="credentials.password"
+            required
+            minlength="8"
+            #password="ngModel"
+            (ngModelChange)="showErrorMessage = false"
+          />
+        </div>
+        <div [ngxErrors]="password.control" class="p-error mt-1">
+          <div ngxError="required">Password is required!</div>
+          <div ngxError="minlength">Password must be at least 8 characters</div>
+        </div>
+      </div>
+      <p-message *ngIf="showErrorMessage" severity="error" styleClass="w-full" text="Email or password is wrong!"></p-message>
+      <div class="form-group button-group">
+        <p-button [loading]="loading" type="Submit" label="Login" icon="pi pi-check"></p-button>
+      </div>
+    </form>
+  </div>
+</div>

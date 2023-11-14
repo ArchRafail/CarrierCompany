@@ -1,12 +1,12 @@
 import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
-import { StatisticHttpService } from "../../api/services/statistic-http.service";
+import { StatisticHttpService } from "../../../api/services/statistic-http.service";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { finalize } from "rxjs";
-import { ToastService } from "../../services/toast.service";
-import { COLORS_MAP, DefaultOptionsPie } from "../../constants/statistic-constants";
-import { DeliveriesStatusStructuralDto } from "../../api/models/deliveries-status-structural-dto";
-import { DeliveriesOnTimeStructuralDto } from "../../api/models/deliveries-on-time-structural-dto";
+import { ToastService } from "../../../services/toast.service";
+import { COLORS_MAP, DefaultOptionsPie } from "../../../constants/statistic-constants";
+import { DeliveriesStatusStructuralDto } from "../../../api/models/deliveries-status-structural-dto";
+import { DeliveriesOnTimeStructuralDto } from "../../../api/models/deliveries-on-time-structural-dto";
 import * as changeCase from "change-case";
 
 

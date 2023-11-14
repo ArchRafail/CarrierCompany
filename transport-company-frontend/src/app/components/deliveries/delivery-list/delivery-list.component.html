@@ -5,6 +5,7 @@
 <p-contextMenu #deliveryActions [model]="contextMenuItems"/>
 <p-menu #popupDeliveryActions [model]="contextMenuItems" [popup]="true"/>
 <p-table
+  #deliveriesTable
   [value]="deliveryPage?.content || []"
   [lazy]="true"
   (onLazyLoad)="onLazyLoad($event)"
@@ -234,7 +235,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="loadingbody">
-    <tr class="loading-fields" *ngFor="let _ of [].constructor(6)">
+    <tr class="loading-fields" *ngFor="let _ of [].constructor(8)">
       <td><p>xxx</p></td>
       <td><p>xxxxx</p></td>
       <td><p>xxxxx</p></td>

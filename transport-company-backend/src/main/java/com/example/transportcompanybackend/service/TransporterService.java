@@ -3,7 +3,7 @@ package com.example.transportcompanybackend.service;
 import com.example.transportcompanybackend.dto.DeliveryDto;
 import com.example.transportcompanybackend.dto.TransporterDto;
 import com.example.transportcompanybackend.entity.Transporter;
-import com.example.transportcompanybackend.exception.EntityNotFoundException;
+import com.example.transportcompanybackend.exception.ItemNotFoundException;
 import com.example.transportcompanybackend.exception.WrongParametersException;
 import com.example.transportcompanybackend.mapper.Mapper;
 import com.example.transportcompanybackend.repository.DeliveryRepository;
@@ -66,7 +66,7 @@ public class TransporterService {
     }
 
     private Transporter retrieve(Long id) {
-        return transporterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Transporter", id));
+        return transporterRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(Transporter.class, id));
     }
 
     private void validateLoadCapacity(Double loadCapacity) {

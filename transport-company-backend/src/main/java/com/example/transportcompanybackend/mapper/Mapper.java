@@ -1,11 +1,11 @@
 package com.example.transportcompanybackend.mapper;
 
-import com.example.transportcompanybackend.dto.DeliveryDto;
-import com.example.transportcompanybackend.dto.TransporterDto;
-import com.example.transportcompanybackend.dto.WarehouseDto;
+import com.example.transportcompanybackend.dto.*;
 import com.example.transportcompanybackend.entity.Delivery;
 import com.example.transportcompanybackend.entity.Transporter;
+import com.example.transportcompanybackend.entity.User;
 import com.example.transportcompanybackend.entity.Warehouse;
+import com.example.transportcompanybackend.pojo.TokensHolder;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -52,4 +52,13 @@ public interface Mapper {
     @Mapping(target = "address.location.latitude", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "address.location.longitude", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void patchWarehouse(WarehouseDto warehouseDto, @MappingTarget Warehouse warehouse);
+
+    UserDto toUserDto(User entity);
+    void mergeUser(UserDto userDto, @MappingTarget User user);
+
+    User toUser(CreateUserDto entity);
+
+    AuthUserDto toAuthUserDto(User entity);
+
+    TokenResponse toTokenResponse(TokensHolder tokensHolder);
 }
