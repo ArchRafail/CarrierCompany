@@ -5,6 +5,7 @@ import com.example.transportcompanybackend.dto.PasswordUpdateDto;
 import com.example.transportcompanybackend.dto.UserDto;
 import com.example.transportcompanybackend.dto.UserUpdateDto;
 import com.example.transportcompanybackend.entity.User;
+import com.example.transportcompanybackend.security.UserPrincipal;
 import com.example.transportcompanybackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -37,14 +39,16 @@ public class UserController {
 
     @PutMapping("/{id}/password")
     public UserDto changePassword(@PathVariable Long id,
-                                  @RequestBody PasswordUpdateDto passwordUpdateDto) {
-        return userService.changePassword(id, passwordUpdateDto);
+                                  @RequestBody PasswordUpdateDto passwordUpdateDto,
+                                  @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return userService.changePassword(id, passwordUpdateDto, userPrincipal);
     }
 
     @PutMapping("/{id}")
-    public UserDto update(@PathVariable Long id,
-                          @RequestBody UserUpdateDto userUpdateDto) {
-        return userService.update(id, userUpdateDto);
+    public UserDto updatePersonalInfo(@PathVariable Long id,
+                          @RequestBody UserUpdateDto userUpdateDto,
+                          @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return userService.updatePersonalInfo(id, userUpdateDto, userPrincipal);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

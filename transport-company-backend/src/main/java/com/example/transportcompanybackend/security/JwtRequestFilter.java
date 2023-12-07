@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenService jwtTokenService;
+    private final DatabaseUserService databaseUserService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                username,
+                databaseUserService.loadUserByUsername(username),
                 null,
                 Stream.of(jwtTokenService.getRole(jwtToken))
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))

@@ -5,6 +5,7 @@ import com.example.transportcompanybackend.entity.User;
 import com.example.transportcompanybackend.exception.ItemNotFoundException;
 import com.example.transportcompanybackend.mapper.Mapper;
 import com.example.transportcompanybackend.repository.UserRepository;
+import com.example.transportcompanybackend.security.UserPrincipal;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,8 +41,11 @@ public class UserService {
                 ));
     }
 
-    public UserDto changePassword(Long id, PasswordUpdateDto passwordUpdateDto) {
+    public UserDto changePassword(Long id, PasswordUpdateDto passwordUpdateDto, UserPrincipal userPrincipal) {
         User user = retrieve(id);
+        if (!userPrincipal.getId().equals(user.getId())) {
+            throw new ValidationException("Password can't be changed");
+        }
         if (!encoder.matches(passwordUpdateDto.getOldPassword(), user.getPassword())) {
             throw new ValidationException("Password can't be changed");
         }
@@ -49,8 +53,11 @@ public class UserService {
         return mapper.toUserDto(userRepository.save(user));
     }
 
-    public UserDto update(Long id, UserUpdateDto userUpdateDto) {
+    public UserDto updatePersonalInfo(Long id, UserUpdateDto userUpdateDto, UserPrincipal userPrincipal) {
         User user = retrieve(id);
+        if (!userPrincipal.getId().equals(user.getId())) {
+            throw new ValidationException("User can't be updated");
+        }
         user = mapper.patchUser(userUpdateDto, user);
         return mapper.toUserDto(userRepository.save(user));
     }
