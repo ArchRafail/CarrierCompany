@@ -4,8 +4,8 @@ import lombok.Data;
 
 
 @Data
-public class CredentialsDto {
+public class UserUpdateDto {
     private String email;
-    private String password;
-    private String deviceId;
+    private String firstName;
+    private String lastName;
 }

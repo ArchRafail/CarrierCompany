@@ -1,0 +1,145 @@
+<h3 class="page-title">Settings</h3>
+<div class="flex flex-column gap-3">
+
+  <div class="flex justify-content-center gap-3">
+
+    <div class="card col3">
+      <h4 class="card-title">Password</h4>
+      <form #formPassword="ngForm" (ngSubmit)="formPassword.valid && onClickPasswordSubmit(formPassword);">
+        <div>
+          <div class="input-password-block">
+            <label for="oldPassword">Old password:</label>
+            <input pInputText
+                   type="password"
+                   #oldPasswordEl="ngModel"
+                   [(ngModel)]="oldPassword"
+                   id="oldPassword"
+                   name="oldPassword"
+                   required
+            >
+          </div>
+          <small [ngxErrors]="oldPasswordEl.control" class="p-error">
+            <div ngxError="required" class="text-right mt-1">Required field</div>
+          </small>
+        </div>
+        <div>
+          <div class="input-password-block">
+            <label for="newPassword">New password:</label>
+            <input pInputText
+                   type="password"
+                   #newPasswordEl="ngModel"
+                   [(ngModel)]="newPassword"
+                   id="newPassword"
+                   name="newPassword"
+                   [minlength]="8"
+                   validateNotEqual="oldPassword"
+                   required
+            >
+          </div>
+          <small [ngxErrors]="newPasswordEl.control" class="p-error">
+            <div ngxError="required" class="text-right mt-1">Required field</div>
+            <div ngxError="minlength" class="text-right mt-1">Password must be at least 8 characters long</div>
+            <div ngxError="validateNotEqual" class="text-right mt-1">Should not match old password</div>
+          </small>
+        </div>
+        <div>
+          <div class="input-password-block">
+            <label for="repeatPassword">Repeat new password:</label>
+            <input pInputText
+                   type="password"
+                   #repeatPasswordEl="ngModel"
+                   [(ngModel)]="repeatNewPassword"
+                   id="repeatPassword"
+                   name="repeatPassword"
+                   validateEqual="newPassword"
+                   required
+            >
+          </div>
+          <small [ngxErrors]="repeatPasswordEl.control" class="p-error block">
+            <div ngxError="required" class="text-right mt-1">Required field</div>
+            <div ngxError="validateEqual" class="text-right mt-1">Is not match new password</div>
+          </small>
+        </div>
+        <div class="button-block">
+          <p-button type="submit" styleClass="p-button-success" [disabled]="savingPassword">Update</p-button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card col3">
+      <h4 class="card-title">Personal information</h4>
+      <form #formUser="ngForm" (ngSubmit)="formUser.valid && onClickPersonalInfoSubmit(formUser)">
+        <div class="input-password-block">
+          <label for="email">Email:</label>
+          <input pInputText
+                 type="email"
+                 #emailEl="ngModel"
+                 [(ngModel)]="email"
+                 id="email"
+                 name="email"
+                 email
+          >
+        </div>
+        <div class="input-password-block">
+          <label for="firstName">First name:</label>
+          <input pInputText
+                 type="text"
+                 #firstNameEl="ngModel"
+                 [(ngModel)]="firstName"
+                 id="firstName"
+                 name="firstName"
+                 [minlength]="2"
+          >
+        </div>
+        <div class="input-password-block">
+          <label for="lastName">Last name:</label>
+          <input pInputText
+                 type="text"
+                 #lastNameEl="ngModel"
+                 [(ngModel)]="lastName"
+                 id="lastName"
+                 name="lastName"
+                 [minlength]="2"
+          >
+        </div>
+        <div class="button-block">
+          <p-button type="submit" styleClass="p-button-success" [disabled]="savingPersonalInfo">Update</p-button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card col3">
+      <h4 class="card-title">Account access</h4>
+      <div class="tokens-block first-block">
+        <label>It will allow You clear access on all your devices.</label>
+        <p-button styleClass="p-button-danger" (click)="confirmClearMyTokens()">Remove my access on all devices</p-button>
+      </div>
+      <div *ngIf="authService.isAdmin()" class="tokens-block">
+        <label for="userEmail">Remove tokens by user's email.</label>
+        <input pInputText type="email" [(ngModel)]="userEmail" id="userEmail" name="userEmail">
+        <p-button styleClass="p-button-danger" (click)="confirmClearUserTokens()">Remove user access on all devices</p-button>
+      </div>
+      <div *ngIf="authService.isAdmin()" class="tokens-block">
+        <label>Remove all users tokens.</label>
+        <p-button styleClass="p-button-danger" (click)="confirmClearAllTokens()">Remove all users access on all devices</p-button>
+      </div>
+    </div>
+
+    <p-confirmDialog header="Confirmation"
+                     message="Are you sure?"
+                     icon="pi pi-exclamation-triangle p-warn"
+                     rejectButtonStyleClass="p-button-outlined p-button-secondary"
+    />
+
+  </div>
+
+  <div *ngIf="authService.isAdmin()"  class="flex justify-content-center gap-3">
+
+    <div class="card col1">
+      <h4 class="card-title">Users</h4>
+      <app-users-table/>
+    </div>
+
+  </div>
+
+</div>

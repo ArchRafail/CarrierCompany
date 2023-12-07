@@ -16,7 +16,8 @@ export class LoginComponent {
   private readonly destroyRef = inject(DestroyRef);
   credentials: CredentialsDto = {
     email: "",
-    password: ""
+    password: "",
+    device_id: ""
   };
   showErrorMessage = false;
   loading: boolean = false;

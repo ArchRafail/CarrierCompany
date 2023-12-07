@@ -1,3 +1,4 @@
 export const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';
 export const REFRESH_TOKEN_EXPIRATION_KEY = 'REFRESH_TOKEN_EXPIRATION';
 export const USER_KEY = 'USER';
+export const DEVICE_ID_KEY = 'DEVICE_ID';

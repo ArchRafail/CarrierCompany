@@ -4,11 +4,12 @@ import { AuthUserDto } from "../api/models/auth-user-dto";
 import { Router } from "@angular/router";
 import { ToastService } from "./toast.service";
 import { CredentialsDto } from "../api/models/credentials-dto";
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_EXPIRATION_KEY, USER_KEY } from "../constants/storage-keys";
+import { ACCESS_TOKEN_KEY, DEVICE_ID_KEY, REFRESH_TOKEN_EXPIRATION_KEY, USER_KEY } from "../constants/storage-keys";
 import { AuthHttpService } from "../api/services/auth-http.service";
 import { LoginResponse } from "../api/models/login-response";
 import { TokenResponse } from "../api/models/token-response";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { Role } from "../api/models/role";
 
 
 @Injectable({
@@ -28,6 +29,7 @@ export class AuthService {
   }
 
   login(credentials: CredentialsDto) {
+    credentials.device_id = this.getDeviceId(credentials.email);
     return this.authHttpService.login(credentials)
       .pipe(tap(loginResponse => {
         this.persistAuthData(loginResponse);
@@ -36,7 +38,9 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.authHttpService.refreshToken()
+    const deviceId = this.getDeviceId(this.getUser()!.email);
+    if (!deviceId) this.logout();
+    return this.authHttpService.refreshToken(deviceId!)
       .pipe(tap(tokenResponse => this.persistRefreshData(tokenResponse) ));
   }
 
@@ -45,6 +49,7 @@ export class AuthService {
     let expirationTimestamp = this.getTokenExpiration(loginResponse.refresh_token)!;
     localStorage.setItem(REFRESH_TOKEN_EXPIRATION_KEY, expirationTimestamp.toString());
     localStorage.setItem(USER_KEY, JSON.stringify(loginResponse.user));
+    localStorage.setItem(`${DEVICE_ID_KEY}_${loginResponse.user.email}`, loginResponse.device_id);
     this.runTokenExpirationTimeout(expirationTimestamp);
   }
 
@@ -99,5 +104,30 @@ export class AuthService {
         this.logout();
         this.router.navigate(["auth/login"]);
       });
+  }
+
+  private getDeviceId(email: string) {
+    return localStorage.getItem(`${DEVICE_ID_KEY}_${email}`);
+  }
+
+  hasRole(role: Role): boolean {
+    return this.getUser()?.role === role;
+  }
+
+  hasAnyRole(roles: Array<Role>): boolean {
+    const user = this.getUser();
+    return !!user && roles.includes(user.role);
+  }
+
+  isAdmin(): boolean {
+    return this.hasRole(Role.ADMIN)
+  }
+
+  getMyDeviceId(): string {
+    return this.getDeviceId(this.getUser()!.email)!;
+  }
+
+  getUserId(): number {
+    return this.getUser()!.id;
   }
 }

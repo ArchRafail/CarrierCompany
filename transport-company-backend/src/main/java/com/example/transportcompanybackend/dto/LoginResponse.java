@@ -11,9 +11,11 @@ import lombok.Setter;
 @Setter
 public class LoginResponse extends TokensHolder {
     private AuthUserDto user;
+    private String deviceId;
 
-    public LoginResponse(String accessToken, String refreshToken, AuthUserDto user) {
+    public LoginResponse(String accessToken, String refreshToken, AuthUserDto user, String deviceId) {
         super(accessToken, refreshToken);
         this.user = user;
+        this.deviceId = deviceId;
     }
 }

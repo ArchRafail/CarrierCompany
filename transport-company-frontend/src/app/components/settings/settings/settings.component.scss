@@ -1,0 +1,58 @@
+:host {
+  .page-title {
+    padding: 0 24px;
+  }
+
+  .card {
+    padding: 24px;
+    background-color: var(--blue-50);
+    border-radius: 20px;
+    border: 1px solid var(--blue-100);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &.col1 {
+      width: 98%;
+    }
+
+    &.col3 {
+      width: 32%;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .input-password-block {
+        display: flex;
+        wrap-option: wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        label {
+          width: 35%;
+        }
+
+        input {
+          width: 60%;
+        }
+      }
+
+      .button-block {
+        align-self: end;
+        margin-top: 12px;
+      }
+    }
+
+    .tokens-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px 6px;
+      border: 1px solid var(--red-100);
+    }
+  }
+
+}

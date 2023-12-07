@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'warehouses', loadChildren: () => import('./components/warehouses/warehouses.module').then(m => m.WarehousesModule), canMatch: [authenticatedGuard]},
   {path: 'transporters', loadChildren: () => import('./components/transporters/transporters.module').then(m => m.TransportersModule), canMatch: [authenticatedGuard]},
   {path: 'deliveries', loadChildren: () => import('./components/deliveries/deliveries.module').then(m => m.DeliveriesModule), canMatch: [authenticatedGuard]},
-  {path: 'settings', redirectTo: 'page-construction', pathMatch: "full", canMatch: [authenticatedGuard]},
+  {path: 'settings', loadChildren: () => import('./components/settings/settings.module').then(m => m.SettingsModule), canMatch: [authenticatedGuard]},
   {path: 'page-construction', component: PageUnderConstructionComponent, canMatch: [authenticatedGuard]},
   {path: '', loadChildren: () => import('./components/dashboard/dashboard.module').then(m => m.DashboardModule), canMatch: [authenticatedGuard]},
   {path: '**', component: PageNotFoundComponent},

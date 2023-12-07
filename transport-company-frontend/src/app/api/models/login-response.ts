@@ -5,4 +5,5 @@ export interface LoginResponse {
   user: AuthUserDto;
   access_token: string;
   refresh_token: string;
+  device_id: string;
 }

@@ -18,7 +18,7 @@ export class AuthHttpService {
     return this.http.post<LoginResponse>(`${this.URL}/login`, credentials);
   }
 
-  refreshToken() {
-    return this.http.post<TokenResponse>(`${this.URL}/refreshtoken`, undefined);
+  refreshToken(deviceId: string) {
+    return this.http.post<TokenResponse>(`${this.URL}/refreshtoken`, deviceId);
   }
 }

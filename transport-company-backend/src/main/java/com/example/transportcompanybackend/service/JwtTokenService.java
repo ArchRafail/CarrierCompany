@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.*;
 
@@ -26,6 +27,12 @@ public class JwtTokenService {
     private Duration jwtAccessLifeTime;
     @Value("${jwt.refresh.validity-time}")
     private Duration jwtRefreshLifeTime;
+
+    private final TokenService tokenService;
+
+    public JwtTokenService(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
 
     public String generateAccessToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
@@ -47,19 +54,22 @@ public class JwtTokenService {
                 .compact();
     }
 
-    public String generateRefreshToken(String accessToken){
-        return generateRefreshToken(accessToken, null);
+    public String generateRefreshToken(String accessToken, String deviceId){
+        return generateRefreshToken(accessToken, null, deviceId);
     }
 
-    public String generateRefreshToken(String accessToken, Date expiredDate){
+    public String generateRefreshToken(String accessToken, Date expiredDate, String deviceId){
         Date issuedDate = new Date();
-        return Jwts.builder()
+        Date expirationDate = ofNullable(expiredDate).orElse(new Date(issuedDate.getTime() + jwtRefreshLifeTime.toMillis()));
+        String token = Jwts.builder()
                 .setSubject(getUsername(accessToken))
                 .setIssuedAt(issuedDate)
-                .setExpiration(ofNullable(expiredDate).orElse(new Date(issuedDate.getTime() + jwtRefreshLifeTime.toMillis())))
+                .setExpiration(expirationDate)
                 .setId(UUID.randomUUID().toString())
                 .signWith(Keys.hmacShaKeyFor(refreshSecret.getBytes()))
                 .compact();
+        tokenService.saveToken(deviceId, getUsername(accessToken), token, new Timestamp(expirationDate.getTime()));
+        return token;
     }
 
     public String getUsername(String token) {

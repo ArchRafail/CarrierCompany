@@ -34,8 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/refreshtoken")
-    public TokenResponse refreshToken(@CookieValue(REFRESH_TOKEN_KEY) String refreshToken, HttpServletResponse response) {
-        TokensHolder tokensHolder = authService.refreshToken(refreshToken);
+    public TokenResponse refreshToken(@CookieValue(REFRESH_TOKEN_KEY) String refreshToken, @RequestBody String deviceId, HttpServletResponse response) {
+        TokensHolder tokensHolder = authService.refreshToken(refreshToken, deviceId);
         addRefreshTokenCookie(response, tokensHolder.getRefreshToken());
         return mapper.toTokenResponse(tokensHolder);
     }

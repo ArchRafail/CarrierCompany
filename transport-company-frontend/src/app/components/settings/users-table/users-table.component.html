@@ -1,0 +1,112 @@
+<p-contextMenu #usersActions [model]="contextMenuItems"/>
+<p-table
+  #table
+  [value]="usersPage?.content || []"
+  [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="usersPage?.size"
+  [totalRecords]="usersPage?.total_elements || 0"
+  [loading]="loading"
+  [showLoader]="false"
+  sortField="id"
+  [sortOrder]="1"
+  [(contextMenuSelection)]="selectedUser"
+  [contextMenu]="usersActions"
+  (onContextMenuSelect)="onContextMenuSelect($event)"
+  styleClass="p-datatable-striped"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id">Id<p-sortIcon field="id"/></th>
+      <th pSortableColumn="email">Email<p-sortIcon field="email"/></th>
+      <th pSortableColumn="first_name">First name<p-sortIcon field="first_name"/></th>
+      <th pSortableColumn="last_name">Last name<p-sortIcon field="last_name"/></th>
+      <th pSortableColumn="role">Role<p-sortIcon field="role"/></th>
+      <th pSortableColumn="is_disable">Disabled<p-sortIcon field="is_disable"/></th>
+    </tr>
+    <tr>
+      <th>
+        <p-columnFilter type="text" field="id" [showMenu]="false"
+                        [matchMode]="PrimengTableFilterCustomMatchMode.EQUALS_TEXT"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="email" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="first_name" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter type="text" field="last_name" [showMenu]="false" [matchMode]="FilterMatchMode.CONTAINS"
+                        [showClearButton]="false" placeholder="Search..." />
+      </th>
+      <th>
+        <p-columnFilter field="role" [showMenu]="false" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="roles"
+              (onChange)="filter($event.value)"
+              placeholder="All"
+              [showClear]="true"
+              scrollHeight="250px"
+              appendTo="body"
+            >
+              <ng-template let-option pTemplate="item">
+                <span>{{option}}</span>
+              </ng-template>
+            </p-dropdown>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter field="is_disable" [matchMode]="FilterMatchMode.EQUALS" [showMenu]="false" [showClearButton]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [ngModel]="value"
+              [options]="DROPDOWN_BOOL_OPTIONS"
+              placeholder="All"
+              (onChange)="filter($event.value)"
+              class="table-filter"
+              appendTo="body"
+            />
+          </ng-template>
+        </p-columnFilter>
+      </th>
+    </tr>
+    <p-confirmDialog header="Confirmation"
+                     message="Are you sure?"
+                     icon="pi pi-exclamation-triangle p-warn"
+                     rejectButtonStyleClass="p-button-outlined p-button-secondary"
+    />
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr [pContextMenuRow]="user">
+      <td>{{user.id}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.first_name}}</td>
+      <td>{{user.last_name}}</td>
+      <td>{{user.role | titlecase}}</td>
+      <td><app-boolean-icon [value]="user.is_disabled" [neutralFalse]="true" [invertedColors]="true" /></td>
+    </tr>
+  </ng-template>
+  <ng-template *ngIf="!usersPage?.content" pTemplate="emptymessage">
+    <tr>
+      <td colspan="5" class="no-table-data xs text-center text-400">Data not found</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="loadingbody">
+    <tr class="loading-fields" *ngFor="let _ of [].constructor(6)">
+      <td><p>xxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxxx</p></td>
+      <td><p>xxxx</p></td>
+      <td><p>xxxx</p></td>
+    </tr>
+  </ng-template>
+</p-table>

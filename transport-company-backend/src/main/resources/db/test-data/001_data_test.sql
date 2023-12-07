@@ -1,7 +1,7 @@
 INSERT INTO users (email, password, first_name, last_name, is_disabled, role) VALUES
 ('admin@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Jeth', 'Ellison', false, 'ADMIN'),
-('support@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Eugine', 'Bryde', false, 'MANAGER'),
-('support2@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Foster', 'Ryan', false, 'MANAGER'),
+('manager@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Eugine', 'Bryde', false, 'MANAGER'),
+('manager2@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Foster', 'Ryan', false, 'MANAGER'),
 ('user@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Mike', 'Vincent', false, 'USER'),
 ('disabled@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Arin', 'Pinnington', true, 'USER'),
 ('user2@gmail.com', '$2a$10$Ybm8TtAnAOh612FLxy8DO.aiqor7l5aZVjhUwwB/cQBc.HFIBs6xi', 'Andrew', 'Colorod', false, 'USER');

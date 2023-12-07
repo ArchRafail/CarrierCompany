@@ -1,0 +1,24 @@
+<form #form="ngForm" class="flex flex-column" (ngSubmit)="form.valid && onSubmit()">
+
+  <div class="grid p-fluid">
+    <div class="field col-12">
+      <label for="role">New user role</label>
+      <p-dropdown #roleEl="ngModel"
+                  inputId="role"
+                  name="role"
+                  [options]="roles"
+                  [(ngModel)]="role"
+                  appendTo="body"
+                  [required]="true"
+      />
+    </div>
+    <small [ngxErrors]="roleEl.control" class="p-error block">
+      <div ngxError="required">Required field</div>
+    </small>
+    <div class="w-full flex justify-content-end gap-3">
+      <button type="button" pButton label="Cancel" class="p-button-secondary p-button-text w-fit" (click)="dialogRef.close()"></button>
+      <button type="submit" pButton label="Update" class="p-button-success w-fit" [loading]="saving"></button>
+    </div>
+  </div>
+
+</form>

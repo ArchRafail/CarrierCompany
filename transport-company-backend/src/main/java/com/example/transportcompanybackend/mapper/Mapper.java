@@ -6,6 +6,7 @@ import com.example.transportcompanybackend.entity.Transporter;
 import com.example.transportcompanybackend.entity.User;
 import com.example.transportcompanybackend.entity.Warehouse;
 import com.example.transportcompanybackend.pojo.TokensHolder;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -54,7 +55,9 @@ public interface Mapper {
     void patchWarehouse(WarehouseDto warehouseDto, @MappingTarget Warehouse warehouse);
 
     UserDto toUserDto(User entity);
-    void mergeUser(UserDto userDto, @MappingTarget User user);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    User patchUser(UserUpdateDto userUpdateDto, @MappingTarget User user);
 
     User toUser(CreateUserDto entity);
 
