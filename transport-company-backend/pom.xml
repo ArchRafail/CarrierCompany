@@ -61,12 +61,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.junit.vintage</groupId>-->
-<!--                    <artifactId>junit-vintage-engine</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
         </dependency>
 
         <dependency>
@@ -157,25 +151,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <artifactId>maven-resources-plugin</artifactId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>copy-resources</id>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals><goal>copy-resources</goal></goals>-->
-<!--                        <configuration>-->
-<!--                            <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>-->
-<!--                            <resources>-->
-<!--                                <resource>-->
-<!--                                    <directory>${project.parent.basedir}/transport-company-frontend/dist/</directory>-->
-<!--                                </resource>-->
-<!--                            </resources>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
 
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
